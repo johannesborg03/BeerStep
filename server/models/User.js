@@ -3,12 +3,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 
-
-//Connect to MongoDB:
-mongoose.connect(
-    'mongodb://localhost:27017/beerStepDB'
-);
-
 var userSchema = new moongose.Schema({
     userID : {
         type : String,
