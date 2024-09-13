@@ -9,7 +9,7 @@ var leaderboardSchema = mongoose.Schema({
         unique : true
     },
     month : {
-        type String,
+        type : String,
         required : true,
         min : 3,
         max : 20
