@@ -24,3 +24,5 @@ var squadSchema = mongoose.Schema({
 });
 
 var Squad = mongoose.model('Squad', squadSchema);
+
+module.exports = Squad;

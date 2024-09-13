@@ -17,3 +17,5 @@ var leaderboardSchema = mongoose.Schema({
 });
 
 var Leaderboard = mongoose.model('Leaderboard', leaderboardSchema);
+
+module.exports = Leaderboard;
