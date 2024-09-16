@@ -60,7 +60,7 @@ router.put('/api/users/:userID', async function (req, res)  {
     }
     });
 
-// Delete a user
+// Delete a specific user
 router.delete('/api/users/:userID', async function (req, res) {
     try {
     var userID = req.params.userID;
@@ -74,7 +74,7 @@ router.delete('/api/users/:userID', async function (req, res) {
 }
 });
 
-//Implement Delete all users here:
+//Delete all users
 router.delete('/api/users', async function (req, res) {
     try {
         const deletedResult = await User.deleteMany({});
@@ -90,7 +90,29 @@ router.delete('/api/users', async function (req, res) {
     }
 });
 
-// Implement Patch function here:
+// Partially update a User
+router.patch('/api/users/:userID', async function (req, res) {
+    try {
+        const userID = req.params.userID;
+
+        const updatedUser = await User.findOneAndUpdate(
+            {userID: userID},
+            { $set: req.body },
+            {new: true, runValidators: true} //Return the updated documents and run schema validators
+        );
+        if (!updatedUser) {
+            return res.status(404).json({message: "User not found"});
+        }
+        res.status(200).json(updatedUser);
+    } catch (err){
+        res.status(500).json({
+            message: "Server error while updating the user",
+            error: err.message,
+        });
+    }
+});
+
+
 
 
 module.exports = router;
