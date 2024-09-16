@@ -6,8 +6,8 @@ var User = require('../models/User.js');
 
 // Create a new user (POST /api/users)
 router.post('/api/users', async function (req, res, next) {
-    var user = newUser({
-        userID: req.body.userId,
+    var user = new User({
+        userID: req.body.userID,
         username: req.body.username,
         email: req.body.email,
         password: req.body.password,
@@ -29,39 +29,47 @@ router.get('/api/users', async function (req, res, ){
 });
 
 //Get specific User
-router.get('/api/users/:id', async function (req, res) {
-    var id = req.params.id;
-    const user = await User.findById(id);
+router.get('/api/users/:userID', async function (req, res) {
+    try{
+    var userID = req.params.userID;
+    const user = await User.findOne({userID : userID});
     if (!user){
         return res.status(404).json({"message": "No such user"});
     }
     res.json(user);
+} catch (err) {
+    res.status(500).json({"message" : "Server error", "error": err.message});
+}
 });
 
 //Update a User
-router.put('api/users/:id', async function (req, res)  {
+router.put('/api/users/:userID', async function (req, res)  {
     try{
-    var id = req.params.id;
-    const user = await User.findByIdAndUpdate(id);
-    if (!user) 
-        return res.status(404).json({"message": "No such user"});
-    res.json(user);
-    } catch (error) {
-        res.status(400).json({message : error.message});
+        var userID = req.params.userID;
+        const updatedData = req.body;
+        const updatedUser = await User.findOneAndUpdate({userID : userID}, updatedData, 
+            {new: true, runValidators: true}
+        );
+        if (!updatedUser){
+            return res.status(404).json({"message": "No such user"});
+        }
+        res.json(updatedUser);
+    } catch (err) {
+        res.status(500).json({"message" : "Server error", "error": err.message});
     }
-});
-
+    });
 
 // Delete a user
-router.delete('api/users/:id', async function (req, res) {
+router.delete('/api/users/:userID', async function (req, res) {
     try {
-    var id = req.params.id;
-    const user = await User.findByIdAndDelete(id);
-    if(!user) 
+    var userID = req.params.userID;
+    const deletedUser = await User.findOneAndDelete({userID: userID});
+    if(!deletedUser) {
         return res.status(404).json({"message": "No such user"});
-    res.json(user);
-} catch (error) {
-    res.status(500).json({message : error.message});
+}
+    res.json({ "message": "User deleted successfully", "user" : deletedUser});
+} catch (err) {
+    res.status(500).json({"message" : "Server error", "error" : err.message});
 }
 });
 
