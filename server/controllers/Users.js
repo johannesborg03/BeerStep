@@ -23,6 +23,7 @@ router.post('/api/users', async function (req, res, next) {
     res.status(201).json(user);
 });
 
+// Get all Users
 router.get('/api/users', async function (req, res, ){
     const users = await User.find();
     res.json({'users': users});
@@ -72,6 +73,24 @@ router.delete('/api/users/:userID', async function (req, res) {
     res.status(500).json({"message" : "Server error", "error" : err.message});
 }
 });
+
+//Implement Delete all users here:
+router.delete('/api/users', async function (req, res) {
+    try {
+        const deletedResult = await User.deleteMany({});
+        res.status(200).json({
+            message: "All users succesfully deleted",
+            deletedCount: deletedResult.deletedCount,
+        });
+    } catch (err) {
+        res.status(500).json({
+            message: "Server error while deleting users",
+            error: err.message,
+        });
+    }
+});
+
+// Implement Patch function here:
 
 
 module.exports = router;
