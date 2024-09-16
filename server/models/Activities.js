@@ -7,7 +7,7 @@ app.get('/api/activities', async function (req, res)  {
     res.json({'activities': activities});
 });
 
-app.post('/api/camels', (req, res) => {
+app.post('/api/activities', (req, res) => {
     var new_activities = {
         "activity_id": activity. activity_id,
         "beercount": req.body.beercount,
