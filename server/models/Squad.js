@@ -19,10 +19,13 @@ var squadSchema = mongoose.Schema({
         type : String,
         required : true,
         unique : false
-    }
+    },
+    users: [{ 
+        type: mongoose.Schema.Types.ObjectId, ref: 'User'  // Reference to users
+    }] 
 
 });
 
-var Squad = mongoose.model('Squad', squadSchema);
+var Squad = mongoose.model('Squads', squadSchema);
 
 module.exports = Squad;
