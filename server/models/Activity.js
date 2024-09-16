@@ -1,4 +1,4 @@
-var mongoose = requrie('mongoose');
+var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
@@ -10,7 +10,7 @@ var activitySchema = mongoose.Schema({
     unique : true,
     },
     beercount : {
-        type : Integer,
+        type : Number,
         required : true,
         unique : false,
         min : 1,
