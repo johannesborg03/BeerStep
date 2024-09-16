@@ -13,9 +13,14 @@ var leaderboardSchema = mongoose.Schema({
         required : true,
         min : 3,
         max : 20
+    },
+    squad : {
+        type : mongoose.Schema.Types.ObjectId, 
+        ref: 'Squad', 
+        unique : true 
     }
 });
 
-var Leaderboard = mongoose.model('Leaderboard', leaderboardSchema);
+var Leaderboard = mongoose.model('Leaderboards', leaderboardSchema);
 
 module.exports = Leaderboard;

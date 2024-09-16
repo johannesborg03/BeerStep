@@ -21,8 +21,14 @@ var squadSchema = mongoose.Schema({
         unique : false
     },
     users: [{ 
-        type: mongoose.Schema.Types.ObjectId, ref: 'User'  // Reference to users
-    }] 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'User'  // Reference to users
+    }],
+    leaderboard : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref : 'Leaderboard',
+        unique : true
+    }
 
 });
 

@@ -9,7 +9,6 @@ var activitySchema = mongoose.Schema({
     type : String,
     unique : true,
     },
-
     Beercount : {
         type : Integer,
         required : true,
@@ -17,15 +16,18 @@ var activitySchema = mongoose.Schema({
         min : 1,
         max : 30
     },
-
     Activity_type : {
     type : String,
     unique : false,
     required : true,
+    },
+    user : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'User',
+        required : true
     }
-
 });
 
-var Activity = mongoose.model('Activity', activitySchema);
+var Activity = mongoose.model('Activities', activitySchema);
 
 module.exports = Activity;
