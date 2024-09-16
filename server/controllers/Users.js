@@ -1,14 +1,18 @@
 var express = require ('express');
 var router = express.Router();
 
-var User = require('../models/users.js');
+var User = require('../models/User.js');
 
 
 // Create a new user (POST /api/users)
 router.post('/api/users', async function (req, res, next) {
     var user = newUser({
-
-        //Fill in with attributes
+        userID: req.body.userId,
+        username: req.body.username,
+        email: req.body.email,
+        password: req.body.password,
+        squads: req.body.squads,
+        activities: req.body.activities,
     });
 
     try {
@@ -35,19 +39,31 @@ router.get('/api/users/:id', async function (req, res) {
 });
 
 //Update a User
-router.put('api/users/:id', async function (req, res) {
+router.put('api/users/:id', async function (req, res)  {
+    try{
     var id = req.params.id;
-    const user = await User.findById(id);
-    if (!user) {
+    const user = await User.findByIdAndUpdate(id);
+    if (!user) 
         return res.status(404).json({"message": "No such user"});
-    }
     res.json(user);
+    } catch (error) {
+        res.status(400).json({message : error.message});
+    }
 });
 
-// 
 
-
-
+// Delete a user
+router.delete('api/users/:id', async function (req, res) {
+    try {
+    var id = req.params.id;
+    const user = await User.findByIdAndDelete(id);
+    if(!user) 
+        return res.status(404).json({"message": "No such user"});
+    res.json(user);
+} catch (error) {
+    res.status(500).json({message : error.message});
+}
+});
 
 
 module.exports = router;
