@@ -5,18 +5,18 @@ var Schema = mongoose.Schema;
 var activitySchema = mongoose.Schema({
 
 
-    Activity_id : {
+    activity_id : {
     type : String,
     unique : true,
     },
-    Beercount : {
+    beercount : {
         type : Integer,
         required : true,
         unique : false,
         min : 1,
         max : 30
     },
-    Activity_type : {
+    activity_type : {
     type : String,
     unique : false,
     required : true,
@@ -28,6 +28,6 @@ var activitySchema = mongoose.Schema({
     }
 });
 
-var Activity = mongoose.model('Activities', activitySchema);
+var activity = mongoose.model('activities', activitySchema);
 
-module.exports = Activity;
+module.exports = activity;
