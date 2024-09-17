@@ -87,6 +87,27 @@ router.delete('/api/activities', async function (req, res) {
     }
 });
 
+// Partially update a activity
+router.patch('/api/activities/:activity_id', async function (req, res) {
+    try {
+        const activity_id = req.params.activity_id;
+
+        const updatedActivity = await Activity.findOneAndUpdate(
+            {activity_id: activity_id},
+            { $set: req.body },
+            {new: true, runValidators: true} //Return the updated documents and run schema validators
+        );
+        if (!updatedActivity) {
+            return res.status(404).json({message: "Activity not found"});
+        }
+        res.status(200).json(updatedActivity);
+    } catch (err){
+        res.status(500).json({
+            message: "Server error while updating the activity",
+            error: err.message,
+        });
+    }
+});
 
 
 module.exports = router;

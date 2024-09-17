@@ -6,7 +6,7 @@ var activitySchema = mongoose.Schema({
 
 
     activity_id : {
-    type : String,
+    type : Number,
     unique : true,
     },
     beercount : {
@@ -24,7 +24,7 @@ var activitySchema = mongoose.Schema({
     user : {
         type : mongoose.Schema.Types.ObjectId,
         ref : 'User',
-        required : true
+        required : false
     }
 });
 
