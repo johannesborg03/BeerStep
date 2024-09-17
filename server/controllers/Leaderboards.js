@@ -58,9 +58,19 @@ router.put('/api/leaderboards/:leaderboard_id', async function (req, res)  {
     }
     });
 
-
 //Delete a specific Leaderboard (DELETE)
-
+router.delete('/api/leaderboards/:leaderboard_id', async function (req, res) {
+    try {
+    var leaderboard_id = req.params.leaderboard_id;
+    const deletedLeaderboard = await Leaderboard.findOneAndDelete({leaderboard_id: leaderboard_id});
+    if(!deletedLeaderboard) {
+        return res.status(404).json({"message": "No such Leaderboard"});
+}
+    res.json({ "message": "Leaderboard deleted successfully", "leaderboard" : deletedLeaderboard});
+} catch (err) {
+    res.status(500).json({"message" : "Server error", "error" : err.message});
+}
+});
 
 
 //Delete all Leaderboards (DELETE)
