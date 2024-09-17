@@ -5,6 +5,8 @@ var path = require('path');
 var cors = require('cors');
 var history = require('connect-history-api-fallback');
 
+var leaderboardsController = require('./controllers/Leaderboards');
+
 var usersController = require('./controllers/Users');
 
 // Variables
@@ -39,7 +41,7 @@ app.get('/api', function(req, res) {
 //Users here
 app.use(usersController);
 
-
+app.use(leaderboardsController);
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
 app.use('/api/*', function (req, res) {
