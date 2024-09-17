@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 var leaderboardSchema = mongoose.Schema({
     leaderboard_id : {
-        type : String,
+        type : Number,
         required : true,
         unique : true
     },
@@ -16,8 +16,7 @@ var leaderboardSchema = mongoose.Schema({
     },
     squad : {
         type : mongoose.Schema.Types.ObjectId, 
-        ref: 'Squad', 
-        unique : true 
+        ref: 'Squad' 
     }
 });
 
