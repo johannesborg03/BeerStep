@@ -3,9 +3,9 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 
-var userSchema = new moongose.Schema({
+var userSchema = new mongoose.Schema({
     userID : {
-        type : String,
+        type : Number,
         required : true,
         unique : true
     },
@@ -31,11 +31,21 @@ var userSchema = new moongose.Schema({
         min : 4,
         max : 20,
         unique : false,
-    }
-});
+    },
+    squads : [{ 
+        type: mongoose.Schema.Types.ObjectId, ref: 'Squad'      // Reference to squads
+    }],
+    activities: [{ 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Activity'  // One-to-many relationship with Activity
+    }]
+
+}); 
+
+
 
 var User = mongoose.model('Users', userSchema);
-
+module.exports = User;
  
 
 
