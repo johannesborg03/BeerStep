@@ -74,8 +74,20 @@ router.delete('/api/leaderboards/:leaderboard_id', async function (req, res) {
 
 
 //Delete all Leaderboards (DELETE)
-
-
+router.delete('/api/leaderboards', async function (req, res) {
+    try {
+        const deletedResult = await Leaderboard.deleteMany({});
+        res.status(200).json({
+            message: "All leaderboards succesfully deleted",
+            deletedCount: deletedResult.deletedCount,
+        });
+    } catch (err) {
+        res.status(500).json({
+            message: "Server error while deleting leaderboards",
+            error: err.message,
+        });
+    }
+});
 
 //Partially Update a user (PATCH)
 
