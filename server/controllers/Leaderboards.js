@@ -42,7 +42,21 @@ router.get('/api/leaderboards/:leaderboard_id', async function (req, res) {
 
 
 //Update a Leaderboard (PUT)
-
+router.put('/api/leaderboards/:leaderboard_id', async function (req, res)  {
+    try{
+        var leaderboard_id = req.params.leaderboard_id;
+        const updatedData = req.body;
+        const updatedLeaderboard = await Leaderboard.findOneAndUpdate({leaderboard_id : leaderboard_id}, updatedData, 
+            {new: true, runValidators: true}
+        );
+        if (!updatedLeaderboard){
+            return res.status(404).json({"message": "No such Leaderboard"});
+        }
+        res.json(updatedLeaderboard);
+    } catch (err) {
+        res.status(500).json({"message" : "Server error", "error": err.message});
+    }
+    });
 
 
 //Delete a specific Leaderboard (DELETE)
