@@ -6,6 +6,7 @@ var cors = require('cors');
 var history = require('connect-history-api-fallback');
 
 var usersController = require('./controllers/Users');
+var squadsController = require('./controllers/Squads');
 
 // Variables
 var mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/beerStepDB';
@@ -38,6 +39,8 @@ app.get('/api', function(req, res) {
 
 //Users here
 app.use(usersController);
+//Squads here
+app.use(squadsController);
 
 
 
