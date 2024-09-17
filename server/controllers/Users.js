@@ -5,7 +5,7 @@ var User = require('../models/User.js');
 
 
 // Create a new user (POST /api/users)
-router.post('/api/users', async function (req, res, next) {
+router.post('/api/Users', async function (req, res, next) {
     var user = new User({
         userID: req.body.userID,
         username: req.body.username,

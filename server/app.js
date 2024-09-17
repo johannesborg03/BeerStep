@@ -5,6 +5,8 @@ var path = require('path');
 var cors = require('cors');
 var history = require('connect-history-api-fallback');
 
+var leaderboardsController = require('./controllers/Leaderboards');
+
 var usersController = require('./controllers/Users');
 
 
@@ -43,7 +45,7 @@ app.get('/api', function(req, res) {
 //Users here
 app.use(usersController);
 
-
+app.use(leaderboardsController);
 
 app.use(activitiesController);
 
