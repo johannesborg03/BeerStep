@@ -1,22 +1,22 @@
-var mongoose = requrie('mongoose');
+var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
 var activitySchema = mongoose.Schema({
 
 
-    Activity_id : {
-    type : String,
+    activity_id : {
+    type : Number,
     unique : true,
     },
-    Beercount : {
-        type : Integer,
+    beercount : {
+        type : Number,
         required : true,
         unique : false,
         min : 1,
         max : 30
     },
-    Activity_type : {
+    activity_type : {
     type : String,
     unique : false,
     required : true,
@@ -24,10 +24,10 @@ var activitySchema = mongoose.Schema({
     user : {
         type : mongoose.Schema.Types.ObjectId,
         ref : 'User',
-        required : true
+        required : false
     }
 });
 
-var Activity = mongoose.model('Activities', activitySchema);
+var Activity = mongoose.model('activities', activitySchema);
 
 module.exports = Activity;
