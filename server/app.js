@@ -7,6 +7,10 @@ var history = require('connect-history-api-fallback');
 
 var usersController = require('./controllers/Users');
 
+
+
+var activitiesController = require('./controllers/Activities');
+
 // Variables
 var mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/beerStepDB';
 var port = process.env.PORT || 3000;
@@ -40,6 +44,8 @@ app.get('/api', function(req, res) {
 app.use(usersController);
 
 
+
+app.use(activitiesController);
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
 app.use('/api/*', function (req, res) {

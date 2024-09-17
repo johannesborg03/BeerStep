@@ -1,9 +1,9 @@
 var express = require('express');
-var router = express.router();
+var router = express.Router();
 
 var Activity = require('../models/Activity.js');
 
-router.post('/api/activities', async function (req, res) {
+router.post('/api/activities', async function (req, res, next) {
     // Instantiate the Activity model with request data
     var new_activity = new Activity({
         activity_id: req.body.activity_id,
@@ -11,28 +11,26 @@ router.post('/api/activities', async function (req, res) {
         activity_type: req.body.activity_type,
         user: req.body.user
     });
-
     try {
-        await user.save();
+        await new_activity.save();
 
     } catch (err) {
         next(err);
     }
-    3
     res.status(201).json(new_activity);
 });
 
 // Get all activities
 router.get('/api/activities', async function (req, res,) {
     const activities = await Activity.find();
-    res.json({ 'activities': activities });
+    res.json({'activities': activities});
 });
 
 //Get specific activity
 router.get('/api/activities/:activity_id', async function (req, res) {
     try {
-        var activityID = req.params.activity_id;
-        const activity = await Activity.findOne({ activity_id: activityID });
+        var activity_id = req.params.activity_id;
+        const activity = await Activity.findOne({activity_id: activity_id});
         if (!activity) {
             return res.status(404).json({ "message": "No such activity" });
         }
@@ -45,9 +43,9 @@ router.get('/api/activities/:activity_id', async function (req, res) {
 //Update a activity
 router.put('/api/activities/:activity_id', async function (req, res) {
     try {
-        var activityID = req.params.activity_id;
+        var activity_id = req.params.activity_id;
         const updatedData = req.body;
-        const updatedActivity = await Activity.findOneAndUpdate({ activity_id: activityID }, updatedData,
+        const updatedActivity = await Activity.findOneAndUpdate({activity_id: activity_id}, updatedData,
             { new: true, runValidators: true }
         );
         if (!updatedActivity) {
@@ -62,8 +60,8 @@ router.put('/api/activities/:activity_id', async function (req, res) {
 // Delete a specific activity 
 router.delete('/api/activities/:activity_id', async function (req, res) {
     try {
-        var activityID = req.params.activity_id;
-        const deletedActivity = await Activity.findOneAndDelete({ activity_id : activityID });
+        var activity_id = req.params.activity_id;
+        const deletedActivity = await Activity.findOneAndDelete({activity_id : activity_id });
         if (!deletedActivity) {
             return res.status(404).json({ "message": "No such activity" });
         }
@@ -90,3 +88,5 @@ router.delete('/api/activities', async function (req, res) {
 });
 
 
+
+module.exports = router;

@@ -28,6 +28,6 @@ var activitySchema = mongoose.Schema({
     }
 });
 
-var activity = mongoose.model('activities', activitySchema);
+var Activity = mongoose.model('activities', activitySchema);
 
-module.exports = activity;
+module.exports = Activity;
