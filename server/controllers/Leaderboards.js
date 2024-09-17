@@ -90,6 +90,25 @@ router.delete('/api/leaderboards', async function (req, res) {
 });
 
 //Partially Update a user (PATCH)
+router.patch('/api/leaderboards/:leaderboard_id', async function (req, res) {
+    try {
+        const leaderboard_id = req.params.leaderboard_id;
 
+        const updatedLeaderboard = await Leaderboard.findOneAndUpdate(
+            {leaderboard_id: leaderboard_id},
+            { $set: req.body },
+            {new: true, runValidators: true} //Return the updated documents and run schema validators
+        );
+        if (!updatedLeaderboard) {
+            return res.status(404).json({message: "Leaderboard not found"});
+        }
+        res.status(200).json(updatedLeaderboard);
+    } catch (err){
+        res.status(500).json({
+            message: "Server error while updating the Leaderboard",
+            error: err.message,
+        });
+    }
+});
 
 module.exports = router;
