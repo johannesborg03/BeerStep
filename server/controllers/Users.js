@@ -203,10 +203,39 @@ router.get('/api/users/:userID/activities/:activityId', async function (req, res
     }
 });
 
-
-
-
 // Create a DELETE route for a specific Activity for a Specific User
+router.delete('/api/users/:userID/:activities/:activityId', async function (req, res){
+    try {
+        const user = await User.findOne({userID : req.params.userID});
+
+        if(!user) {
+            return res.status(404).json({ message : "User not found"});
+        }
+        const activity = await Activity.findOneAndDelete({ _id : req.params.activityId});
+
+        if (!activity) {
+            return res.status(404).json({ message : "Activity not found" });
+        }
+
+        //Remove the activity reference from the users activities array
+        user.activities = user.activities.filter(actID => actID.toString()!== req.params.activityId);
+
+        //Save the user after removing the activity
+        await user.save();
+
+        res.status(200).json({
+            message : "Activity deleted successfully",
+            activityId : req.params.activityId
+        });
+    } catch (errror) {
+        res.status(500).json({
+            message : "Server error while deleting activity",
+            error : error.message
+        });
+    }
+});
+
+
 
 //OPTIONAL: Create a DELETE ROUTE for All activities for a Specific User
 
