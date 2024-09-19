@@ -174,8 +174,37 @@ router.get('/api/users/:userID/activities', async function (req, res) {
     }
 });
 
-
 // Create a GET route for a specifc Activity for a Specific User
+router.get('/api/users/:userID/activities/:activityId', async function (req, res){
+    try {
+        const user = await User.findOne({userID : req.params.userID});
+
+        if (!user){
+            return res.status(404).json({ message : "User not found"});
+        }
+
+        //Find specific activity by MongoDB_id within users activities
+        const activity = user.activities.find(act => act._id.toString() == req.params.activityId);
+
+        if (!activity){
+            return res.status(404).json({  message : "Activity not found"});
+        }
+
+        //Return specific Activity
+        res.status(200).json({
+            message : "Activity retrieved successfully",
+            activity : activity
+        });
+    } catch (error) {
+        res.status(500).json({
+            message : "Server error while retrieving activity",
+            error : error.message
+        });
+    }
+});
+
+
+
 
 // Create a DELETE route for a specific Activity for a Specific User
 
