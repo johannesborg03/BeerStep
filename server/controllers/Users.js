@@ -54,13 +54,15 @@ router.get('/api/users', async function (req, res, ){
             sort [req.query.sortBy] = req.query.order === 'desc' ? -1 : 1;
         }
 
+        //Field selection (Specify which fields to include or exclude)
+        const fields = req.query.fields ? req.query.fields.split(',').join(' ') : '';
+
         // Fetch users from database with the specified options
         const users = await User.find(filter)
             .select(fields)    // Field selection
             .sort(sort)        // Sorting
 
-
-    const totalUsers = await User.find();
+    // const totalUsers = await User.find();
     res.status(200).json({
         message: "Users retrieved successfully",
         users: users
