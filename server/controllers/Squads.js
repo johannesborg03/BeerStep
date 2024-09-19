@@ -81,6 +81,41 @@ router.patch('/api/squads/:squad_id', async function (req, res, next) {
     }
 });
 
+router.post('/api/squads/:squad_id/invite', async function (req, res) {
+    try {
+        const { squad_id } = req.params;
+        const { userID } = req.body; // The ID of the user being invited
+
+        // Find the squad by its ID
+        const squad = await Squad.findOne({ squad_id });
+        if (!squad) {
+            return res.status(404).json({ message: "Squad not found" });
+        }
+
+        // Find the user by their ID
+        const user = await User.findOne({ userID });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Check if the user is already part of the squad
+        if (squad.users.includes(user._id)) {
+            return res.status(400).json({ message: "User is already in the squad" });
+        }
+
+        // Add the user to the squad
+        squad.users.push(user._id);
+        await squad.save();
+
+        res.status(200).json({
+            message: `User ${user.username} has been invited to the squad ${squad.squadName}.`,
+            squad,
+        });
+    } catch (err) {
+        res.status(500).json({ message: "Error inviting user", error: err.message });
+    }
+});
+
 
 router.delete('/api/squads/:squad_id', async function (req, res, next) {
     try {
