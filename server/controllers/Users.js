@@ -4,6 +4,8 @@ var router = express.Router();
 var User = require('../models/User.js');
 var Activity = require('../models/Activity.js');
 
+var methodOverride = require('method-override');
+
 // Create a new user (POST /api/users)
 router.post('/api/users', async function (req, res, next) {
     var user = new User({
@@ -52,13 +54,15 @@ router.get('/api/users', async function (req, res, ){
             sort [req.query.sortBy] = req.query.order === 'desc' ? -1 : 1;
         }
 
+        //Field selection (Specify which fields to include or exclude)
+        const fields = req.query.fields ? req.query.fields.split(',').join(' ') : '';
+
         // Fetch users from database with the specified options
         const users = await User.find(filter)
             .select(fields)    // Field selection
             .sort(sort)        // Sorting
 
-
-    const totalUsers = await User.find();
+    // const totalUsers = await User.find();
     res.status(200).json({
         message: "Users retrieved successfully",
         users: users
@@ -83,6 +87,30 @@ router.get('/api/users/:userID', async function (req, res) {
 } catch (err) {
     res.status(500).json({"message" : "Server error", "error": err.message});
 }
+});
+
+// Enable HTTP method overriding
+router.use(methodOverride('_method'));
+
+// Get specific User (GET with HTTP method overriding)
+router.all('/api/users/:userID', async function (req, res) {
+    if (req.method === 'POST' && req.body._method === 'GET') {
+        req.method = 'GET';  // Override the method to GET
+    }
+    if (req.method === 'GET') {
+        try {
+            var userID = req.params.userID;
+            const user = await User.findOne({ userID: userID });
+            if (!user) {
+                return res.status(404).json({ "message": "No such user" });
+            }
+            res.json(user);
+        } catch (err) {
+            res.status(500).json({ "message": "Server error", "error": err.message });
+        }
+    } else {
+        res.status(405).json({ "message": "Method Not Allowed" });
+    }
 });
 
 //Update a User
