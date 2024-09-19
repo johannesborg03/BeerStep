@@ -238,6 +238,35 @@ router.delete('/api/users/:userID/:activities/:activityId', async function (req,
 
 
 //OPTIONAL: Create a DELETE ROUTE for All activities for a Specific User
+router.delete('/api/users/:userID/activities', async function (req, res){
+    try{
+        const user = await User.findOne({ userID : req.params.userID});
+
+        if(!user) {
+            return res.status(404).json({ message : "User not found"});
+        }
+
+        //Delete all activities associated with this user
+        await Activity.deleteMany({ _id : { $in: user.activities } });
+
+        //Clear the users activities array
+       user.activities = [];
+
+    //Save the user after clearing the activities array
+         await user.save();
+
+    res.status(200).json({
+        message : "All activities for the user have been deleted"
+    });
+
+    } catch (error) {
+        res.status(500).json({
+            message : "Server error while deleting activities",
+            error : error.message
+        });
+        
+    }
+});
 
 
 
