@@ -4,11 +4,6 @@ var Schema = mongoose.Schema;
 
 var activitySchema = mongoose.Schema({
 
-
-    activity_id : {
-    type : Number,
-    unique : true,
-    },
     beercount : {
         type : Number,
         required : true,

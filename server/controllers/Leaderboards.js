@@ -89,7 +89,7 @@ router.delete('/api/leaderboards', async function (req, res) {
     }
 });
 
-//Partially Update a user (PATCH)
+//Partially Update a leaderboard (PATCH)
 router.patch('/api/leaderboards/:leaderboard_id', async function (req, res) {
     try {
         const leaderboard_id = req.params.leaderboard_id;

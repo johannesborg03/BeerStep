@@ -17,16 +17,58 @@ router.post('/api/users', async function (req, res, next) {
 
     try {
         await user.save();
+        res.status(200).json(user);
     } catch (err) {
-        next(err);
-    }  
-    res.status(201).json(user);
+        if (err.code ===11000) {
+            let duplicateField = Object.keys(err.keyValue)[0];
+            return res.status(400).json({
+                message : `A user with the same ${duplicateField} already exist`,
+                field : duplicateField
+            });
+        }
+        res.status(500).json({
+            message : "Server error while creating user",
+            error : error.message
+        });
+    } 
 });
 
 // Get all Users
 router.get('/api/users', async function (req, res, ){
-    const users = await User.find();
-    res.json({'users': users});
+    try{
+
+        //Filtering by username, email
+        const filter = {};
+        if(req.query.username){
+            filter.username = req.query.username;
+        }
+        if(req.query.email){
+            filter.email = req.query.email;
+        }
+
+        //Sorting (by username or email)
+        const sort = {};
+        if (req.query.sortBy) {
+            sort [req.query.sortBy] = req.query.order === 'desc' ? -1 : 1;
+        }
+
+        // Fetch users from database with the specified options
+        const users = await User.find(filter)
+            .select(fields)    // Field selection
+            .sort(sort)        // Sorting
+
+
+    const totalUsers = await User.find();
+    res.status(200).json({
+        message: "Users retrieved successfully",
+        users: users
+    });
+} catch (error) {
+    res.status(500).json({
+        message: "Server error",
+        error: error.message,
+    });
+}
 });
 
 //Get specific User
@@ -267,9 +309,6 @@ router.delete('/api/users/:userID/activities', async function (req, res){
         
     }
 });
-
-
-
 
 
 module.exports = router;
