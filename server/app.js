@@ -8,6 +8,7 @@ var history = require('connect-history-api-fallback');
 var leaderboardsController = require('./controllers/Leaderboards');
 
 var usersController = require('./controllers/Users');
+var squadsController = require('./controllers/Squads');
 
 
 
@@ -44,6 +45,8 @@ app.get('/api', function(req, res) {
 
 //Users here
 app.use(usersController);
+//Squads here
+app.use(squadsController);
 
 app.use(leaderboardsController);
 
