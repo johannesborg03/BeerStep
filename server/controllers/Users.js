@@ -17,10 +17,20 @@ router.post('/api/users', async function (req, res, next) {
 
     try {
         await user.save();
+        res.status(200).json(user);
     } catch (err) {
-        next(err);
-    }  
-    res.status(201).json(user);
+        if (err.code ===11000) {
+            let duplicateField = Object.keys(err.keyValue)[0];
+            return res.status(400).json({
+                message : `A user with the same ${duplicateField} already exist`,
+                field : duplicateField
+            });
+        }
+        res.status(500).json({
+            message : "Server error while creating user",
+            error : error.message
+        });
+    } 
 });
 
 // Get all Users
