@@ -153,6 +153,27 @@ router.post('/api/users/:userID/activities', async function (req, res) {
 
 
 // Create a GET route for Activities for a specific User
+router.get('/api/users/:userID/activities', async function (req, res) {
+    try{
+        const user = await User.findOne({userID : req.params.userID});
+
+        if (!user){
+            return res.status(404).json({ message : "User not found"});
+        }
+
+        //Return the activities of the user:
+        res.status(200).json({
+            message : "Activities retrieved successfully",
+            activities : user.activities
+        });
+    } catch (error) {
+        res.status(500).json({
+            message : "Server error while retrieving activities",
+            error : error.message
+        });
+    }
+});
+
 
 // Create a GET route for a specifc Activity for a Specific User
 
