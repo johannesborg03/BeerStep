@@ -4,7 +4,7 @@ var router = express.Router();
 var User = require('../models/User.js');
 var Activity = require('../models/Activity.js');
 
-var methodOverride = require('../method-override');
+var methodOverride = require('method-override');
 
 // Create a new user (POST /api/users)
 router.post('/api/users', async function (req, res, next) {
