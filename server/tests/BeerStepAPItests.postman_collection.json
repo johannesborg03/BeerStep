@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"userID\" : 1,\n    \"username\" : \"John\",\n    \"email\" : \"email@gmail.com\",\n    \"password\" : \"password\"\n}",
+					"raw": "{\n    \"userID\" : 1,\n    \"username\" : \"John\",\n    \"email\" : \"emaila@gmail.com\",\n    \"password\" : \"password\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -169,6 +169,157 @@
 					"path": [
 						"api",
 						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST/ACTIVITY FOR USER_ID",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"beercount\" : 1,\n    \"activity_type\" : \"drinking\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/users/1/activities",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users",
+						"1",
+						"activities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET ACTIVITIES FOR USER_ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/users/1/activities",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users",
+						"1",
+						"activities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET SPECIFIC ACTIVITY FOR USER_ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/users/1/activities/66ed7eaa36afb77ac8ed409d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users",
+						"1",
+						"activities",
+						"66ed7eaa36afb77ac8ed409d"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE SPECIFIC ACTIVITY FOR USER_ID",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/users/1/activities/66ed7eaa36afb77ac8ed409d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users",
+						"1",
+						"activities",
+						"66ed7eaa36afb77ac8ed409d"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE ALL ACTIVITIES FOR USER_ID",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/users/1/activities",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users",
+						"1",
+						"activities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH/USER_ID",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \n    \"userID\" : 10,\n    \"username\" : \"Johnna\"\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/users/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users",
+						"1"
 					]
 				}
 			},
@@ -347,6 +498,37 @@
 			"response": []
 		},
 		{
+			"name": "POST INVITE USER TO SQUAD",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"userID\" : 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/squads/66ed80d839f7f7849d85f4ae/invite",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"squads",
+						"66ed80d839f7f7849d85f4ae",
+						"invite"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "POST/LEADERBOARD",
 			"request": {
 				"method": "POST",
@@ -518,26 +700,6 @@
 			"response": []
 		},
 		{
-			"name": "GET/ACTIVITIES",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/api/activities",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"activities"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "POST/ACTIVITY",
 			"request": {
 				"method": "POST",
@@ -565,6 +727,148 @@
 				}
 			},
 			"response": []
-		} 
+		},
+		{
+			"name": "GET/ACTIVITIES",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/activities",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"activities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET/ACTIVITY_ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/activities/66ed40bdf58e9389bdd485a9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"activities",
+						"66ed40bdf58e9389bdd485a9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT/ACTIVITY",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"beercount\" : 3,\n    \"activity_type\" : \"Drrinking\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/activities/66ed40bdf58e9389bdd485a9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"activities",
+						"66ed40bdf58e9389bdd485a9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE/ACTIVITIES",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/activities",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"activities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE/ACTIVITY_ID",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/activities/66ed40bdf58e9389bdd485a9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"activities",
+						"66ed40bdf58e9389bdd485a9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH/ACTIVITY",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"beercount\" : 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/activities/66ed7eaa36afb77ac8ed409d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"activities",
+						"66ed7eaa36afb77ac8ed409d"
+					]
+				}
+			},
+			"response": []
+		}
 	]
 }
