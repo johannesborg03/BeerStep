@@ -193,7 +193,6 @@ router.post('/api/users/:userID/activities', async function (req, res) {
 
         //Create the new Activity
         const newActivity = new Activity ({
-            activity_id : req.body.activity_id,
             beercount : req.body.beercount,
             activity_type : req.body.activity_type,
             user : user._id //Can you do this?
