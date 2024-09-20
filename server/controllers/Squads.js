@@ -3,6 +3,7 @@ var router = express.Router();
 
 var Squad = require('../models/Squad.js');
 var User = require('../models/User.js');
+const Leaderboard = require('../models/Leaderboard');  // Add this line
 
 
 router.post('/api/squads', async function (req, res, next) {

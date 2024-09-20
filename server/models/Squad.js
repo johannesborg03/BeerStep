@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 var squadSchema = mongoose.Schema({
     squad_id : {
-        type : String,
+        type : Number,
         required : true,
         unique : true
     },

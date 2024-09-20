@@ -5,19 +5,38 @@ var Leaderboard = require('../models/Leaderboard.js');
 
 //Create a new Leaderboard: POST
 router.post('/api/leaderboards', async function (req, res, next) {
+    try {
+        if (!req.body.squad) {
+            return res.status(400).json({
+                message: 'Squad field is required.'
+            });
+        }
     var leaderboard = new Leaderboard({
         leaderboard_id: req.body.leaderboard_id,
         month: req.body.month,
         squad: req.body.squad,
     });
 
-    try {
         await leaderboard.save();
+        res.status(201).json(leaderboard);
     } catch (err) {
-        next(err);
-    }  
-    res.status(201).json(leaderboard);
+        // Check if the error is a duplicate key error (E11000)
+        if (err.code === 11000) {
+            let duplicateField = Object.keys(err.keyValue)[0]; // Find the field that caused the duplicate error
+            return res.status(409).json({
+                message: `A leaderboard with the same ${duplicateField} already exists.`,
+                field: duplicateField
+            });
+        }
+
+        // Catch validation or other errors
+        res.status(500).json({
+            message: 'Server error while creating leaderboard',
+            error: err.message
+        });
+    }
 });
+
 
 //Get all Leaderboards (GET)
 router.get('/api/leaderboards', async function (req, res, ){
