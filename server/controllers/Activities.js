@@ -86,7 +86,7 @@ router.put('/api/activities/:activity_id', async function (req, res) {
 router.delete('/api/activities/:activity_id', async function (req, res) {
     try {
         var activity_id = req.params.activity_id;
-        const deletedActivity = await Activity.findOneAndDelete({activity_id : activity_id });
+        const deletedActivity = await Activity.findByIdAndDelete(activity_id);
         if (!deletedActivity) {
             return res.status(404).json({ "message": "No such activity" });
         }
@@ -117,8 +117,8 @@ router.patch('/api/activities/:activity_id', async function (req, res) {
     try {
         const activity_id = req.params.activity_id;
 
-        const updatedActivity = await Activity.findOneAndUpdate(
-            {activity_id: activity_id},
+        const updatedActivity = await Activity.findByIdAndUpdate(
+            (activity_id),
             { $set: req.body },
             {new: true, runValidators: true} //Return the updated documents and run schema validators
         );

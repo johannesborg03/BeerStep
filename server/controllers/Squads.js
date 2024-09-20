@@ -88,7 +88,7 @@ router.post('/api/squads/:squad_id/invite', async function (req, res) {
         const { userID } = req.body; // The ID of the user being invited
 
         // Find the squad by its ID
-        const squad = await Squad.findOne({ squad_id });
+        const squad = await Squad.findById(squad_id);
         if (!squad) {
             return res.status(404).json({ message: "Squad not found" });
         }
