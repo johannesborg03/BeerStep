@@ -13,9 +13,9 @@
     "lint": "eslint .",
     "test": "cross-env-shell MONGODB_URI=mongodb://localhost:27017/serverTestDB \"npm run newman-server\"",
     "ci-test": "npm run newman-server",
-    "newman-server": "cross-env-shell PORT=3001 \"npm run dropdb && run-p --race start newman-wait\"",
-    "newman-wait": "wait-on http://localhost:3001/api && npm run newman",
-    "newman": "newman run ./tests/server.postman_collection.json --env-var host=http://localhost:3001",
+    "newman-server": "cross-env-shell PORT=3000 \"npm run dropdb && run-p --race start newman-wait\"",
+    "newman-wait": "wait-on http://localhost:3000/api && npm run newman",
+    "newman": "newman run ./tests/BeerStepAPItests.postman_collection.json --env-var host=http://localhost:3000",
     "dropdb": "node ./tests/dropdb.js"
   },
   "repository": {
@@ -38,4 +38,5 @@
     "npm-run-all": "^4.1.5",
     "wait-on": "^8.0.0"
   }
+  
 }

@@ -4,6 +4,7 @@ var morgan = require('morgan');
 var path = require('path');
 var cors = require('cors');
 var history = require('connect-history-api-fallback');
+const methodOverride = require('method-override');
 
 var leaderboardsController = require('./controllers/Leaderboards');
 
@@ -42,6 +43,10 @@ app.use(cors());
 app.get('/api', function(req, res) {
     res.json({'message': 'Welcome to your DIT342 backend ExpressJS project!'});
 });
+
+//Use method override
+app.use(methodOverride('_method'));
+
 
 //Users here
 app.use(usersController);

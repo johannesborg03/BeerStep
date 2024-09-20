@@ -93,7 +93,7 @@ router.get('/api/users/:userID', async function (req, res) {
 router.use(methodOverride('_method'));
 
 // Get specific User (GET with HTTP method overriding)
-router.all('/api/users/:userID', async function (req, res) {
+router.post('/api/users/:userID', async function (req, res) {
     if (req.method === 'POST' && req.body._method === 'GET') {
         req.method = 'GET';  // Override the method to GET
     }
