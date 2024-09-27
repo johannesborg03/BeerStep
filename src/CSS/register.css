@@ -8,7 +8,7 @@ header {
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-image: url('/assets/logInBack.jpg'); 
+    background-image: url('/src/assets/logInBack.jpg'); 
     background-size: cover; 
     background-position: center; 
     margin: 0; 
