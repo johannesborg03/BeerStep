@@ -1,0 +1,38 @@
+
+/* Header */
+header {
+    width: 100%;
+    background: #333;
+    display: flex;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    flex: 1; /* Allows the h1 to take available space */
+    font-size: 35px;
+    text-align: center; /* Centers the text within the h1 */
+    margin: 5; /* Removes default margin */
+    color: #ebb112; /* Ensures the text color is white */
+    margin-left: 40px
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    margin-left: auto; 
+}
+
+.profile-pic {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%; 
+    overflow: hidden;
+    margin-right: 10px; 
+}
+
+.profile-pic img {
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+}
+
