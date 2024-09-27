@@ -1,0 +1,24 @@
+header {
+    text-align: center; 
+    color: White;
+    font-size: 16px;
+    margin: 50px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: url('/assets/logInBack.jpg'); 
+    background-size: cover; 
+    background-position: center; 
+    margin: 0; 
+    height: 100vh; 
+}
+
+.container {
+    display: flex;          
+    justify-content: center; 
+    align-items: center;     
+    height: 100%;           
+}
+
