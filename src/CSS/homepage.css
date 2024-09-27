@@ -1,0 +1,144 @@
+
+/* Header */
+header {
+    width: 100%;
+    background: #333;
+    display: flex;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    flex: 1; /* Allows the h1 to take available space */
+    font-size: 35px;
+    text-align: center; /* Centers the text within the h1 */
+    margin: 5; /* Removes default margin */
+    color: #ebb112; /* Ensures the text color is white */
+    margin-left: 40px
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    margin-left: auto; 
+}
+
+.profile-pic {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%; 
+    overflow: hidden;
+    margin-right: 10px; 
+}
+
+.profile-pic img {
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+}
+
+.settings {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%; 
+    margin: auto;
+    margin-left: 100px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.settings img {
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+}
+
+/* Hover effect */
+.settings:hover {
+    transform: scale(1.1); /* Slightly increase size */
+    opacity: 0.8; /* Change opacity on hover */
+}
+
+
+.username {
+    font-size: 16px;
+    color: #ffffff;
+    margin-right: 100px;
+}
+
+/* General */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #2b2b2b;
+    color: #f1f1f1;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Main */
+main {
+    position: relative; 
+    width: 100%; 
+    display: flex; /* Enable flexbox layout for the main section */
+    flex-direction: column; /* Ensure main content flows vertically */
+    align-items: center; /* Center align items */
+   
+}
+
+/* Beer Background */
+.beerBack {
+    border-radius: 3%;
+    overflow: hidden;
+    width: 91vw;        
+    height: 70vh;       
+    margin: 0 auto;    
+    position: relative; 
+}
+
+.beerBack img {
+    width: 100%;         
+    height: 100%;          
+    object-fit: cover;     
+}
+
+.button-container {
+    display: flex; 
+    flex-direction: row; 
+    gap: 150px; /* Adjusted to reduce spacing */
+    width: 100%;
+    max-width: 1200px; /* Increased to fit larger buttons */
+    position: absolute; 
+    top: 60%; /* Move down on the page */
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    padding-bottom: 80px;
+}
+
+.button {
+    margin-top: 400px;
+    padding: 6px 0; /* Keep padding for vertical space */
+    font-size: 16px;
+    color: #f2f1ea;
+    border-radius: 15px;
+    text-align: center;
+    text-decoration: none;
+    width: 60px; /* Set a fixed width for all buttons */
+    height: 25px; /* Set a fixed height for all buttons */
+    flex: 1; /* Allow buttons to grow equally */
+    transition: 0.3s;
+}
+
+.button:hover {
+    transform: translateY(-3px);
+}
+
+/* Button Colors */
+.button.green { background: #276229; } 
+.button.red { background: #a62b23; }     
+.button.blue { background: #156eb6; }   
+
+
+
+
