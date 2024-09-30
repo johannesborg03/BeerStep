@@ -1,10 +1,9 @@
 <template>
 
-    <header>
-        <h1>BeerStep</h1>
-    </header>
-
     <body>
+        <header>
+            <h1>BeerStep</h1>
+        </header>
         <main>
             <div class="container">
                 <div class="box">

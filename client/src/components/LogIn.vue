@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <link rel="stylesheet" href="/src/CSS/logIn.css">
-    <title>Login Page</title>
-</head>
-
+<template>
 <body> 
 
     <header>
@@ -28,4 +22,4 @@
     </main>
 
 </body>
-</html>
+</template>
