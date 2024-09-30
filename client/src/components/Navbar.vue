@@ -31,11 +31,13 @@ header {
 
 header h1 {
   flex: 1;
-  font-size: 40px;
+  font-size: 44px;
   text-align: center;
   margin: 0;
   color: #ebb112;
   margin-left: 40px;
+  margin-top: 10px;
+  font-family: 'Segoe UI';
 }
 
 .user {
@@ -63,6 +65,7 @@ header h1 {
   height: 35px;
   border-radius: 50%;
   margin-left: 100px;
+  margin-top: 20px;
 }
 
 .settings img {

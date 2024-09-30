@@ -101,7 +101,7 @@ main {
 }
 
 .button {
-  margin-top: 400px;
+  margin-top: 500px;
   padding: 6px 0;
   font-size: 16px;
   color: #f2f1ea;
@@ -109,7 +109,7 @@ main {
   text-align: center;
   text-decoration: none;
   width: 60px;
-  height: 25px;
+  height: 35px;
   flex: 1;
   transition: 0.3s;
 }
