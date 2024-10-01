@@ -1,8 +1,19 @@
 <template>
   <header>
-    <div class="settings">
+    <div class="settings" @click="toggleMenu">
       <img src="/src/assets/settings.png" alt="Settings" />
+      <div v-if="menuVisible" class="menu">
+      <ul>
+        <li @click="goToSettings">Settings</li>
+        <li @click="logout">Logout</li>
+      </ul>
     </div>
+    </div>
+    <div class = buttonsNav>
+      <button>Home</button>
+      <button>Squads</button>
+      <button>Leaderboard</button>
+  </div>
     <h1>BeerStep</h1>
     <div class="user">
       <div class="profile-pic">
@@ -11,79 +22,146 @@
       <p class="username">Jabo</p>
     </div>
   </header>
-</template>
-
-<script>
-export default {
+ </template>
+ 
+ 
+ 
+ 
+ <script>
+ export default {
   name: 'Navbar',
-};
-</script>
-
-<style>
-header {
+  data() {
+    return {
+      menuVisible: false
+    };
+  },
+  methods: {
+    toggleMenu() {
+      this.menuVisible = !this.menuVisible;
+    },
+    goToSettings() {
+      this.$router.push('/Settings');
+    },
+    logout() {
+      this.$router.push('/LogIn');
+    }
+  }
+ };
+ </script>
+ 
+ 
+ <style>
+ header {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   height: 80px;
   width: 100%;
   background: #333;
   display: flex;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-header h1 {
+  position: relative;
+ }
+ 
+ 
+ header h1 {
   flex: 1;
   font-size: 44px;
   text-align: center;
   margin: 0;
   color: #ebb112;
-  margin-left: 40px;
   margin-top: 10px;
   font-family: 'Segoe UI';
-}
-
-.user {
+  margin-right: 450px;
+ }
+ 
+ 
+ .user {
   display: flex;
   align-items: center;
   margin-left: auto;
-}
-
-.profile-pic {
+ }
+ 
+ 
+ .profile-pic {
   width: 35px;
   height: 35px;
   border-radius: 50%;
   overflow: hidden;
   margin-right: 10px;
-}
-
-.profile-pic img {
+ }
+ 
+ 
+ .profile-pic img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.settings {
+ }
+ 
+ 
+ .settings {
   width: 35px;
   height: 35px;
   border-radius: 50%;
   margin-left: 100px;
+  margin-right: 75px;
   margin-top: 20px;
-}
-
-.settings img {
+  cursor: pointer;
+ }
+ 
+ 
+ .settings img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  
-}
-
-.settings:hover {
-  transform: scale(1.1);
-  opacity: 0.8;
-}
-
-.username {
+ }
+ 
+ 
+ 
+ 
+ .username {
   font-size: 16px;
   color: #ffffff;
   margin-right: 100px;
   margin-top: 9px;
-}
-</style>
+ }
+ 
+ 
+ 
+ 
+ .menu {
+  top: 80px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+ }
+ 
+ 
+ .menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  z-index: 10;
+  position: absolute;
+ }
+ 
+ 
+ .menu li {
+  padding: 10px 20px;
+ }
+ 
+ 
+ .buttonsNav {
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 28px;
+  margin-left: 75px;
+ }
+ 
+ 
+ .buttonsNav button {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 10px;
+ }
+ 
+ 
+ </style>
