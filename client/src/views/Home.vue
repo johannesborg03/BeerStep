@@ -53,17 +53,12 @@ body {
   height: 100vh;
 }
 
-/* Main */
 main {
   position: relative;
   width: 100%;
   display: flex;
-  /* Enable flexbox layout for the main section */
   flex-direction: column;
-  /* Ensure main content flows vertically */
   align-items: center;
-  /* Center align items */
-
 }
 
 /* Beer Background */
@@ -87,7 +82,6 @@ main {
   width: 30%;
   position: absolute;
   top: 60%;
-  /* Move down on the page */
   left: 50%;
   transform: translate(-50%, -50%);
   padding-bottom: 80px;
