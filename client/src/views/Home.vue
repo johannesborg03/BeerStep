@@ -1,5 +1,4 @@
 <template>
-
   <body>
     <main>
       <div class="beerBack">
@@ -43,8 +42,6 @@ export default {
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #2b2b2b;
-  color: #f1f1f1;
   margin: 0;
   padding: 0;
   display: flex;
@@ -56,14 +53,16 @@ body {
 main {
   position: relative;
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: #2b2b2b
 }
 
 /* Beer Background */
 .beerBack {
-  border-radius: 3%;
+  border-radius: 2%;
   overflow: hidden;
   width: 91vw;
   height: 70vh;

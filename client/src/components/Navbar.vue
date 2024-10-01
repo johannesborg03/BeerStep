@@ -22,10 +22,7 @@
       <p class="username">Jabo</p>
     </div>
   </header>
- </template>
- 
- 
- 
+ </template> 
  
  <script>
  export default {
@@ -70,7 +67,7 @@
   color: #ebb112;
   margin-top: 10px;
   font-family: 'Segoe UI';
-  margin-right: 450px;
+  margin-right: 430px;
  }
  
  
@@ -98,24 +95,20 @@
  
  
  .settings {
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   margin-left: 100px;
   margin-right: 75px;
-  margin-top: 20px;
+  margin-top: 23px;
   cursor: pointer;
  }
- 
  
  .settings img {
   width: 100%;
   height: 100%;
   object-fit: cover;
  }
- 
- 
- 
  
  .username {
   font-size: 16px;
@@ -124,12 +117,10 @@
   margin-top: 9px;
  }
  
- 
- 
- 
  .menu {
   top: 80px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: #ffffff;
  }
  
  
@@ -152,7 +143,7 @@
   display: flex;
   flex-direction: row;
   gap: 28px;
-  margin-left: 75px;
+  margin-left: 55px;
  }
  
  
