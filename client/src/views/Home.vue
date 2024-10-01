@@ -40,7 +40,7 @@ export default {
 </script>
 
 <style>
-/* General */
+
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: #2b2b2b;
