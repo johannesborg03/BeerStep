@@ -1,6 +1,6 @@
 <template>
     <div class="activity-view">
-      <h1>Leaderboard</h1>
+      <h1>Activity</h1>
       <!-- Add the content you want to display in the view -->
       <p>This is where the activity data will appear.</p>
     </div>
