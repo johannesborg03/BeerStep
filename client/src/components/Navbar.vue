@@ -67,7 +67,7 @@
   color: #ebb112;
   margin-top: 10px;
   font-family: 'Segoe UI';
-  margin-right: 430px;
+  margin-right: 416px;
  }
  
  

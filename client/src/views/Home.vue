@@ -1,9 +1,14 @@
 <template>
+
   <body>
     <main>
       <div class="beerBack">
         <img src="/src/assets/beerBackground.jpg">
-        <router-link to="/">Home</router-link>
+
+        <div class="stats">
+          <h2>2300</h2>
+          <p>Steps required</p>
+        </div>
         <div class="button-container">
           <router-link to="/log-activity" class="button red">Log activity</router-link>
         </div>
@@ -39,7 +44,6 @@ export default {
 </script>
 
 <style>
-
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
@@ -103,5 +107,13 @@ main {
 
 .button:hover {
   transform: translateY(-3px);
+}
+
+.stats {
+  margin-top: 300px;
+  font-size: 24px;
+  text-align: center;
+  color: white;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
 }
 </style>
