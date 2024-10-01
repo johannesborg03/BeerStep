@@ -29,4 +29,16 @@ export default {
     gap: 500px; /* Gap between buttons */
     margin-top: 20px;
 }
+
+.massive-button {
+    width: 600px;
+    height: 500px;
+    font-size: 48px;
+    color: rgb(46, 7, 7);
+    border: none;
+    border-radius: 10px; /* rounded corners */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transition: transform 0.3s ease, background-color 0.3s ease; /* Smooth transitions */
+
+}
 </style>
