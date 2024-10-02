@@ -113,4 +113,8 @@ transform: scale(1.2); /* Slightly enlarge on hover */
     transition: background-color 0.3s ease;
 }
 
+.submit-button:hover {
+    background-color: #218838;
+}
+
 </style>
