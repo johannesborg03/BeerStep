@@ -93,4 +93,13 @@ transform: scale(1.2); /* Slightly enlarge on hover */
     margin-top: 20px
 }
 
+.step-input {
+    font-size: 24px;
+    padding: 20px;
+    border-radius: 5px;
+    border: 2px solid #ccc;
+    width: 300px;
+    margin-right: 10px;
+}
+
 </style>
