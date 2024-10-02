@@ -10,7 +10,7 @@
     </div>
     </div>
     <div class = buttonsNav>
-      <router-link to="/Home">Home</router-link>
+      <router-link to=" ">Home</router-link>
       <router-link to="/Squads">Squads</router-link>
       <router-link to="/About">Leaderboard</router-link>
   </div>

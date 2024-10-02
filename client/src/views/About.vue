@@ -12,15 +12,6 @@
 
 <style scoped>
 
-body {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: #2b2b2b
-}
 
 header h1 {
   flex: 1;
@@ -30,13 +21,10 @@ header h1 {
   color: #ebb112;
   margin-top: 10px;
   font-family: 'Segoe UI';
-  margin-right: 416px;
  }
 
  .buttonsNav {
   padding: 10px;
-  display: flex;
-  margin-left: 55px;
  }
  
  
@@ -44,7 +32,6 @@ header h1 {
   background-color: #333;
   color: white;
   border: none;
-  padding: 10px;
  }
 
 </style>
