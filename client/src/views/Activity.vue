@@ -102,4 +102,15 @@ transform: scale(1.2); /* Slightly enlarge on hover */
     margin-right: 10px;
 }
 
+.submit-button {
+    font-size: 24px;
+    padding: 20px;
+    border: none;
+    background-color: #28a745;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
 </style>
