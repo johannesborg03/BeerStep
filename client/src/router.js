@@ -6,8 +6,8 @@ import Register from './views/Register.vue'
 import LogIn from './views/LogIn.vue'
 
 const routes = [
-  { path: '/LogIn', name: 'LogIn', component: Home , meta: { hideNavbar: true } },
-  { path: '/Register', name: 'Register', component: Home, meta: { hideNavbar: true }  },
+  { path: '/LogIn', name: 'LogIn', component: LogIn , meta: { hideNavbar: true } },
+  { path: '/Register', name: 'Register', component: Register, meta: { hideNavbar: true }  },
   { path: '/About', name: 'About', component: About, meta: { hideNavbar: true } },
   { path: '/', name: 'Home', component: Home },
 

@@ -47,7 +47,7 @@
  </script>
  
  
- <style>
+ <style scoped>
  header {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   height: 80px;

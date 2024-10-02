@@ -1,37 +1,50 @@
 <template>
 
-<body>
+<header>
+    <router-link to="/LogIn" class="buttonNav">Log in</router-link>
 <h1>BeerStep</h1>
-<div class= "button-container">
-      <router-link to="/LogIn" class="buttonNav">Log in</router-link>
-</div>
-</body>
+      
+</header>
+<main>
+    
+
+
+</main>
 </template>
 
 
 
 <style scoped>
 
+.main{
+
+}
+
+header{
+ display: flex; 
+  justify-content: space-between; 
+  align-items: center;
+}
 
 header h1 {
-  flex: 1;
-  font-size: 44px;
-  text-align: center;
-  margin: 0;
-  color: #ebb112;
-  margin-top: 10px;
+  margin-top: 80px;
   font-family: 'Segoe UI';
+  position: absolute; 
+  left: 50%;
+  transform: translateX(-50%);
  }
 
- .buttonsNav {
+ .buttonNav {
   padding: 10px;
  }
  
  
  .buttonNav button {
-  background-color: #333;
-  color: white;
   border: none;
  }
+
+ .buttonNav, 
+router-link { color: black; text-decoration: none; 
+}
 
 </style>
