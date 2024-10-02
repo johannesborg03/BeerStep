@@ -10,9 +10,9 @@
     </div>
     </div>
     <div class = buttonsNav>
-      <button>Home</button>
-      <button>Squads</button>
-      <button>Leaderboard</button>
+      <router-link to="/Home">Home</router-link>
+      <router-link to="/Squads">Squads</router-link>
+      <router-link to="/About">Leaderboard</router-link>
   </div>
     <h1>BeerStep</h1>
     <div class="user">
@@ -67,7 +67,7 @@
   color: #ebb112;
   margin-top: 10px;
   font-family: 'Segoe UI';
-  margin-right: 416px;
+ margin-right: 320px;
  }
  
  
@@ -143,7 +143,8 @@
   display: flex;
   flex-direction: row;
   gap: 28px;
-  margin-left: 55px;
+  margin-left: 45px;
+  margin-top: 15px;
  }
  
  
@@ -155,4 +156,8 @@
  }
  
  
+ .buttonsNav a, 
+router-link { color: white; text-decoration: none; 
+}
+
  </style>

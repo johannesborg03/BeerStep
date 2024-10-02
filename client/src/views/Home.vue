@@ -4,13 +4,13 @@
     <main>
       <div class="beerBack">
         <img src="/src/assets/beerBackground.jpg">
-
         <div class="stats">
           <h2>2300</h2>
           <p>Steps required</p>
         </div>
         <div class="button-container">
           <router-link to="/log-activity" class="button red">Log activity</router-link>
+  
         </div>
       </div>
 
@@ -91,7 +91,7 @@ main {
 }
 
 .button {
-  margin-top: 500px;
+  margin-top: 450px;
   padding: 4px 0;
   font-size: 17px;
   color: #f2f1ea;
@@ -110,7 +110,7 @@ main {
 }
 
 .stats {
-  margin-top: 300px;
+  margin-top: 200px;
   font-size: 24px;
   text-align: center;
   color: white;
