@@ -89,4 +89,8 @@ background-color: #0056b3; /* Darker shade on hover */
 transform: scale(1.2); /* Slightly enlarge on hover */
 }
 
+.step-input-container {
+    margin-top: 20px
+}
+
 </style>
