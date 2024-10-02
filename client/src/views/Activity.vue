@@ -1,8 +1,8 @@
 <template>
     <div class="activity-view">
-      <h1>Activity</h1>
+      <h1>Activity Header</h1>
       <!-- Add the content you want to display in the view -->
-      <p>This is where the activity data will appear.</p>
+      <p>Log your activity (or Beer ;)</p>
       <div class="button-container">
         <button class="massive-button beer">Beer</button>
         <button class="massive-button log-step">Log Steps</button>
@@ -31,10 +31,11 @@ export default {
 }
 
 .massive-button {
+    font-family: 'sans-serif';
     width: 600px;
     height: 500px;
-    font-size: 48px;
-    color: rgb(46, 7, 7);
+    font-size: 100px;
+    color: rgb(6, 4, 1);
     border: none;
     border-radius: 10px; /* rounded corners */
     cursor: pointer; /* Change cursor to pointer on hover */
@@ -46,7 +47,7 @@ export default {
 }
 
 .beer:hover {
-transform: translateY(-50px);
+/* transform: translateY(-50px); */
 background-color: #218838; /* Darker shade on hover */
 transform: scale(1.2); /* Slightly enlarge on hover */
 }
@@ -56,7 +57,7 @@ transform: scale(1.2); /* Slightly enlarge on hover */
 }
 
 .log-step:hover {
-transform: translateY(-50px);
+/* transform: translateY(-50px); */
 background-color: #0056b3; /* Darker shade on hover */
 transform: scale(1.2); /* Slightly enlarge on hover */
 }
