@@ -5,14 +5,41 @@
       <p>Log your activity (or Beer ;)</p>
       <div class="button-container">
         <button class="massive-button beer">Beer</button>
-        <button class="massive-button log-step">Log Steps</button>
+        <button class="massive-button log-step" @click="showStepInput = true">Step</button>
       </div>
+
+    <div v-if="showStepInput" class="step-input-container">
+        <input
+        v-model="steps"
+        type="number"
+        placeholder="Enter number of steps"
+        class="step-input"
+        />
+        <button @click="log-steps" class="submit-button">Submit</button>
     </div>
-  </template>
+</div>
+</template>
 
 <script>
 export default {
-  name: 'activityView'
+  name: 'activityView',
+  data() {
+    return {
+      showStepInput: false, /* Track wether input should be shown */
+      steps: '' /* Track number of steps */
+    }
+  },
+
+  methods: {
+    logSteps() {
+    /* Add your logic to handle the steps (e.g., save it, or perform an action)
+      console.log('Steps logged:', this.steps); */
+
+      // Reset the input field and hide it again after submission
+      this.steps = ''
+      this.showStepInput = false
+    }
+  }
 }
 </script>
 
