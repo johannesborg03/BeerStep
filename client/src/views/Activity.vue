@@ -106,13 +106,14 @@ transform: scale(1.2); /* Slightly enlarge on hover */
   flex-direction: column; /* Stack the input and button vertically */
   justify-content: center; /* Centers the input and button */
   align-items: center; /* Aligns horizontally to center */
-  padding: 20px; /* Adds padding inside the container */
+  /* padding: 20px; /* Adds padding inside the container */
   margin-top: 20px; /* Adds space above the container */
   width: 300px; /* Ensures the container is as wide as possible */
   height: auto; /* Auto-adjusts the height based on content */
   position: absolute;
   left: 40%;
   right: 40%;
+  padding-bottom: 500px;
 }
 
 .step-input {
