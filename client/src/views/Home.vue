@@ -4,11 +4,13 @@
     <main>
       <div class="beerBack">
         <img src="/src/assets/beerBackground.jpg">
-        <router-link to="/">Home</router-link>
+        <div class="stats">
+        </div>
+        <h2>2300</h2>
+        <p>Steps required</p>
         <div class="button-container">
-          <router-link to="/squad" class="button green">Squad</router-link>
           <router-link to="/log-activity" class="button red">Log activity</router-link>
-          <router-link to="/leaderboard" class="button blue">Leaderboard</router-link>
+
         </div>
       </div>
 
@@ -41,12 +43,9 @@ export default {
 }
 </script>
 
-<style>
-/* General */
+<style scoped>
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #2b2b2b;
-  color: #f1f1f1;
   margin: 0;
   padding: 0;
   display: flex;
@@ -55,22 +54,19 @@ body {
   height: 100vh;
 }
 
-/* Main */
 main {
   position: relative;
   width: 100%;
+  height: 100%;
   display: flex;
-  /* Enable flexbox layout for the main section */
   flex-direction: column;
-  /* Ensure main content flows vertically */
   align-items: center;
-  /* Center align items */
-
+  background: #2b2b2b
 }
 
 /* Beer Background */
 .beerBack {
-  border-radius: 3%;
+  border-radius: 2%;
   overflow: hidden;
   width: 91vw;
   height: 70vh;
@@ -86,24 +82,18 @@ main {
 
 .button-container {
   display: flex;
-  flex-direction: row;
-  gap: 150px;
-  /* Adjusted to reduce spacing */
-  width: 100%;
-  max-width: 1200px;
-  /* Increased to fit larger buttons */
+  width: 30%;
   position: absolute;
   top: 60%;
-  /* Move down on the page */
   left: 50%;
   transform: translate(-50%, -50%);
   padding-bottom: 80px;
 }
 
 .button {
-  margin-top: 500px;
-  padding: 6px 0;
-  font-size: 16px;
+  margin-top: 450px;
+  padding: 4px 0;
+  font-size: 17px;
   color: #f2f1ea;
   border-radius: 15px;
   text-align: center;
@@ -112,21 +102,18 @@ main {
   height: 35px;
   flex: 1;
   transition: 0.3s;
+  background: #a62b23;
 }
 
 .button:hover {
   transform: translateY(-3px);
 }
 
-.button.green {
-  background: #276229;
-}
-
-.button.red {
-  background: #a62b23;
-}
-
-.button.blue {
-  background: #156eb6;
+.stats {
+  margin-top: 200px;
+  font-size: 24px;
+  text-align: center;
+  color: white;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
 }
 </style>

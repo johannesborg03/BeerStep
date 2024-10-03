@@ -16,7 +16,7 @@
                         <input type="password" id="password" class="input-field" name="password"
                             placeholder="Enter your password" required><br><br>
                         <button type="submit" class="submit-button">Login </button>
-                        <p class="register">If you already have an account <a href="URL"> sign in here </a></p>
+                        <p class ="logIn">If you already have an account, <a> <router-link to="/LogIn" >sign in here</router-link> </a></p>
                     </form>
                 </div>
             </div>
@@ -28,8 +28,8 @@
 
 <script>
 export default {
-    name: 'Register',
-};
+  name: 'Register'
+}
 </script>
 
 <style scoped>
@@ -37,7 +37,7 @@ header {
     text-align: center;
     color: White;
     font-size: 16px;
-    margin: 50px;
+    padding: 20px;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 
@@ -85,7 +85,6 @@ body {
 
 }
 
-
 .input-field {
     width: 380px;
     height: 30px;
@@ -95,7 +94,6 @@ body {
     font-size: 14px;
 
 }
-
 
 .submit-button {
     width: 400px;
@@ -109,8 +107,7 @@ body {
 
 }
 
-
-.register {
+.logIn {
     color: rgb(49, 49, 49);
     font-size: 14px;
     text-align: center;
