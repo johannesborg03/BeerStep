@@ -4,7 +4,7 @@
       <!-- Add the content you want to display in the view -->
       <p>Log your activity (or Beer ;)</p>
       <div class="button-container">
-        <button class="massive-button beer">Beer</button>
+        <button class="massive-button beer" :class="{'disabled-button': showBeerNotification}" @click="logBeer" :disabled="showBeerNotification">Beer</button>
         <button class="massive-button log-step" @click="showStepInput = true">Step</button>
       </div>
 
@@ -17,7 +17,11 @@
         />
         <button @click="logSteps" class="submit-button">Submit</button>
     </div>
-</div>
+    <div v-if="showBeerNotification" class="notification">
+      Beer Logged! Good Job King! Keep It Up!
+    </div>
+  </div>
+
 </template>
 
 <script>
@@ -26,18 +30,26 @@ export default {
   data() {
     return {
       showStepInput: false, /* Track wether input should be shown */
-      steps: '' /* Track number of steps */
+      steps: '', /* Track number of steps */
+      showBeerNotification: false
     }
   },
 
   methods: {
     logSteps() {
-    /* Add your logic to handle the steps (e.g., save it, or perform an action)
-      console.log('Steps logged:', this.steps); */
+    /* Add your logic to handle the steps (e.g., save it, or perform an action) */
+      console.log('Steps logged:', this.steps)
 
       // Reset the input field and hide it again after submission
       this.steps = ''
       this.showStepInput = false
+    },
+    logBeer() {
+      console.log('Beer logged')
+      this.showBeerNotification = true // Show notification when "Beer" is clicked
+      setTimeout(() => {
+        this.showBeerNotification = false
+      }, 3000)
     }
   }
 }
@@ -126,6 +138,37 @@ transform: scale(1.2); /* Slightly enlarge on hover */
 
 .submit-button:hover {
     background-color: #218838;
+}
+
+.notification {
+  margin-top: 20px;
+  font-size: 32px;
+  color: #fff;
+  background-color: #28a745;
+  padding: 20px;
+  border-radius: 10px;
+  opacity: 0.9;
+  animation: fadeout 3s ease-out forwards; /* Animate fading out after a while */
+  pointer-events: none; /* Disable pointer events when animating */
+}
+@keyframes fadeout {
+  0% {                    /* 0%: This represents the starting point of the animation (the beginning).
+                           At 0%, the opacity is set to 0.9, which means the element is almost fully visible but slightly transparent. */
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {                  /* 100%: This represents the end point of the animation (the end).
+    At 100%, the opacity is set to 0, meaning the element becomes fully transparent (completely invisible). */
+    opacity: 0;
+  }
+}
+
+.disabled-button {
+  cursor: not-allowed;
+  opacity: 0.6;
+  pointer-events: none;
 }
 
 </style>
