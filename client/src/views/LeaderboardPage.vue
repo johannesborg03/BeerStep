@@ -3,13 +3,13 @@
     <h1>Leaderboard</h1>
     <div>
       <label for="squadSelect">Select Squad:</label>
-      <select v-model="selectedSquad" @change="fetchLeaderboardData">
+      <select v-model="selectedSquad" @change="fetchLeaderboardData" class="squad-select">
         <option v-for="squad in squads" :key="squad._id" :value="squad.squad_id">
           {{ squad.squadName }}
         </option>
       </select>
     </div>
-    <table>
+    <table class="leaderboard-table">
       <thead>
         <tr>
           <th>Rank</th>
@@ -54,32 +54,23 @@ export default {
   },
   methods: {
     calculatePoints(steps, beers) {
-      return steps - beers * 100
+      return (steps - beers) * 100
     },
     fetchLeaderboardData() {
-      // For now, we are using static data, but you can fetch new data here based on the selected squad.
       console.log(`Fetching leaderboard for squad ID: ${this.selectedSquad}`)
-      // Adjust the leaderboard data as per the selected squad, if needed
     }
   },
   mounted() {
-    // Automatically loads the data for the first squad
     this.fetchLeaderboardData()
   }
 }
 </script>
 
 <style scoped>
+/* Leaderboard Styles */
 .Leaderboard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 50px;
-  width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-  color: #2b2b2b;
+  padding: 20px;
+  text-align: center;
 }
 
 h1 {
@@ -88,11 +79,20 @@ h1 {
   margin-bottom: 20px;
 }
 
-table {
+.squad-select {
+  font-size: 24px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: 2px solid #ccc;
+  margin-bottom: 20px;
+}
+
+.leaderboard-table {
   width: 100%;
   border-collapse: collapse;
   background-color: #f8f8f8;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
 }
 
 thead {
@@ -103,10 +103,10 @@ thead {
 th, td {
   padding: 15px;
   text-align: left;
+  font-size: 1.5rem; /* Increase font size for better visibility */
 }
 
 th {
-  font-size: 1.2rem;
   text-transform: uppercase;
   border-bottom: 2px solid #ddd;
 }
@@ -120,7 +120,7 @@ tbody tr:hover {
 }
 
 td {
-  font-size: 1rem;
+  font-size: 1.2rem;
 }
 
 @media (max-width: 768px) {
@@ -129,8 +129,46 @@ td {
   }
 
   th, td {
-    font-size: 0.9rem;
+    font-size: 1rem;
     padding: 10px;
   }
+}
+
+/* Consistent Button Styles */
+.massive-button {
+  font-family: 'sans-serif';
+  width: 600px;
+  height: 500px;
+  font-size: 100px;
+  color: rgb(6, 4, 1);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.beer {
+  background-color: #28a745;
+}
+
+.beer:hover {
+  background-color: #218838;
+  transform: scale(1.2);
+}
+
+.log-step {
+  background-color: #007bff;
+}
+
+.log-step:hover {
+  background-color: #0056b3;
+  transform: scale(1.2);
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 500px;
+  margin-top: 20px;
 }
 </style>
