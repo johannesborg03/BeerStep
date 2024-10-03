@@ -15,7 +15,7 @@
         placeholder="Enter number of steps"
         class="step-input"
         />
-        <button @click="log-steps" class="submit-button">Submit</button>
+        <button @click="logSteps" class="submit-button">Submit</button>
     </div>
 </div>
 </template>
@@ -90,12 +90,23 @@ transform: scale(1.2); /* Slightly enlarge on hover */
 }
 
 .step-input-container {
-    margin-top: 20px
+  display: flex; /* Ensures the input and button are aligned */
+  flex-direction: column; /* Stack the input and button vertically */
+  justify-content: center; /* Centers the input and button */
+  align-items: center; /* Aligns horizontally to center */
+  padding: 20px; /* Adds padding inside the container */
+  margin-top: 20px; /* Adds space above the container */
+  width: 300px; /* Ensures the container is as wide as possible */
+  height: auto; /* Auto-adjusts the height based on content */
+  position: absolute;
+  left: 40%;
+  right: 40%;
 }
 
 .step-input {
     font-size: 24px;
-    padding: 20px;
+    padding: 20px 20px;
+    height: 80px;
     border-radius: 5px;
     border: 2px solid #ccc;
     width: 300px;
