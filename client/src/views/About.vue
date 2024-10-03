@@ -7,6 +7,10 @@
             </div>
             <router-link to="/LogIn" class="buttonNav">Log in</router-link>
         </div>
+        <div class = "subtitle">
+            <h1>Healthy drinking, made easy with BeerStep</h1>
+            <p>Join BeerStep and balance fun with wellness!</p>
+     </div>
     </main>
 </template>
 
@@ -23,7 +27,7 @@ main {
 .aboutImg {
     overflow: hidden;
     width: 100%;
-    height: 90vh;
+    height: 80vh;
     margin: 0 auto;
     position: relative;
 }
@@ -47,6 +51,8 @@ main {
     margin-top: 50px;
     transform: translate(-50%, -50%);
     position: absolute;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    margin-right: 15px;
 
 }
 
@@ -68,5 +74,20 @@ router-link {
     color: white;
     text-decoration: none;
     font-size: 18px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.subtitle {
+    position: absolute;
+    text-align: left;
+    color: white;
+    font-family: 'Segoe UI';
+    margin-top: 200px;
+    max-width: 450px;
+    left: 20px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    padding-left: 50px;
+    font-size: 28px;
+    
 }
 </style>
