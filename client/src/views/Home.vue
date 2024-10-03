@@ -5,9 +5,9 @@
       <div class="beerBack">
         <img src="/src/assets/beerBackground.jpg">
         <div class="stats">
-          <h2>2300</h2>
-          <p>Steps required</p>
         </div>
+        <h2>2300</h2>
+        <p>Steps required</p>
         <div class="button-container">
           <router-link to="/log-activity" class="button red">Log activity</router-link>
   

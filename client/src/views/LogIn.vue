@@ -77,6 +77,7 @@ body {
 }
 
 .subtitle {
+    padding-top: 10px;
     padding-bottom: 70px;
     font-weight: 400;
     color: black;

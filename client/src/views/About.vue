@@ -1,50 +1,72 @@
 <template>
-
-<header>
-    <router-link to="/LogIn" class="buttonNav">Log in</router-link>
-<h1>BeerStep</h1>
-      
-</header>
-<main>
-    
-
-
-</main>
+    <main>
+        <div class="aboutImg">
+            <img src="/src/assets/aboutImg.jpg">
+            <div class="content">
+                <h1>BeerStep</h1>
+            </div>
+            <router-link to="/LogIn" class="buttonNav">Log in</router-link>
+        </div>
+    </main>
 </template>
 
-
-
 <style scoped>
+main {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-.main{
+.aboutImg {
+    overflow: hidden;
+    width: 100%;
+    height: 90vh;
+    margin: 0 auto;
+    position: relative;
+}
+
+
+.aboutImg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* Center the content over the image */
+.content {
+    position: absolute;
+    text-align: center;
+    color: white;
+    left: 50%;
+    margin-top: 50px;
+    transform: translate(-50%, -50%);
+    position: absolute;
 
 }
 
-header{
- display: flex; 
-  justify-content: space-between; 
-  align-items: center;
+.buttonNav {
+    padding: 10px;
+    position: absolute;
+    right: 40px; 
+    margin-top: 40px;
+    transform: translateY(-50%);
 }
 
-header h1 {
-  margin-top: 80px;
-  font-family: 'Segoe UI';
-  position: absolute; 
-  left: 50%;
-  transform: translateX(-50%);
- }
 
- .buttonNav {
-  padding: 10px;
- }
- 
- 
- .buttonNav button {
-  border: none;
- }
-
- .buttonNav, 
-router-link { color: black; text-decoration: none; 
+.buttonNav button {
+    border: none;
 }
 
+.buttonNav,
+router-link {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+}
 </style>
