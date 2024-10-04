@@ -12,7 +12,7 @@
     <div class = buttonsNav>
       <router-link to=" ">Home</router-link>
       <router-link to="/Squads">Squads</router-link>
-      <router-link to="/About">Leaderboard</router-link>
+      <router-link to="/Leaderboard">Leaderboard</router-link>
   </div>
     <h1>BeerStep</h1>
     <div class="user">
@@ -22,31 +22,30 @@
       <p class="username">Jabo</p>
     </div>
   </header>
- </template> 
- 
- <script>
- export default {
+ </template>
+
+<script>
+export default {
   name: 'Navbar',
   data() {
     return {
       menuVisible: false
-    };
+    }
   },
   methods: {
     toggleMenu() {
-      this.menuVisible = !this.menuVisible;
+      this.menuVisible = !this.menuVisible
     },
     goToSettings() {
-      this.$router.push('/Settings');
+      this.$router.push('/Settings')
     },
     logout() {
-      this.$router.push('/LogIn');
+      this.$router.push('/LogIn')
     }
   }
- };
- </script>
- 
- 
+}
+</script>
+
  <style scoped>
  header {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -57,8 +56,7 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   position: relative;
  }
- 
- 
+
  header h1 {
   flex: 1;
   font-size: 44px;
@@ -69,15 +67,13 @@
   font-family: 'Segoe UI';
  margin-right: 320px;
  }
- 
- 
+
  .user {
   display: flex;
   align-items: center;
   margin-left: auto;
  }
- 
- 
+
  .profile-pic {
   width: 35px;
   height: 35px;
@@ -85,15 +81,13 @@
   overflow: hidden;
   margin-right: 10px;
  }
- 
- 
+
  .profile-pic img {
   width: 100%;
   height: 100%;
   object-fit: cover;
  }
- 
- 
+
  .settings {
   width: 30px;
   height: 30px;
@@ -103,27 +97,26 @@
   margin-top: 23px;
   cursor: pointer;
  }
- 
+
  .settings img {
   width: 100%;
   height: 100%;
   object-fit: cover;
  }
- 
+
  .username {
   font-size: 16px;
   color: #ffffff;
   margin-right: 100px;
   margin-top: 9px;
  }
- 
+
  .menu {
   top: 80px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   color: #ffffff;
  }
- 
- 
+
  .menu ul {
   list-style: none;
   padding: 0;
@@ -131,13 +124,11 @@
   z-index: 10;
   position: absolute;
  }
- 
- 
+
  .menu li {
   padding: 10px 20px;
  }
- 
- 
+
  .buttonsNav {
   padding: 10px;
   display: flex;
@@ -146,18 +137,16 @@
   margin-left: 45px;
   margin-top: 15px;
  }
- 
- 
+
  .buttonsNav button {
   background-color: #333;
   color: white;
   border: none;
   padding: 10px;
  }
- 
- 
- .buttonsNav a, 
-router-link { color: white; text-decoration: none; 
+
+ .buttonsNav a,
+router-link { color: white; text-decoration: none;
 }
 
  </style>
