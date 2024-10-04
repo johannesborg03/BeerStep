@@ -5,13 +5,15 @@ import About from './views/About.vue'
 import Register from './views/Register.vue'
 import LogIn from './views/LogIn.vue'
 import Activity from '@/views/Activity.vue'
+import Leaderboard from './views/Leaderboard.vue'
 
 const routes = [
-  { path: '/LogIn', name: 'LogIn', component: LogIn , meta: { hideNavbar: true } },
-  { path: '/Register', name: 'Register', component: Register, meta: { hideNavbar: true }  },
+  { path: '/LogIn', name: 'LogIn', component: LogIn, meta: { hideNavbar: true } },
+  { path: '/Register', name: 'Register', component: Register, meta: { hideNavbar: true } },
   { path: '/About', name: 'About', component: About, meta: { hideNavbar: true } },
   { path: '/', name: 'Home', component: Home },
-  { path: '/Activity', name: 'Activity', component: Activity }
+  { path: '/Activity', name: 'Activity', component: Activity },
+  { path: '/leaderboard', name: 'Leaderboard', component: Leaderboard }
 ]
 
 const router = createRouter({

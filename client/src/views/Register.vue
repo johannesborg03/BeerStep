@@ -28,8 +28,8 @@
 
 <script>
 export default {
-    name: 'Register',
-};
+  name: 'Register'
+}
 </script>
 
 <style scoped>
@@ -85,7 +85,6 @@ body {
 
 }
 
-
 .input-field {
     width: 380px;
     height: 30px;
@@ -95,7 +94,6 @@ body {
     font-size: 14px;
 
 }
-
 
 .submit-button {
     width: 400px;
@@ -108,7 +106,6 @@ body {
     margin-bottom: 30px;
 
 }
-
 
 .logIn {
     color: rgb(49, 49, 49);
