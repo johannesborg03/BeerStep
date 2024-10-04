@@ -5,6 +5,7 @@ import Home from './views/Home.vue'
 import Register from './views/Register.vue'
 import LogIn from './views/LogIn.vue'
 import Activity from '@/views/Activity.vue'
+import Leaderboard from './views/Leaderboard.vue'
 
 const routes = [
   { path: '/LogIn', name: 'LogIn', component: LogIn , meta: { hideNavbar: true } },
