@@ -1,20 +1,17 @@
 <template>
-
-  <body>
     <main>
-      <div class="beerBack">
-        <img src="/src/assets/beerBackground.jpg">
-        <div class="stats">
+        <div class="aboutImg">
+            <img src="/src/assets/aboutImg.jpg">
+            <div class="content">
+                <h1>BeerStep</h1>
+            </div>
+            <router-link to="/LogIn" class="buttonNav">Log in</router-link>
         </div>
-        <h2>2300</h2>
-        <p>Steps required</p>
-        <div class="button-container">
-          <router-link to="/log-activity" class="button red">Log activity</router-link>
-        </div>
-      </div>
-
+        <div class = "subtitle">
+            <h1>Healthy drinking, made easy with BeerStep</h1>
+            <p>Join BeerStep and balance fun with wellness!</p>
+     </div>
     </main>
-  </body>
 </template>
 
 <script>
@@ -43,76 +40,79 @@ export default {
 </script>
 
 <style scoped>
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100vh;
-}
-
 main {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: #2b2b2b
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* Beer Background */
-.beerBack {
-  border-radius: 2%;
-  overflow: hidden;
-  width: 91vw;
-  height: 70vh;
-  margin: 0 auto;
-  position: relative;
+.aboutImg {
+    overflow: hidden;
+    width: 100%;
+    height: 80vh;
+    margin: 0 auto;
+    position: relative;
 }
 
-.beerBack img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+
+.aboutImg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
-.button-container {
-  display: flex;
-  width: 30%;
-  position: absolute;
-  top: 60%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding-bottom: 80px;
+/* Center the content over the image */
+.content {
+    position: absolute;
+    text-align: center;
+    color: white;
+    left: 50%;
+    margin-top: 50px;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    margin-right: 15px;
+
 }
 
-.button {
-  margin-top: 450px;
-  padding: 4px 0;
-  font-size: 17px;
-  color: #f2f1ea;
-  border-radius: 15px;
-  text-align: center;
-  text-decoration: none;
-  width: 60px;
-  height: 35px;
-  flex: 1;
-  transition: 0.3s;
-  background: #a62b23;
+.buttonNav {
+    padding: 10px;
+    position: absolute;
+    right: 40px; 
+    margin-top: 40px;
+    transform: translateY(-50%);
 }
 
-.button:hover {
-  transform: translateY(-3px);
+
+.buttonNav button {
+    border: none;
 }
 
-.stats {
-  margin-top: 200px;
-  font-size: 24px;
-  text-align: center;
-  color: white;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+.buttonNav,
+router-link {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.subtitle {
+    position: absolute;
+    text-align: left;
+    color: white;
+    font-family: 'Segoe UI';
+    margin-top: 200px;
+    max-width: 450px;
+    left: 20px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    padding-left: 50px;
+    font-size: 28px;
+    
 }
 </style>
