@@ -10,7 +10,7 @@
         <p>Steps required</p>
         <div class="button-container">
           <router-link to="/log-activity" class="button red">Log activity</router-link>
-
+  
         </div>
       </div>
 
