@@ -11,14 +11,14 @@
 
 <script>
 // Import the Navbar component
-import Navbar from './components/Navbar.vue';
+import Navbar from './components/Navbar.vue'
 
 export default {
   name: 'App',
   components: {
-    Navbar, // Register Navbar as a component in App.vue
-  },
-};
+    Navbar // Register Navbar as a component in App.vue
+  }
+}
 </script>
 
 <style>
@@ -28,6 +28,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  width: 100%; 
+  width: 100%;
 }
 </style>

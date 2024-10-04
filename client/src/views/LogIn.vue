@@ -1,6 +1,5 @@
-
 <template>
-<body> 
+<body>
 
     <header>
         <h1>BeerStep</h1>
@@ -9,8 +8,8 @@
     <main>
         <div class="container">
             <div class="box">
-                <h1 class="title">Welcome Back!</h1> 
-                <p class="subtitle">Ready for more beers and steps? Log in to continue your BeerStep journey!</p> 
+                <h1 class="title">Welcome Back!</h1>
+                <p class="subtitle">Ready for more beers and steps? Log in to continue your BeerStep journey!</p>
                 <form id="loginForm">
                     <input type="text" id="username" name="username" class="input-field" placeholder="Enter your username" required><br><br>
                     <input type="password" id="password" class="input-field" name="password" placeholder="Enter your password" required><br><br>
@@ -26,14 +25,14 @@
 
 <script>
 export default {
-  name: 'LogIn',
-};
+  name: 'LogIn'
+}
 </script>
 
 <style scoped>
 
 header {
-    text-align: center; 
+    text-align: center;
     color: White;
     font-size: 16px;
     padding: 20px;
@@ -42,37 +41,37 @@ header {
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-image: url('/src/assets/logInBack.jpg'); 
-    background-size: cover; 
-    background-position: center; 
-    margin: 0; 
+    background-image: url('/src/assets/logInBack.jpg');
+    background-size: cover;
+    background-position: center;
+    margin: 0;
     height: 100vh; /* Ensure the body covers the full height of the viewport */
 }
 
 .container {
-    display: flex;          
-    justify-content: center; 
-    align-items: center;     
-    height: 100%;           
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 }
 
 .box {
-    width: 50%; 
-    background-color: rgb(238, 238, 238);  
+    width: 50%;
+    background-color: rgb(238, 238, 238);
     border-radius: 3%;
-    display: flex;            
-    justify-content: center; 
-    flex-direction: column; 
-    align-items: center;      
-    height: 70vh;             
-    margin: 0; 
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    height: 70vh;
+    margin: 0;
     color: black;
-   
+
 }
 
 .title {
     color: black;
-    margin: 0; 
+    margin: 0;
     font-weight: 400;
 }
 
@@ -84,33 +83,30 @@ body {
 
 }
 
-
 .input-field {
     width: 380px;
-    height: 30px; 
-    padding: 10px; 
-    border: 1px solid #ccc; 
-    border-radius: 18px; 
-    font-size: 14px; 
+    height: 30px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 18px;
+    font-size: 14px;
 
 }
 
-
 .submit-button {
-    width: 400px; 
-    height: 50px; 
+    width: 400px;
+    height: 50px;
     color: white;
-    border: none; 
-    border-radius: 18px; 
+    border: none;
+    border-radius: 18px;
     font-size: 16px;
     background-color: #ebb112;
     margin-bottom: 30px;
 
 }
 
-
 .register {
-color: rgb(49, 49, 49); 
+color: rgb(49, 49, 49);
 font-size: 14px;
 text-align: center;
 }
