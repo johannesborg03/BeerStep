@@ -32,7 +32,6 @@ main {
     position: relative;
 }
 
-
 .aboutImg img {
     width: 100%;
     height: 100%;
@@ -59,11 +58,10 @@ main {
 .buttonNav {
     padding: 10px;
     position: absolute;
-    right: 40px; 
+    right: 40px;
     margin-top: 40px;
     transform: translateY(-50%);
 }
-
 
 .buttonNav button {
     border: none;
@@ -88,6 +86,6 @@ router-link {
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
     padding-left: 50px;
     font-size: 28px;
-    
+
 }
 </style>
