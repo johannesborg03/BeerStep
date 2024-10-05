@@ -12,7 +12,8 @@ const routes = [
   { path: '/Register', name: 'Register', component: Register, meta: { hideNavbar: true }  },
   { path: '/HomePage', name: 'HomePage', component: HomePage },
   { path: '/', name: 'Home', component: Home, meta: { hideNavbar: true } },
-  { path: '/Activity', name: 'Activity', component: Activity }
+  { path: '/Activity', name: 'Activity', component: Activity },
+  { path: '/Leaderboard', name: 'Leaderboard', component: Leaderboard }
 ]
 
 const router = createRouter({

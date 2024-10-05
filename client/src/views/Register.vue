@@ -16,7 +16,7 @@
                         <input type="password" id="password" class="input-field" name="password"
                             placeholder="Enter your password" required><br><br>
                         <button type="submit" class="submit-button">Login </button>
-                        <p class ="logIn">If you already have an account, <a> <router-link to="/LogIn" >sign in here</router-link> </a></p>
+                        <p class ="logIn">If you already have an account, <a> <router-link to="/LogIn" >Sign in here</router-link> </a></p>
                     </form>
                 </div>
             </div>
