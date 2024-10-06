@@ -1,13 +1,11 @@
 var mongoose = require('mongoose');
-
 var Schema = mongoose.Schema;
-
 
 var userSchema = new mongoose.Schema({
     userID : {
         type : Number,
-        required : true,
-        unique : true
+        required : false,  /* Change required and unique to true once the user ID generation logic is fixed. */
+        unique : false
     },
 
     username : { 
@@ -41,7 +39,6 @@ var userSchema = new mongoose.Schema({
     }]
 
 }); 
-
 
 
 var User = mongoose.model('User', userSchema);

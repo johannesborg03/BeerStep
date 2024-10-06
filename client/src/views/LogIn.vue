@@ -1,36 +1,68 @@
 <template>
-<body>
 
-    <header>
-        <h1>BeerStep</h1>
-    </header>
+    <body>
 
-    <main>
-        <div class="container">
-            <div class="box">
-                <h1 class="title">Welcome Back!</h1>
-                <p class="subtitle">Ready for more beers and steps? Log in to continue your BeerStep journey!</p>
-                <form id="loginForm">
-                    <input type="text" id="username" name="username" class="input-field" placeholder="Enter your username" required><br><br>
-                    <input type="password" id="password" class="input-field" name="password" placeholder="Enter your password" required><br><br>
-                    <button type="submit" class="submit-button">Login </button>
-                    <p class ="register">If you don't have an account, <a> <router-link to="/Register" >Sign up here</router-link> </a></p>
-                </form>
-            </div>
+        <header>
+            <h1>BeerStep</h1>
+        </header>
+
+        <main>
+    <div class="container">
+        <div class="box">
+            <h1 class="title">Welcome Back!</h1>
+            <p class="subtitle">Ready for more beers and steps? Log in to continue your BeerStep journey!</p>
+            <form @submit.prevent="login">
+                <input type="text" id="username" v-model="input.username" class="input-field"
+                    placeholder="Enter your username" required><br><br>
+                <input type="password" id="password" v-model="input.password" class="input-field"
+                    placeholder="Enter your password" required><br><br>
+                <button type="submit" class="submit-button">Login</button>
+                <p class="register">If you don't have an account, <router-link to="/Register">Sign up here</router-link></p>
+            </form>
+            <!-- Display error message if login fails -->
+            <p v-if="message" class="error-message">{{ message }}</p>
         </div>
-    </main>
+    </div>
+</main>
 
-</body>
+    </body>
 </template>
 
 <script>
 export default {
-  name: 'LogIn'
-}
+    name: 'LogIn',
+    data() {
+        return {
+            input: {
+                username: "",
+                password: ""
+            },
+            message: ""  // To store any error message
+        };
+    },
+    methods: {
+        async login() {
+            try {
+                const response = await fetch('/users.json');  // later change to connect to database
+                const users = await response.json();
+
+                const user = users.find(u => u.username === this.input.username && u.password === this.input.password);
+                
+                if (user) {
+                    this.$router.push('/homepage');  
+                } else {
+                    this.message = 'Invalid username or password.';
+                }
+            } catch (error) {
+                console.error('Error fetching users:', error);
+                this.message = 'An error occurred while logging in. Please try again.';
+            }
+        }
+    }
+};
 </script>
 
 <style scoped>
-
 header {
     text-align: center;
     color: White;
@@ -45,7 +77,8 @@ body {
     background-size: cover;
     background-position: center;
     margin: 0;
-    height: 100vh; /* Ensure the body covers the full height of the viewport */
+    height: 100vh;
+    /* Ensure the body covers the full height of the viewport */
 }
 
 .container {
@@ -66,7 +99,6 @@ body {
     height: 70vh;
     margin: 0;
     color: black;
-
 }
 
 .title {
@@ -80,7 +112,6 @@ body {
     padding-bottom: 70px;
     font-weight: 400;
     color: black;
-
 }
 
 .input-field {
@@ -90,7 +121,6 @@ body {
     border: 1px solid #ccc;
     border-radius: 18px;
     font-size: 14px;
-
 }
 
 .submit-button {
@@ -102,13 +132,11 @@ body {
     font-size: 16px;
     background-color: #ebb112;
     margin-bottom: 30px;
-
 }
 
 .register {
-color: rgb(49, 49, 49);
-font-size: 14px;
-text-align: center;
+    color: rgb(49, 49, 49);
+    font-size: 14px;
+    text-align: center;
 }
-
 </style>
