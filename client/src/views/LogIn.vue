@@ -43,15 +43,13 @@ export default {
     methods: {
         async login() {
             try {
-                // Fetch user data from the local JSON file
-                const response = await fetch('/users.json');  // Make sure the path is correct
+                const response = await fetch('/users.json');  // later change to connect to database
                 const users = await response.json();
 
-                // Check if the entered username and password match any user
                 const user = users.find(u => u.username === this.input.username && u.password === this.input.password);
                 
                 if (user) {
-                    this.$router.push('/homepage');  // Navigate to homepage if login is successful
+                    this.$router.push('/homepage');  
                 } else {
                     this.message = 'Invalid username or password.';
                 }
