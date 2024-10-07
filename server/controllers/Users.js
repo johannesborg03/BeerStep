@@ -160,12 +160,12 @@ router.delete('/api/users', async function (req, res) {
 });
 
 // Partially update a User
-router.patch('/api/users/:userID', async function (req, res) {
+router.patch('/api/users/:username', async function (req, res) {
     try {
-        const userID = req.params.userID;
+        const username = req.params.username;
 
         const updatedUser = await User.findOneAndUpdate(
-            {userID: userID},
+            {username: username},
             { $set: req.body },
             {new: true, runValidators: true} //Return the updated documents and run schema validators
         );
