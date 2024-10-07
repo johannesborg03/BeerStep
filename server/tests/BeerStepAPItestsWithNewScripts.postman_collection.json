@@ -106,7 +106,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/users/1",
+					"raw": "http://localhost:3000/api/users/John",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -115,7 +115,7 @@
 					"path": [
 						"api",
 						"users",
-						"1"
+						"John"
 					]
 				}
 			},
@@ -142,7 +142,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"userID\" : 2,\n    \"username\" : \"John\",\n    \"email\" : \"email@gmail.com\",\n    \"password\" : \"password\"\n}",
+					"raw": "{\n    \"username\" : \"John\",\n    \"email\" : \"email@gmail.com\",\n    \"password\" : \"password\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -150,7 +150,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/users/1",
+					"raw": "http://localhost:3000/api/users/John",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -159,7 +159,7 @@
 					"path": [
 						"api",
 						"users",
-						"1"
+						"John"
 					]
 				}
 			},
@@ -185,7 +185,7 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/users/2?_method=GET",
+					"raw": "http://localhost:3000/api/users/John?_method=GET",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -194,7 +194,7 @@
 					"path": [
 						"api",
 						"users",
-						"2"
+						"John"
 					],
 					"query": [
 						{
@@ -226,7 +226,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/users/2",
+					"raw": "http://localhost:3000/api/users/John",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -235,7 +235,7 @@
 					"path": [
 						"api",
 						"users",
-						"2"
+						"John"
 					]
 				}
 			},
@@ -304,7 +304,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/users/1/activities",
+					"raw": "http://localhost:3000/api/users/John/activities",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -313,7 +313,7 @@
 					"path": [
 						"api",
 						"users",
-						"1",
+						"John",
 						"activities"
 					]
 				}
@@ -341,7 +341,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/users/1/activities",
+					"raw": "http://localhost:3000/api/users/John/activities",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -350,7 +350,7 @@
 					"path": [
 						"api",
 						"users",
-						"1",
+						"John",
 						"activities"
 					]
 				}
@@ -377,7 +377,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/users/1/activities/66ed7eaa36afb77ac8ed409d",
+					"raw": "http://localhost:3000/api/users/John/activities/66ed7eaa36afb77ac8ed409d",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -386,7 +386,7 @@
 					"path": [
 						"api",
 						"users",
-						"1",
+						"John",
 						"activities",
 						"66ed7eaa36afb77ac8ed409d"
 					]
@@ -414,7 +414,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/users/1/activities/66ed7eaa36afb77ac8ed409d",
+					"raw": "http://localhost:3000/api/users/John/activities/66ed7eaa36afb77ac8ed409d",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -423,7 +423,7 @@
 					"path": [
 						"api",
 						"users",
-						"1",
+						"John",
 						"activities",
 						"66ed7eaa36afb77ac8ed409d"
 					]
@@ -451,7 +451,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/users/1/activities",
+					"raw": "http://localhost:3000/api/users/John/activities",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -460,7 +460,7 @@
 					"path": [
 						"api",
 						"users",
-						"1",
+						"John",
 						"activities"
 					]
 				}
@@ -496,7 +496,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/users/1",
+					"raw": "http://localhost:3000/api/users/John",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -505,7 +505,7 @@
 					"path": [
 						"api",
 						"users",
-						"1"
+						"John"
 					]
 				}
 			},
