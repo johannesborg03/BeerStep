@@ -306,9 +306,9 @@ router.delete('/api/users/:username/:activities/:activityId', async function (re
 
 
 //OPTIONAL: Create a DELETE ROUTE for All activities for a Specific User
-router.delete('/api/users/:userID/activities', async function (req, res){
+router.delete('/api/users/:username/activities', async function (req, res){
     try{
-        const user = await User.findOne({ userID : req.params.userID});
+        const user = await User.findOne({ username : req.params.username});
 
         if(!user) {
             return res.status(404).json({ message : "User not found"});
