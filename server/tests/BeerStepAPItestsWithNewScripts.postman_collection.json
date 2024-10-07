@@ -1105,8 +1105,8 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 400 for bad request\", function () {",
-							"    pm.response.to.have.status(400);",
+							"pm.test(\"Status code is 500 for Server Error (Needs A User Reference)\", function () {",
+							"    pm.response.to.have.status(500);",
 							"});"
 						],
 						"type": "text/javascript",
@@ -1119,7 +1119,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"beercount\" : 2,\n    \"activity_type\" : \"Drinking\"\n}",
+					"raw": "{\n    \"total_beers\": 0,\n    \"total_steps\" : 0,\n    \"steps_needed\": 0\n}",
 					"options": {
 						"raw": {
 							"language": "json"
