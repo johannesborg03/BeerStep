@@ -6,44 +6,31 @@ var Activity = require('../models/Activity.js');
 
     router.post('/api/activities', async function (req, res, next) {
         try {
-            // Validate required fields
-            if (!req.body.beercount || !req.body.activity_type || !req.body.user) {
+
+            if (req.body.user) {
                 return res.status(400).json({
-                    message: 'Beercount, activity type, and user fields are required.'
+                    message: 'User field is required to create an activity'
                 });
             }
-    
-            // Instantiate the Activity model with request data
+
             var new_activity = new Activity({
-                beercount: req.body.beercount,
-                activity_type: req.body.activity_type,
-                user: req.body.user
+                user: req.body.user,
+                total_beers: 0,
+                total_steps: 0,
+                steps_needed: 0
             });
-    
-            // Attempt to save the activity to the database
+
             await new_activity.save();
-    
-            // Send the response if the activity is saved successfully
+
             res.status(201).json(new_activity);
-    
+
         } catch (err) {
-            // Handle duplicate key error (E11000)
-            if (err.code === 11000) {
-                let duplicateField = Object.keys(err.keyValue)[0]; // Find which field caused the duplicate error
-                return res.status(409).json({
-                    message: `An activity with the same ${duplicateField} already exists.`,
-                    field: duplicateField
-                });
-            }
-    
-            // Handle validation or other errors
             res.status(500).json({
                 message: 'Server error while creating activity',
                 error: err.message
             });
         }
     });
-    
 
 // Get all activities
 router.get('/api/activities', async function (req, res,) {
