@@ -30,35 +30,57 @@
 
 <script>
 export default {
-    name: 'LogIn',
-    data() {
-        return {
-            input: {
-                username: "",
-                password: ""
-            },
-            message: ""  // To store any error message
-        };
-    },
-    methods: {
-        async login() {
-            try {
-                const response = await fetch('/users.json');  // later change to connect to database
-                const users = await response.json();
+   name: 'LogIn',
+   data() {
+       return {
+           input: {
+               username: "",
+               password: ""
+           },
+           message: ""  
+       };
+   },
+   methods: {
+       async login() {
+           try {
+               // Construct query parameters (username and password)
+               const queryParams = new URLSearchParams({
+                   username: this.input.username,
+                   password: this.input.password
+               }).toString();
 
-                const user = users.find(u => u.username === this.input.username && u.password === this.input.password);
-                
-                if (user) {
-                    this.$router.push('/homepage');  
-                } else {
-                    this.message = 'Invalid username or password.';
-                }
-            } catch (error) {
-                console.error('Error fetching users:', error);
-                this.message = 'An error occurred while logging in. Please try again.';
-            }
-        }
-    }
+
+               // Send GET request with the login data
+               const response = await fetch(`http://localhost:3000/api/users?${queryParams}`, {
+                   method: 'GET',
+                   headers: {
+                       'Content-Type': 'application/json'
+                   }
+               });
+
+
+               if (response.ok) {
+                   const responseData = await response.json();
+
+
+                   // Check if any user was returned
+                   if (responseData.users && responseData.users.length > 0) {
+                       // User found, redirect to homepage
+                       this.$router.push('/homepage');
+                   } else {
+                       // No matching user found
+                       this.message = 'Invalid username or password.';
+                   }
+               } else {
+                   const errorData = await response.json();
+                   this.message = errorData.message || 'Login failed. Please try again.';
+               }
+           } catch (error) {
+               console.error('Error logging in:', error);
+               this.message = 'An error occurred while logging in. Please try again.';
+           }
+       }
+   }
 };
 </script>
 
@@ -78,7 +100,7 @@ body {
     background-position: center;
     margin: 0;
     height: 100vh;
-    /* Ensure the body covers the full height of the viewport */
+    
 }
 
 .container {
