@@ -182,9 +182,9 @@ router.patch('/api/users/:username', async function (req, res) {
 });
 
 // Create a POST route for logging Activity for a specific User
-router.post('/api/users/:userID/activities', async function (req, res) {
+router.post('/api/users/:username/activities', async function (req, res) {
     try {
-        const user = await User.findOne({ userID : req.params.userID });
+        const user = await User.findOne({ username : req.params.username });
         
         if (!user) {
             return res.status(404).json({ message : "User not found"});
@@ -194,7 +194,7 @@ router.post('/api/users/:userID/activities', async function (req, res) {
         const newActivity = new Activity ({
             beercount : req.body.beercount,
             activity_type : req.body.activity_type,
-            user : user._id //Can you do this?
+            user : user._id //This works?
         });
 
         //Save Activity
