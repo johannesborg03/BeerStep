@@ -130,10 +130,10 @@ router.put('/api/users/:username', async function (req, res)  {
     });
 
 // Delete a specific user
-router.delete('/api/users/:userID', async function (req, res) {
+router.delete('/api/users/:username', async function (req, res) {
     try {
-    var userID = req.params.userID;
-    const deletedUser = await User.findOneAndDelete({userID: userID});
+    var username = req.params.username;
+    const deletedUser = await User.findOneAndDelete({username: username});
     if(!deletedUser) {
         return res.status(404).json({"message": "No such user"});
 }
