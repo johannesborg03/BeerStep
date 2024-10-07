@@ -13,13 +13,14 @@ router.post('/api/users', async function (req, res, next) {
         email: req.body.email,
         password: req.body.password,
         squads: req.body.squads,
-        activities: req.body.activities,
+        activities: req.body.activities
     });
 
     try {
         await user.save();
         res.status(200).json(user);
     } catch (err) {
+        console.error("Error while creating user:", err);  // Log the error for debugging
         if (err.code ===11000) {
             let duplicateField = Object.keys(err.keyValue)[0];
             return res.status(400).json({
