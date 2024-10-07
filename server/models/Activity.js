@@ -3,23 +3,28 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var activitySchema = mongoose.Schema({
-
-    beercount : {
-        type : Number,
-        required : true,
-        unique : false,
-        min : 1,
-        max : 30
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true, // Make it required to associate activity with a user
     },
-    activity_type : {
-    type : String,
-    unique : false,
-    required : true,
+    total_beers: {
+        type: Number,
+        required: true,
+        default: 0, // Initial value is 0
+        min: 0
     },
-    user : {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : 'User',
-        required : false
+    total_steps: {
+        type: Number,
+        required: true,
+        default: 0, // Initial value is 0
+        min: 0
+    },
+    steps_needed: {
+        type: Number,
+        required: true,
+        default: 0, // Steps needed starts at 0 but will increase as beers are logged
+        min: 0
     }
 });
 
