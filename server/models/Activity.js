@@ -41,7 +41,7 @@ activitySchema.methods.logSteps = function(steps) {
         this.steps_needed = Math.max(0, this.steps_needed - steps);
     }
     return this.save();
-}
+};
 
 
 
