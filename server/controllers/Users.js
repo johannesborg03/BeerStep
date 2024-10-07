@@ -113,11 +113,11 @@ router.post('/api/users/:username', async function (req, res) {
 });
 
 //Update a User
-router.put('/api/users/:userID', async function (req, res)  {
+router.put('/api/users/:username', async function (req, res)  {
     try{
-        var userID = req.params.userID;
+        var username = req.params.username;
         const updatedData = req.body;
-        const updatedUser = await User.findOneAndUpdate({userID : userID}, updatedData, 
+        const updatedUser = await User.findOneAndUpdate({username : username}, updatedData, 
             {new: true, runValidators: true}
         );
         if (!updatedUser){
