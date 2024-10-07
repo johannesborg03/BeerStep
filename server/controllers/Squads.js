@@ -85,7 +85,7 @@ router.patch('/api/squads/:squad_id', async function (req, res, next) {
 router.post('/api/squads/:squad_id/invite', async function (req, res) {
     try {
         const { squad_id } = req.params;
-        const { userID } = req.body; // The ID of the user being invited
+        const { username } = req.body; // The ID of the user being invited
 
         // Find the squad by its ID
         const squad = await Squad.findById(squad_id);
@@ -94,7 +94,7 @@ router.post('/api/squads/:squad_id/invite', async function (req, res) {
         }
 
         // Find the user by their ID
-        const user = await User.findOne({ userID });
+        const user = await User.findOne({ username });
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
