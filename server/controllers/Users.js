@@ -9,7 +9,6 @@ var methodOverride = require('method-override');
 // Create a new user (POST /api/users)
 router.post('/api/users', async function (req, res, next) {
     var user = new User({
-        userID: req.body.userID,
         username: req.body.username,
         email: req.body.email,
         password: req.body.password,
@@ -76,10 +75,10 @@ router.get('/api/users', async function (req, res, ){
 });
 
 //Get specific User
-router.get('/api/users/:userID', async function (req, res) {
+router.get('/api/users/:username', async function (req, res) {
     try{
-    var userID = req.params.userID;
-    const user = await User.findOne({userID : userID});
+    var username = req.params.username;
+    const user = await User.findOne({username : username});
     if (!user){
         return res.status(404).json({"message": "No such user"});
     }
@@ -93,14 +92,14 @@ router.get('/api/users/:userID', async function (req, res) {
 router.use(methodOverride('_method'));
 
 // Get specific User (GET with HTTP method overriding)
-router.post('/api/users/:userID', async function (req, res) {
+router.post('/api/users/:username', async function (req, res) {
     if (req.method === 'POST' && req.body._method === 'GET') {
         req.method = 'GET';  // Override the method to GET
     }
     if (req.method === 'GET') {
         try {
-            var userID = req.params.userID;
-            const user = await User.findOne({ userID: userID });
+            var username = req.params.username;
+            const user = await User.findOne({ username: username });
             if (!user) {
                 return res.status(404).json({ "message": "No such user" });
             }
