@@ -221,9 +221,9 @@ router.post('/api/users/:username/activities', async function (req, res) {
 
 
 // Create a GET route for Activities for a specific User
-router.get('/api/users/:userID/activities', async function (req, res) {
+router.get('/api/users/:username/activities', async function (req, res) {
     try{
-        const user = await User.findOne({userID : req.params.userID});
+        const user = await User.findOne({username : req.params.username});
 
         if (!user){
             return res.status(404).json({ message : "User not found"});
