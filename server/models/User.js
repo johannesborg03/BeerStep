@@ -2,12 +2,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var userSchema = new mongoose.Schema({
-    userID : {
-        type : Number,
-        required : false,  /* Change required and unique to true once the user ID generation logic is fixed. */
-        unique : false
-    },
-
     username : { 
         type : String,
         required : true,

@@ -9,18 +9,18 @@ var methodOverride = require('method-override');
 // Create a new user (POST /api/users)
 router.post('/api/users', async function (req, res, next) {
     var user = new User({
-        userID: req.body.userID,
         username: req.body.username,
         email: req.body.email,
         password: req.body.password,
         squads: req.body.squads,
-        activities: req.body.activities,
+        activities: req.body.activities
     });
 
     try {
         await user.save();
         res.status(200).json(user);
     } catch (err) {
+        console.error("Error while creating user:", err);  // Log the error for debugging
         if (err.code ===11000) {
             let duplicateField = Object.keys(err.keyValue)[0];
             return res.status(400).json({
@@ -76,10 +76,10 @@ router.get('/api/users', async function (req, res, ){
 });
 
 //Get specific User
-router.get('/api/users/:userID', async function (req, res) {
+router.get('/api/users/:username', async function (req, res) {
     try{
-    var userID = req.params.userID;
-    const user = await User.findOne({userID : userID});
+    var username = req.params.username;
+    const user = await User.findOne({username : username});
     if (!user){
         return res.status(404).json({"message": "No such user"});
     }
@@ -93,14 +93,14 @@ router.get('/api/users/:userID', async function (req, res) {
 router.use(methodOverride('_method'));
 
 // Get specific User (GET with HTTP method overriding)
-router.post('/api/users/:userID', async function (req, res) {
+router.post('/api/users/:username', async function (req, res) {
     if (req.method === 'POST' && req.body._method === 'GET') {
         req.method = 'GET';  // Override the method to GET
     }
     if (req.method === 'GET') {
         try {
-            var userID = req.params.userID;
-            const user = await User.findOne({ userID: userID });
+            var username = req.params.username;
+            const user = await User.findOne({ username: username });
             if (!user) {
                 return res.status(404).json({ "message": "No such user" });
             }
@@ -114,11 +114,11 @@ router.post('/api/users/:userID', async function (req, res) {
 });
 
 //Update a User
-router.put('/api/users/:userID', async function (req, res)  {
+router.put('/api/users/:username', async function (req, res)  {
     try{
-        var userID = req.params.userID;
+        var username = req.params.username;
         const updatedData = req.body;
-        const updatedUser = await User.findOneAndUpdate({userID : userID}, updatedData, 
+        const updatedUser = await User.findOneAndUpdate({username : username}, updatedData, 
             {new: true, runValidators: true}
         );
         if (!updatedUser){
@@ -131,10 +131,10 @@ router.put('/api/users/:userID', async function (req, res)  {
     });
 
 // Delete a specific user
-router.delete('/api/users/:userID', async function (req, res) {
+router.delete('/api/users/:username', async function (req, res) {
     try {
-    var userID = req.params.userID;
-    const deletedUser = await User.findOneAndDelete({userID: userID});
+    var username = req.params.username;
+    const deletedUser = await User.findOneAndDelete({username: username});
     if(!deletedUser) {
         return res.status(404).json({"message": "No such user"});
 }
@@ -161,12 +161,12 @@ router.delete('/api/users', async function (req, res) {
 });
 
 // Partially update a User
-router.patch('/api/users/:userID', async function (req, res) {
+router.patch('/api/users/:username', async function (req, res) {
     try {
-        const userID = req.params.userID;
+        const username = req.params.username;
 
         const updatedUser = await User.findOneAndUpdate(
-            {userID: userID},
+            {username: username},
             { $set: req.body },
             {new: true, runValidators: true} //Return the updated documents and run schema validators
         );
@@ -183,9 +183,9 @@ router.patch('/api/users/:userID', async function (req, res) {
 });
 
 // Create a POST route for logging Activity for a specific User
-router.post('/api/users/:userID/activities', async function (req, res) {
+router.post('/api/users/:username/activities', async function (req, res) {
     try {
-        const user = await User.findOne({ userID : req.params.userID });
+        const user = await User.findOne({ username : req.params.username });
         
         if (!user) {
             return res.status(404).json({ message : "User not found"});
@@ -195,7 +195,7 @@ router.post('/api/users/:userID/activities', async function (req, res) {
         const newActivity = new Activity ({
             beercount : req.body.beercount,
             activity_type : req.body.activity_type,
-            user : user._id //Can you do this?
+            user : user._id //This works?
         });
 
         //Save Activity
@@ -222,9 +222,9 @@ router.post('/api/users/:userID/activities', async function (req, res) {
 
 
 // Create a GET route for Activities for a specific User
-router.get('/api/users/:userID/activities', async function (req, res) {
+router.get('/api/users/:username/activities', async function (req, res) {
     try{
-        const user = await User.findOne({userID : req.params.userID});
+        const user = await User.findOne({username : req.params.username});
 
         if (!user){
             return res.status(404).json({ message : "User not found"});
@@ -244,9 +244,9 @@ router.get('/api/users/:userID/activities', async function (req, res) {
 });
 
 // Create a GET route for a specifc Activity for a Specific User
-router.get('/api/users/:userID/activities/:activityId', async function (req, res){
+router.get('/api/users/:username/activities/:activityId', async function (req, res){
     try {
-        const user = await User.findOne({userID : req.params.userID});
+        const user = await User.findOne({username : req.params.username});
 
         if (!user){
             return res.status(404).json({ message : "User not found"});
@@ -273,9 +273,9 @@ router.get('/api/users/:userID/activities/:activityId', async function (req, res
 });
 
 // Create a DELETE route for a specific Activity for a Specific User
-router.delete('/api/users/:userID/:activities/:activityId', async function (req, res){
+router.delete('/api/users/:username/:activities/:activityId', async function (req, res){
     try {
-        const user = await User.findOne({userID : req.params.userID});
+        const user = await User.findOne({username : req.params.username});
 
         if(!user) {
             return res.status(404).json({ message : "User not found"});
@@ -307,9 +307,9 @@ router.delete('/api/users/:userID/:activities/:activityId', async function (req,
 
 
 //OPTIONAL: Create a DELETE ROUTE for All activities for a Specific User
-router.delete('/api/users/:userID/activities', async function (req, res){
+router.delete('/api/users/:username/activities', async function (req, res){
     try{
-        const user = await User.findOne({ userID : req.params.userID});
+        const user = await User.findOne({ username : req.params.username});
 
         if(!user) {
             return res.status(404).json({ message : "User not found"});
