@@ -11,7 +11,7 @@
     </div>
     <div class="buttonsNav">
       <router-link to="/HomePage">Home</router-link>
-      <router-link to="/Squads">Squads</router-link>
+      <router-link to="/SquadPage">Squads</router-link>
       <router-link to="/Leaderboard">Leaderboard</router-link>
     </div>
     <h1>BeerStep</h1>
