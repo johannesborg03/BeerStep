@@ -37,7 +37,7 @@ export default {
       this.menuVisible = !this.menuVisible
     },
     goToSettings() {
-      this.$router.push('/Settings')
+      this.$router.push('/SettingsPage')
     },
     logout() {
       this.$router.push('/LogIn')
