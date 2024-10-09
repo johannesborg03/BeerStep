@@ -43,10 +43,19 @@ export default {
       this.menuVisible = !this.menuVisible;
     },
     goToSettings() {
-      this.$router.push('/SettingsPage')
+      const username = localStorage.getItem('username');
+      // Navigate to the settings page with the username as a route param
+      if (username) {
+        this.$router.push({ name: 'SettingsPage', params: { username } });
+      } else {
+        console.error('No username found in localStorage');
+      }
+    },
+
+
+     // this.$router.push('/SettingsPage')
      // this.$router.push({ name: 'SettingsPage', params: { username: this.input.username } }); //For when A username GLobal Variable is added
 
-    },
     logout() {
       // Clear the localStorage on logout
       localStorage.removeItem('username');

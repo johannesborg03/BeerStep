@@ -65,6 +65,9 @@ export default {
 
                    // Check if any user was returned
                    if (responseData.users && responseData.users.length > 0) {
+                     // Save the username to local storage
+                     localStorage.setItem('username', this.input.username);
+
                        // User found, redirect to homepage
                        this.$router.push('/homepage');
                    } else {
