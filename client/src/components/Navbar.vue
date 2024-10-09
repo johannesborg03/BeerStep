@@ -38,6 +38,8 @@ export default {
     },
     goToSettings() {
       this.$router.push('/SettingsPage')
+     // this.$router.push({ name: 'SettingsPage', params: { username: this.input.username } }); //For when A username GLobal Variable is added
+
     },
     logout() {
       this.$router.push('/LogIn')

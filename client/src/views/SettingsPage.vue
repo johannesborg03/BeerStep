@@ -8,14 +8,14 @@
         <div class="Settings-Container">
         <div class="box">
         <h1 class="Title">Change User Settings</h1>
-        <p class="subtitle">Do You Want To Change Your Settings?</p>
+        <p class="subtitle">Change Your Settings:</p>
         <form @submit.prevent="submit">
             <p>Want To Change Your Email?</p>
             <input type="text" id="email" v-model="input.email" class="input-field"
-            placeholder="Enter your Email"><br><br>
+            placeholder="Enter A New Email"><br><br>
             <p>Want to Change Your Password?</p>
             <input type="text" id="password" v-model="input.password" class="input-field"
-            placeholder="Enter your password"><br><br>
+            placeholder="Enter A New Password"><br><br>
             <button type="submit" class="submit-button">Submit</button>
         </form>
          <!-- Display error message if login fails -->
@@ -38,7 +38,43 @@ export default {
            },
            message: ""  
        };
-   }
+   },
+   methods: {
+    async submit () {
+        try {
+            const username = this.$route.params.username; // Get the username from route parameters
+
+            const updatedUser = {
+                email: this.input.email,
+                password: this.input.password
+            };
+
+            const response = await fetch('http://localhost:3000/api/users/${username}', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'aplication/json'
+                },
+                body: JSON.stringify(updatedUser)
+            });
+            
+            if(response.ok) {
+                const updatedData = await response();
+                console.log('User Updated Successfully');
+                this.successMessage = 'User Updated Successfully!';
+                this.message = '';
+            } else {
+                const errorData = await response.json();
+                this.message = errorData.message || 'Error updating user. Please try again.';
+                this.successMessage = '';
+            }
+         } catch (error) {
+                console.error('Error updating user:', error);
+                this.message = 'An error occured while updating user. Please try again.';
+                this.successMessage = '';
+            }
+        }
+ 
+}
 }
 
 </script>
