@@ -16,13 +16,17 @@
             <p>Want to Change Your Password?</p>
             <input type="text" id="password" v-model="input.password" class="input-field"
             placeholder="Enter A New Password"><br><br>
-            <button type="submit" class="submit-button">Submit</button>
+            <button type="submit" class="submit-button ">Submit</button>
         </form>
          <!-- Display error message if login fails -->
          <p v-if="message" class="error-message">{{ message }}</p>
+         <div v-if="showNotification" class="notification">
+            User Successfully updated!
+         </div>
     </div>
 
     </div>
+    
 </div>
     
 </template>
@@ -36,7 +40,8 @@ export default {
                email: "",
                password: ""
            },
-           message: ""  
+           message: "",
+           showNotification: false
        };
    },
    methods: {
@@ -72,11 +77,14 @@ export default {
                 this.successMessage = 'User Updated Successfully!';
                 this.message = '';
 
-                alert('Success');
-
-                // Clear the input fields
+                //Show Notification and Clear Input fields
+                this.showNotification = true;
                 this.input.email = "";
                 this.input.password = "";
+                //Show Notification for 3 seconds:
+                setTimeout(() => {
+                    this.showBeerNotification = false
+                }, 3000);
             } else {
                 const errorData = await response.json();
                 this.message = errorData.message || 'Error updating user. Please try again.';
@@ -167,12 +175,32 @@ header {
     border-radius: 18px;
     font-size: 16px;
     background-color: #ebb112;
-    margin-bottom: 30px;
+    margin-bottom: 2%; 
+}
+.notification {
+  margin-top: 2%;
+  margin-bottom: 0%;
+  font-size: 32px;
+  color: #fff;
+  background-color: #28a745;
+  padding: 2%;
+  border-radius: 20px;
+  opacity: 0.9;
+  animation: fadeout 3s ease-out forwards; /* Animate fading out after a while */
+  pointer-events: none; /* Disable pointer events when animating */
+}
+@keyframes fadeout {
+  0% {                    /* 0%: This represents the starting point of the animation (the beginning).
+                           At 0%, the opacity is set to 0.9, which means the element is almost fully visible but slightly transparent. */
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {                  /* 100%: This represents the end point of the animation (the end).
+    At 100%, the opacity is set to 0, meaning the element becomes fully transparent (completely invisible). */
+    opacity: 0;
+  }
 }
 
-.register {
-    color: rgb(49, 49, 49);
-    font-size: 14px;
-    text-align: center;
-}
 </style>
