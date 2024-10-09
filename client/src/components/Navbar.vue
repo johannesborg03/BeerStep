@@ -1,28 +1,18 @@
 <template>
-  <header>
-    <div class="settings" @click="toggleMenu">
-      <img src="/src/assets/settings.png" alt="Settings" />
-      <div v-if="menuVisible" class="menu">
-        <ul>
-          <li @click="goToSettings">Settings</li>
-          <li @click="logout">Logout</li>
-        </ul>
-      </div>
-    </div>
-    <div class="buttonsNav">
-      <router-link to="/HomePage">Home</router-link>
-      <router-link to="/SquadPage">Squads</router-link>
-      <router-link to="/Leaderboard">Leaderboard</router-link>
-    </div>
-    <h1>BeerStep</h1>
-    <div class="user">
-      <div class="profile-pic">
-        <img src="/src/assets/userPic.png" alt="User profile picture" />
-      </div>
-      <!-- Display the username from localStorage -->
-      <p class="username">{{ username }}</p>
-    </div>
-  </header>
+
+<b-continer>
+
+  <b-navbar toggleable ="lg" type="dark" variant ="dark">
+<b-navbar-brand class="#">BeerStep</b-navbar-brand>
+
+<b-navbar-item class ="buttonsNav"><router-link to="/HomePage">Home</router-link> </b-navbar-item>
+<b-navbar-item class ="buttonsNav"><router-link to="/SquadPage">Squads</router-link></b-navbar-item>
+<b-navbar-item class ="buttonsNav"><router-link to="/Leaderboard">Leaderboard</router-link></b-navbar-item>
+
+  </b-navbar>
+</b-continer>
+
+
 </template>
 
 <script>
