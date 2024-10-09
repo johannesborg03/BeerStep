@@ -13,9 +13,9 @@
             <p class="subtitle">Ready for more beers and steps? Log in to continue your BeerStep journey!</p>
             <form @submit.prevent="login">
                 <input type="text" id="username" v-model="input.username" class="input-field"
-                    placeholder="Enter A New Username" required><br><br>
+                    placeholder="Enter your username" required><br><br>
                 <input type="password" id="password" v-model="input.password" class="input-field"
-                    placeholder="Enter A New Password" required><br><br>
+                    placeholder="Enter your password" required><br><br>
                 <button type="submit" class="submit-button">Login</button>
                 <p class="register">If you don't have an account, <router-link to="/Register">Sign up here</router-link></p>
             </form>
@@ -30,56 +30,57 @@
 
 <script>
 export default {
-  name: 'LogIn',
-  data() {
-    return {
-      input: {
-        username: "",
-        password: ""
-      },
-      message: ""
-    };
-  },
-  methods: {
-    async login() {
-      try {
-        // Construct query parameters (username and password)
-        const queryParams = new URLSearchParams({
-          username: this.input.username,
-          password: this.input.password
-        }).toString();
+   name: 'LogIn',
+   data() {
+       return {
+           input: {
+               username: "",
+               password: ""
+           },
+           message: ""  
+       };
+   },
+   methods: {
+       async login() {
+           try {
+               // Construct query parameters (username and password)
+               const queryParams = new URLSearchParams({
+                   username: this.input.username,
+                   password: this.input.password
+               }).toString();
 
-        // Send GET request with the login data
-        const response = await fetch(`http://localhost:3000/api/users?${queryParams}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
 
-        if (response.ok) {
-          const responseData = await response.json();
+               // Send GET request with the login data
+               const response = await fetch(`http://localhost:3000/api/users?${queryParams}`, {
+                   method: 'GET',
+                   headers: {
+                       'Content-Type': 'application/json'
+                   }
+               });
 
-          // Check if any user was returned
-          if (responseData.users && responseData.users.length > 0) {
-            // Save the username to local storage
-            localStorage.setItem('username', this.input.username);
 
-            // Redirect to homepage
-            this.$router.push('/homepage');
-          } else {
-            this.message = 'Invalid username or password.';
-          }
-        } else {
-          const errorData = await response.json();
-          this.message = errorData.message || 'Login failed. Please try again.';
-        }
-      } catch (error) {
-        console.error('Error logging in:', error);
-        this.message = 'An error occurred while logging in. Please try again.';
-      }
-    }
-  }
+               if (response.ok) {
+                   const responseData = await response.json();
+
+
+                   // Check if any user was returned
+                   if (responseData.users && responseData.users.length > 0) {
+                       // User found, redirect to homepage
+                       this.$router.push('/homepage');
+                   } else {
+                       // No matching user found
+                       this.message = 'Invalid username or password.';
+                   }
+               } else {
+                   const errorData = await response.json();
+                   this.message = errorData.message || 'Login failed. Please try again.';
+               }
+           } catch (error) {
+               console.error('Error logging in:', error);
+               this.message = 'An error occurred while logging in. Please try again.';
+           }
+       }
+   }
 };
 </script>
 
