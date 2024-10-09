@@ -69,7 +69,7 @@ BeerStep combines health and fun by merging step-taking with beer drinking in a 
 * Home: 1-3 sentences describing what the page displays and what a user can do
 * Shopping cart: ...
 
-### Entity-Relationship (ER) Diagram
+### Entity-Relationship (ER) Diagram 
 
 ![ER Diagram](./images/er_diagram.png)
 
