@@ -7,13 +7,16 @@
         
         <div class="Settings-Container">
         <div class="box">
-        <h1 class="Title">Change User Settings</h1>
+        <h1 class="Title">User Settings</h1>
         <p class="subtitle">Change Your Settings:</p>
         <form @submit.prevent="submit">
-            <p>Want To Change Your Email?</p>
+            <p>Change Your Email:</p>
             <input type="text" id="email" v-model="input.email" class="input-field"
             placeholder="Enter A New Email"><br><br>
-            <p>Want to Change Your Password?</p>
+            <p class="or">
+                OR
+            </p>
+            <p>Change Your Password:</p>
             <input type="text" id="password" v-model="input.password" class="input-field"
             placeholder="Enter A New Password"><br><br>
             <button type="submit" class="submit-button ">Submit</button>
@@ -116,6 +119,17 @@ export default {
 
 }
 
+.or {
+    margin-top: 0%;
+    font-size:large;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    font-weight: 400;
+    color: black;
+    margin-bottom: 5%;
+    font-weight: 1000;
+}
+
 header {
     text-align: center;
     color: White;
@@ -152,10 +166,13 @@ header {
 }
 
 .subtitle {
-    padding-top: 10px;
-    padding-bottom: 70px;
+    font-size:large;
+    padding-top: 2%;
+    padding-bottom: 2%;
     font-weight: 400;
     color: black;
+    margin-bottom: 0%;
+    font-weight: 1000;
 }
 
 .input-field {
