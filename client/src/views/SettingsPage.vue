@@ -43,13 +43,22 @@ export default {
     async submit () {
         try {
             const username = this.$route.params.username; // Get the username from route parameters
+            console.log(username);
+            const updatedUser = {};
+            if (this.input.email) {
+                updatedUser.email = this.input.email;
+            }
+            if (this.input.password) {
+                updatedUser.password = this.input.password;
+            }
 
-            const updatedUser = {
-                email: this.input.email,
-                password: this.input.password
-            };
+            //If no fields are entered show error message:
+            if(Object.keys(updatedUser).length === 0) {
+                this.message = 'Please fill in atleast one field to update.';
+                return;
+            }
 
-            const response = await fetch('http://localhost:3000/api/users/${username}', {
+            const response = await fetch(`http://localhost:3000/api/users/${username}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'aplication/json'
@@ -58,10 +67,16 @@ export default {
             });
             
             if(response.ok) {
-                const updatedData = await response();
+                const updatedData = await response.json();
                 console.log('User Updated Successfully');
                 this.successMessage = 'User Updated Successfully!';
                 this.message = '';
+
+                alert('Success');
+
+                // Clear the input fields
+                this.input.email = "";
+                this.input.password = "";
             } else {
                 const errorData = await response.json();
                 this.message = errorData.message || 'Error updating user. Please try again.';

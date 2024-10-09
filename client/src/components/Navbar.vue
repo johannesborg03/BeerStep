@@ -46,7 +46,7 @@ export default {
       const username = localStorage.getItem('username');
       // Navigate to the settings page with the username as a route param
       if (username) {
-        this.$router.push({ name: 'SettingsPage', params: { username } });
+        this.$router.push({ name: 'SettingsPage', params: { username: this.username } });
       } else {
         console.error('No username found in localStorage');
       }
