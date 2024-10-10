@@ -193,16 +193,39 @@ export default {
     },
 
     sendInvite() {
-      
-      if (this.inviteUsername.trim()) {
-        console.log(`Inviting ${this.inviteUsername} to ${this.selectedSquad.squadName}`)
-        
+    if (this.inviteUsername.trim()) {
+        const inviteData = {
+            squad_id: this.selectedSquad._id, // Get the ID of the selected squad
+            username: this.inviteUsername // The username to invite
+        };
 
-        
-        this.closeInviteModal()
-      } else {
-        alert('Please enter a username to invite.')
-      }
+        // POST request to send the invite
+        fetch('http://localhost:3000/api/squads/invite', { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(inviteData) // Send the invite data in the request body
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json(); // Parse JSON response
+            } else {
+                throw new Error('Failed to send invite'); // Throw an error for non-200 responses
+            }
+        })
+        .then(data => {
+            console.log('Invite sent:', data);
+            alert(`Invite sent to ${this.inviteUsername} for squad ${this.selectedSquad.squadName}!`); // Success message
+            this.closeInviteModal(); // Close the modal after sending the invite
+        })
+        .catch(error => {
+            console.error('Error sending invite:', error);
+            alert('An error occurred while sending the invite. Please try again.'); // Error handling
+        });
+    } else {
+        alert('Please enter a username to invite.'); // Input validation
+    }
     }
   }
 }
