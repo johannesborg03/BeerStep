@@ -10,7 +10,7 @@
             <h2>2300</h2>
             <p>Steps Needed</p>
           </div>
-            <router-link to="/Activity" class="btn btn-danger w-25">Log activity</router-link>
+            <router-link to="/Activity" class="btn btn-danger w-50">Log activity</router-link>
         </div>
     </main>
 
@@ -30,7 +30,7 @@
 }
 
 .overlay {
-  margin-top: 150px;
+  margin-top: 170px;
   position: absolute;
   top: 0;
   left: 0;
@@ -38,11 +38,12 @@
   bottom: 0;
   color: white;
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
-  font-size: 23px;
+  font-size: 28px;
+  font-family: sans-serif;
 }
 
 .btn{
- margin-top: 12%;
+ margin-top: 22%;
  border-radius: 20px;
 }
 
