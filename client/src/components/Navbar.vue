@@ -5,7 +5,7 @@
 
     <BCollapse id="nav-collapse" is-nav>
       <!-- Left Aligned Navbar Links -->
-      <BNavbarNav class="d-flex gap-4responsive design">
+      <BNavbarNav class="d-flex gap-4">
         <BNavItem class="buttonsNav">
           <router-link to="/HomePage">Home</router-link>
         </BNavItem>
