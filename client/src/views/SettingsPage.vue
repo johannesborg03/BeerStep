@@ -1,38 +1,52 @@
 <template>
-    
-    <div class="settings-view">
-        <header>
-        <h1>BeerStep</h1>
-    </header>
-        
-        <div class="Settings-Container">
-        <div class="box">
-        <h1 class="Title">User Settings</h1>
-        <p class="subtitle">Change Your Settings:</p>
-        <form @submit.prevent="submit">
-            <p>Change Your Email:</p>
-            <input type="text" id="email" v-model="input.email" class="input-field"
-            placeholder="Enter A New Email"><br><br>
-            <p class="or">
-                OR
-            </p>
-            <p>Change Your Password:</p>
-            <input type="text" id="password" v-model="input.password" class="input-field"
-            placeholder="Enter A New Password"><br><br>
-            <button type="submit" class="submit-button ">Submit</button>
-        </form>
-         <!-- Display error message if login fails -->
-         <p v-if="message" class="error-message">{{ message }}</p>
-         <div v-if="showNotification" class="notification">
-            User Successfully updated!
-         </div>
-    </div>
+    <b-container fluid class="settings-view">
+  
+      <b-row class="justify-content-center mt-5">
+        <b-col cols="12" md="6">
+          <b-card class="box">
+            <h1 class="title text-center">User Settings</h1>
+            <p class="subtitle text-center">Change Your Settings:</p>
+  
+            <b-form @submit.prevent="submit">
+              <!-- Change Email Section -->
+              <b-form-group label="Change Your Email:" label-for="email">
+                <b-form-input
+                  id="email"
+                  v-model="input.email"
+                  type="email"
+                  placeholder="Enter a New Email"
+                ></b-form-input>
+              </b-form-group>
+  
+              <!-- OR Section -->
+              <p class="or text-center">OR</p>
+  
+              <!-- Change Password Section -->
+              <b-form-group label="Change Your Password:" label-for="password">
+                <b-form-input
+                  id="password"
+                  v-model="input.password"
+                  type="password"
+                  placeholder="Enter a New Password"
+                ></b-form-input>
+              </b-form-group>
+  
+              <!-- Submit Button -->
+              <b-button type="submit" variant="warning" block>Submit</b-button>
+            </b-form>
+  
+            <!-- Error or Success Messages -->
+            <b-alert v-if="message" variant="danger" dismissible>{{ message }}</b-alert>
+            <b-alert v-if="showNotification" variant="success" dismissible>
+                User successfully updated!
+            </b-alert>
 
-    </div>
-    
-</div>
-    
-</template>
+          </b-card>
+        </b-col>
+      </b-row>
+    </b-container>
+  </template>
+  
 
 <script>
 export default {
@@ -69,7 +83,7 @@ export default {
             const response = await fetch(`http://localhost:3000/api/users/${username}`, {
                 method: 'PATCH',
                 headers: {
-                    'Content-Type': 'aplication/json'
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(updatedUser)
             });
@@ -77,7 +91,7 @@ export default {
             if(response.ok) {
                 const updatedData = await response.json();
                 console.log('User Updated Successfully');
-                this.successMessage = 'User Updated Successfully!';
+              //  this.successMessage = 'User Updated Successfully!';
                 this.message = '';
 
                 //Show Notification and Clear Input fields
@@ -86,17 +100,17 @@ export default {
                 this.input.password = "";
                 //Show Notification for 3 seconds:
                 setTimeout(() => {
-                    this.showBeerNotification = false
+                    this.showNotification = false
                 }, 3000);
             } else {
                 const errorData = await response.json();
                 this.message = errorData.message || 'Error updating user. Please try again.';
-                this.successMessage = '';
+               // this.successMessage = '';
             }
          } catch (error) {
                 console.error('Error updating user:', error);
                 this.message = 'An error occured while updating user. Please try again.';
-                this.successMessage = '';
+               // this.successMessage = '';
             }
         }
  
@@ -153,10 +167,9 @@ header {
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    height: 70vh;
-    color: black;
+    height: 75vh;
+    color: black;    
     margin-left: 25%;
-    margin-right: auto;
 }
 
 .title {
@@ -197,11 +210,11 @@ header {
 .notification {
   margin-top: 2%;
   margin-bottom: 0%;
-  font-size: 32px;
-  color: #fff;
-  background-color: #28a745;
+  font-size: 25%;
+  color: #c60c0c;
+  background-color: #2c18c6;
   padding: 2%;
-  border-radius: 20px;
+  border-radius: 25%;
   opacity: 0.9;
   animation: fadeout 3s ease-out forwards; /* Animate fading out after a while */
   pointer-events: none; /* Disable pointer events when animating */
