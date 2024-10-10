@@ -2,7 +2,6 @@ var express = require ('express');
 var router = express.Router();
 
 var User = require('../models/User.js');
-var Activity = require('../models/Activity.js');
 
 var methodOverride = require('method-override');
 
@@ -13,34 +12,17 @@ router.post('/api/users', async function (req, res, next) {
         email: req.body.email,
         password: req.body.password,
         squads: req.body.squads,
-        activities: req.body.activities
+        total_beers: 0,
+        total_steps: 0,
+        steps_needed: 0
     });
 
     try {
         await user.save();
-
-        //After Saving The user, Create a activity for this user:
-        const newActivity = new Activity({
-            user: user._id,  // Associate the activity with the user
-            total_beers: 0,
-            total_steps: 0,
-            steps_needed: 0
-        });
-        // Save the new activity
-        const savedActivity = await newActivity.save();
-
-        // Push the activity into the user's activities array
-        user.activities.push(savedActivity._id);
-
-        // Save the updated user with the activity reference
-        await user.save();
-
-
         // Respond with the user and activity
         res.status(200).json({
-            message: "User and activity created successfully",
-            user: user,
-            activity: savedActivity
+            message: "User created successfully",
+            user: user
         });
     } catch (err) {
         console.error("Error while creating user:", err);  // Log the error for debugging
@@ -204,161 +186,4 @@ router.patch('/api/users/:username', async function (req, res) {
         });
     }
 });
-
-// Create a POST route for logging Activity for a specific User
-router.post('/api/users/:username/activities', async function (req, res) {
-    try {
-        const user = await User.findOne({ username : req.params.username });
-        
-        if (!user) {
-            return res.status(404).json({ message : "User not found"});
-        }
-
-        //Create the new Activity
-        const newActivity = new Activity ({
-            beercount : req.body.beercount,
-            activity_type : req.body.activity_type,
-            user : user._id //This works?
-        });
-
-        //Save Activity
-        const savedActivity = await newActivity.save();
-
-        //Push the activity into the Users Activities array
-        user.activities.push(savedActivity._id)  //Again, can you do this with the id??
-        await user.save();
-
-        res.status(201).json({
-            message : "Activity logged Successfully",
-            activity : savedActivity
-        });
-
-    } catch (error) {
-        res.status(500).json({
-            message : "Server error while logging activity",
-            error : error.message
-        });
-    }
-
-});
-
-
-
-// Create a GET route for Activities for a specific User
-router.get('/api/users/:username/activities', async function (req, res) {
-    try{
-        const user = await User.findOne({username : req.params.username});
-
-        if (!user){
-            return res.status(404).json({ message : "User not found"});
-        }
-
-        //Return the activities of the user:
-        res.status(200).json({
-            message : "Activities retrieved successfully",
-            activities : user.activities
-        });
-    } catch (error) {
-        res.status(500).json({
-            message : "Server error while retrieving activities",
-            error : error.message
-        });
-    }
-});
-
-// Create a GET route for a specifc Activity for a Specific User
-router.get('/api/users/:username/activities/:activityId', async function (req, res){
-    try {
-        const user = await User.findOne({username : req.params.username});
-
-        if (!user){
-            return res.status(404).json({ message : "User not found"});
-        }
-
-        //Find specific activity by MongoDB_id within users activities
-        const activity = user.activities.find(act => act._id.toString() == req.params.activityId);
-
-        if (!activity){
-            return res.status(404).json({  message : "Activity not found"});
-        }
-
-        //Return specific Activity
-        res.status(200).json({
-            message : "Activity retrieved successfully",
-            activity : activity
-        });
-    } catch (error) {
-        res.status(500).json({
-            message : "Server error while retrieving activity",
-            error : error.message
-        });
-    }
-});
-
-// Create a DELETE route for a specific Activity for a Specific User
-router.delete('/api/users/:username/:activities/:activityId', async function (req, res){
-    try {
-        const user = await User.findOne({username : req.params.username});
-
-        if(!user) {
-            return res.status(404).json({ message : "User not found"});
-        }
-        const activity = await Activity.findOneAndDelete({ _id : req.params.activityId});
-
-        if (!activity) {
-            return res.status(404).json({ message : "Activity not found" });
-        }
-
-        //Remove the activity reference from the users activities array
-        user.activities = user.activities.filter(actID => actID.toString()!== req.params.activityId);
-
-        //Save the user after removing the activity
-        await user.save();
-
-        res.status(200).json({
-            message : "Activity deleted successfully",
-            activityId : req.params.activityId
-        });
-    } catch (errror) {
-        res.status(500).json({
-            message : "Server error while deleting activity",
-            error : error.message
-        });
-    }
-});
-
-
-
-//OPTIONAL: Create a DELETE ROUTE for All activities for a Specific User
-router.delete('/api/users/:username/activities', async function (req, res){
-    try{
-        const user = await User.findOne({ username : req.params.username});
-
-        if(!user) {
-            return res.status(404).json({ message : "User not found"});
-        }
-
-        //Delete all activities associated with this user
-        await Activity.deleteMany({ _id : { $in: user.activities } });
-
-        //Clear the users activities array
-       user.activities = [];
-
-    //Save the user after clearing the activities array
-         await user.save();
-
-    res.status(200).json({
-        message : "All activities for the user have been deleted"
-    });
-
-    } catch (error) {
-        res.status(500).json({
-            message : "Server error while deleting activities",
-            error : error.message
-        });
-        
-    }
-});
-
-
 module.exports = router;

@@ -3,7 +3,7 @@
   <div id="app">
     <!-- Include the Navbar component here -->
     <Navbar v-if="!$route.meta.hideNavbar" />
-    <!-- Render the content of the current page view -->
+   <!-- Render the content of the current page view -->
     <router-view />
   </div>
 </template>
