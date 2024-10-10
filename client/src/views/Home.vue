@@ -1,18 +1,19 @@
 <template>
-    <main>
-        <div class="aboutImg">
-            <img src="/src/assets/aboutImg.jpg">
-            <div class="content">
-                <h1>BeerStep</h1>
-            </div>
-            <router-link to="/LogIn" class="buttonNav">Log in</router-link>
-        </div>
-        <div class = "subtitle">
-            <h1>Healthy drinking, made easy with BeerStep</h1>
-            <p>Join BeerStep and balance fun with wellness!</p>
-     </div>
-    </main>
+  <main>
+    <div class="content">
+      <h1 class="main-title">BeerStep</h1>
+    </div>
+    <div class="login-wrapper">
+      <router-link to="/LogIn" class="buttonNav">Log in</router-link>
+      <b-container class="d-flex justify-content-center align-items-center vh-100"></b-container>
+    </div>
+    <b-container class="subtitle mt-10">
+      <h1 class="headline">Healthy drinking, made easy with BeerStep</h1>
+      <p class="subtext">Join BeerStep and balance fun with wellness!</p>
+    </b-container>
+  </main>
 </template>
+
 
 <script>
 // @ is an alias to /src
@@ -40,6 +41,29 @@ export default {
 </script>
 
 <style scoped>
+
+.headline {
+  font-size: 1.5em;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+  /* Hide the subtext (paragraph) on small screens */
+  .subtext {
+    display: none;
+  }
+
+  /* Reduce the size of the headline on small screens */
+  .headline {
+    font-size: 0.8em;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  }
+
+  .main-title {
+    font-size: 1.5em;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  }
+}
 main {
     position: relative;
     width: 100%;
@@ -49,22 +73,12 @@ main {
     align-items: center;
 }
 
-.aboutImg {
-    overflow: hidden;
-    width: 100%;
-    height: 100vh;
-    margin: 0 auto;
-    position: relative;
-}
-
-
-.aboutImg img {
-    width: 100%;
+.login-wrapper { 
+    background-image: url('@/assets/aboutImg.jpg');
+    background-size: cover;
+    background-position: center;
     height: 100%;
-    object-fit: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
+    width: 100%;
 }
 
 /* Center the content over the image */
@@ -84,14 +98,9 @@ main {
 .buttonNav {
     padding: 10px;
     position: absolute;
-    right: 40px; 
+    right: 30px; 
     margin-top: 40px;
     transform: translateY(-50%);
-}
-
-
-.buttonNav button {
-    border: none;
 }
 
 .buttonNav,

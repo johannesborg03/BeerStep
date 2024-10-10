@@ -1,93 +1,54 @@
 <template>
-  <body>
-    <main>
+    <main class="d-flex flex-column align-items-center vh-100 bg-dark">
+      <div class="d-none d-lg-flex align-items-center">
       <div class="beerBack">
-        <img src="/src/assets/beerBackground.jpg">
-        <div class="stats">
-        </div>
-        <h2>2300</h2>
-        <p>Steps required</p>
-        <div class="button-container">
-          <router-link to="/Activity" class="button red">Log activity</router-link>
+        <b-img src="/src/assets/beerBackground.jpg" fluid class="bg-cover" />
         </div>
       </div>
-
+        <div class="overlay">
+          <div class="stats">
+            <h2>2300</h2>
+            <p>Steps Needed</p>
+          </div>
+            <router-link to="/Activity" class="btn btn-danger w-50">Log activity</router-link>
+        </div>
     </main>
-  </body>
+
 </template>
 
-
 <style scoped>
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0;
-  padding: 0;
-  display: flex;  
-  flex-direction: column;
-  align-items: center;
-  height: 100vh;
+
+.main{
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
-main {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: #2b2b2b
-}
-
-/* Beer Background */
 .beerBack {
-  border-radius: 2%;
-  overflow: hidden;
-  width: 91vw;
-  height: 70vh;
-  margin: 0 auto;
   position: relative;
-}
-
-.beerBack img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: 100vh; 
+  overflow: hidden
 }
 
-.button-container {
-  display: flex;
-  width: 30%;
+.overlay {
+  margin-top: 170px;
   position: absolute;
-  top: 60%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding-bottom: 80px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  color: white;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+  font-size: 28px;
+  font-family: sans-serif;
 }
 
-.button {
-  margin-top: 450px;
-  padding: 4px 0;
-  font-size: 17px;
-  color: #f2f1ea;
-  border-radius: 15px;
-  text-align: center;
-  text-decoration: none;
-  width: 60px;
-  height: 35px;
-  flex: 1;
-  transition: 0.3s;
-  background: #a62b23;
+.btn{
+ margin-top: 22%;
+ border-radius: 20px;
 }
 
-.button:hover {
+.btn:hover {
   transform: translateY(-3px);
 }
 
-.stats {
-  margin-top: 200px;
-  font-size: 24px;
-  text-align: center;
-  color: white;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
-}
 </style>
