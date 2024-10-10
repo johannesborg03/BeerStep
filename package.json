@@ -11,6 +11,8 @@
     "node": "18.x"
   },
   "dependencies": {
+    "bootstrap": "^5.3.3",
+    "bootstrap-vue-next": "^0.24.23",
     "method-override": "^3.0.0"
   }
 }
