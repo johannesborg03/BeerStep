@@ -134,6 +134,61 @@ router.post('/api/squads/invite', async function (req, res) {
     }
 });
 
+router.patch('api/squads/:squadId/leave', async (req, res) => {
+    const { squadId } = req.params; // Get squadId from URL params
+    const { username } = req.body;  // Get username from request body
+  
+    console.log('Received request to leave squad:', { squadId, username }); // Debug: Log request info
+  
+    try {
+      // Find the squad by ID
+      const squad = await Squad.findById(squadId);
+      if (!squad) {
+        console.error('Squad not found:', squadId); // Debug: Log if squad not found
+        return res.status(404).json({ message: 'Squad not found' });
+      }
+  
+      console.log('Squad found:', squad.squadName); // Debug: Log found squad details
+  
+      // Find the user by username
+      const user = await User.findOne({ username });
+      if (!user) {
+        console.error('User not found:', username); // Debug: Log if user not found
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      console.log('User found:', user.username); // Debug: Log found user details
+  
+      // Check if the user is part of the squad
+      const userIndex = squad.users.indexOf(user._id);
+      if (userIndex === -1) {
+        console.error('User is not a member of the squad:', user.username); // Debug: Log if user is not a member
+        return res.status(400).json({ message: 'User is not a member of this squad' });
+      }
+  
+      console.log('User is part of the squad, removing...'); // Debug: Log removal process
+  
+      // Remove the user from the squad
+      squad.users.splice(userIndex, 1);
+  
+      // Remove the squad from the user's squads list
+      const squadIdIndex = user.squads.indexOf(squad._id);
+      if (squadIdIndex !== -1) {
+        user.squads.splice(squadIdIndex, 1);
+      } else {
+        console.error('Squad not found in user\'s squads:', squad._id); // Debug: Log if squad ID is missing in user's squads
+      }
+  
+      // Save the updated squad and user
+      await Promise.all([squad.save(), user.save()]);
+  
+      console.log('User successfully removed from squad and squad removed from user\'s list'); // Debug: Log success
+      return res.status(200).json({ message: 'User has left the squad' });
+    } catch (error) {
+      console.error('Error processing leave squad request:', error); // Debug: Log the error
+      return res.status(500).json({ message: 'An error occurred while leaving the squad' });
+    }
+  });
 
 
 router.delete('/api/squads/:squad_id', async function (req, res, next) {

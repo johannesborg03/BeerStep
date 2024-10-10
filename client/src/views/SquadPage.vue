@@ -14,6 +14,7 @@
               <li v-for="(squad, index) in squads" :key="index">
                 {{ squad.squadName }} <!-- Display squad name -->
                 <button class="invite-button" @click="openInviteModal(squad)">+ Invite</button>
+                <button class="leave-button" @click="openLeaveModal(squad)">Leave</button>
               </li>
               <li v-if="squads.length === 0" class="no-squads">No squads yet</li>
             </ul>
@@ -67,6 +68,16 @@
           <button class="invite-button" @click="sendInvite">Send Invite</button>
         </div>
       </div>
+
+      <!-- Leave Modal -->
+      <div v-if="showLeaveModal" class="modal">
+        <div class="modal-content">
+          <span class="close" @click="closeLeaveModal">&times;</span>
+          <h2>Are you sure you want to leave {{ selectedSquad.squadName }}?</h2>
+          <button class="leave-confirm-button" @click="confirmLeave">Yes</button>
+          <button class="leave-cancel-button" @click="closeLeaveModal">No</button>
+        </div>
+      </div>
     </main>
   </body>
 </template>
@@ -81,17 +92,18 @@ export default {
       successMessage: false, // Controls when to show the success message
       squads: [], // Array to hold the squads the user is a member of
       showInviteModal: false, // Controls the visibility of the invite modal
+      showLeaveModal: false, // Controls viibility of leave modal
       inviteUsername: '', // Holds the username to invite
       selectedSquad: null // To store the currently selected squad for inviting
     }
   },
   async mounted() {
-    // Call fetchSquads when the component is mounted
+    
     await this.fetchSquads()
   },
   methods: {
     async fetchSquads() {
-      const username = localStorage.getItem('username') // Retrieve the username from localStorage
+      const username = localStorage.getItem('username') 
       if (username) {
         try {
           const response = await fetch(`http://localhost:3000/api/users/${username}/squads`, {
@@ -103,7 +115,7 @@ export default {
 
           if (response.ok) {
             const data = await response.json()
-            this.squads = data.squads // Set the squads from the response data
+            this.squads = data.squads 
           } else {
             const errorData = await response.json()
             console.error(`Error fetching squads: ${errorData.message}`)
@@ -226,9 +238,59 @@ export default {
     } else {
         alert('Please enter a username to invite.'); // Input validation
     }
-    }
+    },
+    openLeaveModal(squad) {
+      this.selectedSquad = squad // Store the selected squad
+      this.showLeaveModal = true // Show the modal
+    },
+
+    // Close the Leave Squad Modal
+    closeLeaveModal() {
+      this.showLeaveModal = false // Hide the modal
+    },
+
+    async confirmLeave() {
+  const username = localStorage.getItem('username'); // Get the current user's username
+
+  if (!username) {
+    alert('No username found, please log in again.');
+    return;
   }
-}
+
+  if (this.selectedSquad && this.selectedSquad._id) {
+    try {
+      const response = await fetch(`http://localhost:3000/api/squads/${this.selectedSquad._id}/leave`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username }) // Send the username in the request body
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Successfully left the squad:', data.message);
+        alert(`You have left the squad "${this.selectedSquad.squadName}".`);
+
+        // Close the modal and refresh the squads list
+        this.showLeaveModal = false;
+        this.selectedSquad = null;
+
+        // Fetch the updated squads list
+        await this.fetchSquads();
+      } else {
+        const errorData = await response.json();
+        alert(`Error leaving squad: ${errorData.message}`);
+      }
+    } catch (error) {
+      console.error('Error while leaving the squad:', error);
+      alert('An error occurred while trying to leave the squad. Please try again.');
+    }
+  } else {
+    alert('No squad selected to leave.');
+  }
+    
+    }}}
 </script>
 
 <style scoped>
@@ -396,5 +458,45 @@ body {
 
 .invite-button:hover {
   background-color: #d99f10;
+}
+
+.leave-button {
+  margin-left: 10px;
+  background-color: #ff4d4d;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.leave-button:hover {
+  background-color: #e63939;
+}
+
+.leave-confirm-button {
+  background-color: #ff4d4d;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.leave-confirm-button:hover {
+  background-color: #e63939;
+}
+
+.leave-cancel-button {
+  background-color: #ccc;
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.leave-cancel-button:hover {
+  background-color: #aaa;
 }
 </style>
