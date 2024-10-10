@@ -3,6 +3,7 @@ var router = express.Router();
 
 var User = require('../models/User.js');
 var Activity = require('../models/Activity.js');
+var Squad = require('../models/Squad.js');
 
 var methodOverride = require('method-override');
 
@@ -129,6 +130,41 @@ router.put('/api/users/:username', async function (req, res)  {
         res.status(500).json({"message" : "Server error", "error": err.message});
     }
     });
+
+// GET squads a specific user is a member of
+
+router.get('/api/users/:username/squads', async function (req, res) {
+    try {
+      // Log the request for debugging
+      console.log(`Fetching squads for user: ${req.params.username}`);
+  
+      // Find the user by their username and populate their squads
+      const user = await User.findOne({ username: req.params.username }).populate('squads');
+  
+      // Log the retrieved user object
+      console.log('User found:', user);
+  
+      // If no user is found, return 404
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      // Return the squads the user is part of
+      res.status(200).json({
+        message: "Squads retrieved successfully",
+        squads: user.squads
+      });
+    } catch (error) {
+      // Log the error for debugging
+      console.error('Error retrieving squads:', error);
+      
+      // Return a 500 error with detailed error message
+      res.status(500).json({
+        message: "Server error while retrieving squads",
+        error: error.message
+      });
+    }
+  });
 
 // Delete a specific user
 router.delete('/api/users/:username', async function (req, res) {

@@ -6,12 +6,12 @@ var squadSchema = mongoose.Schema({
     squadName : {
         type : String,
         required : true,
-        unique : false,
+        unique : true,
         min : 1,
         max : 25
     },
     created_by : {
-        type : String,
+        type : mongoose.Schema.Types.ObjectId,
         required : true,
         unique : false
     },
@@ -22,10 +22,10 @@ var squadSchema = mongoose.Schema({
     leaderboard : {
         type: mongoose.Schema.Types.ObjectId,
         ref : 'Leaderboard',
-        unique : true
+        unique: false
     }
 });
 
-var Squad = mongoose.model('Squads', squadSchema);
+var Squad = mongoose.model('Squad', squadSchema);
 
 module.exports = Squad;
