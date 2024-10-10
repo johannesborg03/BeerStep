@@ -1,31 +1,38 @@
 <template>
-    <body>
-        <header>
-            <h1>BeerStep</h1>
-        </header>
-        <main>
-            <div class="container">
-                <div class="box">
-                    <h1 class="title">Register an account</h1>
-                    <form @submit.prevent="register">
-                        <input type="email" id="email" v-model="input.email" class="input-field"
-                            placeholder="Enter your email" required><br><br>
-                        <input type="text" id="username" v-model="input.username" class="input-field"
-                            placeholder="Enter your username" required><br><br>
-                        <input type="password" id="password" v-model="input.password" class="input-field"
-                            placeholder="Enter your password" required><br><br>
-                        <button type="submit" class="submit-button">Register</button>
-                        <p class="logIn">If you already have an account, 
-                            <router-link to="/LogIn">Sign in here</router-link>
-                        </p>
-                    </form>
-                    <!-- Display error message if registration fails -->
-                    <p v-if="message" class="error-message">{{ message }}</p>
-                </div>
+    <div class="register-wrapper">
+      <div class="title">
+        <h1>BeerStep</h1>
+      </div>
+      <b-container class="d-flex justify-content-center align-items-center vh-100">
+        <b-card class="text-center">
+          <h1 class="mb-3">Register an Account</h1>
+          <p class="mb-4">Join us today and start tracking your beers and steps!</p>
+          <b-form @submit.prevent="register">
+            <div class="email d-flex justify-content-center">
+              <b-form-input id="email" v-model="input.email" type="email" placeholder="Enter your email"
+                required class="custom-input w-75"></b-form-input>
             </div>
-        </main>
-    </body>
-</template>
+            <div class="username d-flex justify-content-center">
+              <b-form-input id="username" v-model="input.username" type="text" placeholder="Enter your username"
+                required class="custom-input w-75"></b-form-input>
+            </div>
+            <div class="password d-flex justify-content-center">
+              <b-form-input id="password" v-model="input.password" type="password" placeholder="Enter your password"
+                required class="custom-input w-75"></b-form-input>
+            </div>
+            <b-button type="submit" variant="warning" class="custom-button w-75">Register</b-button>
+          </b-form>
+  
+          <p class="logIn mt-3">
+            If you already have an account, <router-link to="/LogIn">Sign in here</router-link>
+          </p>
+  
+          <!-- Display error message if registration fails -->
+          <b-alert v-if="message" variant="danger" dismissible>{{ message }}</b-alert>
+        </b-card>
+      </b-container>
+    </div>
+  </template>
 
 <script>
 export default {
@@ -80,80 +87,68 @@ export default {
 </script>
 
 <style scoped>
-/* Add your styles here as you already have them */
-header {
-    text-align: center;
-    color: White;
-    font-size: 16px;
-    padding: 20px;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+.email {
+  padding-top: 40px;
+  padding-bottom: 10px;
 }
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-image: url('/src/assets/logInBack.jpg');
-    background-size: cover;
-    background-position: center;
-    margin: 0;
-    height: 100vh;
+.username {
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
+.password {
+  padding-top: 10px;
+  padding-bottom: 20px;
 }
 
-.box {
-    width: 50%;
-    background-color: rgb(238, 238, 238);
-    border-radius: 3%;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    height: 70vh;
-    margin: 0;
-    color: black;
+.custom-button {
+  border-radius: 20px;
+  padding: 10px;
+}
+
+.custom-input {
+  border-radius: 20px;
+  padding: 10px;
+  border: 1px solid #ced4da;
+}
+
+.text-center {
+  border-radius: 20px;
+  margin-bottom: 100px;
+}
+
+.mb-3 {
+  padding-top: 12%;
+}
+
+.form {
+  border-radius: 20px;
 }
 
 .title {
-    color: black;
-    margin: 0;
-    font-weight: 400;
-    padding: 40px;
+  text-align: center;
+  color: White;
+  font-size: 16px;
+  padding: 20px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 
-.input-field {
-    width: 380px;
-    height: 30px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 18px;
-    font-size: 14px;
-}
-
-.submit-button {
-    width: 400px;
-    height: 50px;
-    color: white;
-    border: none;
-    border-radius: 18px;
-    font-size: 16px;
-    background-color: #ebb112;
-    margin-bottom: 30px;
+.register-wrapper {
+  background-image: url('@/assets/logInBack.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+  margin: 0;
 }
 
 .logIn {
-    color: rgb(49, 49, 49);
-    font-size: 14px;
-    text-align: center;
+  color: rgb(49, 49, 49);
+  font-size: 14px;
 }
 
-.error-message {
-    color: red;
-    font-size: 14px;
-    text-align: center;
+.text-center {
+  width: 700px;
+  height: 600px;
 }
 </style>
