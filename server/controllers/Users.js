@@ -13,7 +13,9 @@ router.post('/api/users', async function (req, res, next) {
         email: req.body.email,
         password: req.body.password,
         squads: req.body.squads,
-        activities: req.body.activities
+        total_beers: 0,
+        total_steps: 0,
+        steps_needed: 0
     });
 
     try {
