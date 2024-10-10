@@ -36,10 +36,55 @@ export default {
       /* Add your logic to handle the steps (e.g., save it, or perform an action) */
       console.log('Steps logged:', this.steps)
 
-      // Reset the input field and hide it again after submission
-      this.steps = ''
-      this.showStepInput = false
+
+      const username = localStorage.getItem('username');
+
+      // Get the current total_steps and steps_needed Values
+      fetch(`http://localhost:3000/api/users/${username}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Error fetching user data: ${response.statusText}`);
+          }
+          return response.json();
+        })
+
+        .then(user => {
+          const newTotalSteps = user.total_steps + parseInt(this.steps); //IS THIS POSSIBLE?
+
+          let newStepsNeeded = user.steps_needed - parseInt(this.steps); //Dont Let It Go Under 0
+          if (newStepsNeeded < 0) {
+            newStepsNeeded = 0;
+          }
+
+          // Send a PATCH request to update the new values
+          return fetch(`http://localhost:3000/api/users/${username}`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              total_steps: newTotalSteps,
+              steps_needed: newStepsNeeded
+            }), // CAN YOU DO THIS??
+          });
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Error updating steps count: ${response.statusText}`);
+          }
+          return response.json();
+        })
+        .then(updatedUser => {
+          console.log('Steps Added:', updatedUser);
+          // Reset the input field and hide it again after submission
+          this.steps = '';
+          this.showStepInput = false;
+        })
+        .catch(error => {
+          console.error('Error logging steps:', error);
+        });
     },
+
     logBeer() {
       console.log('Beer logged');
 
