@@ -31,11 +31,12 @@
           </b-button>
         </b-col>
       </b-row>
+      
 
       <!-- Notification area -->
       <b-row v-if="showBeerNotification" class="justify-content-center mt-3">
         <b-col cols="12" md="5" class="text-center">
-          <b-alert variant="success" show>
+          <b-alert :show="showBeerNotification" variant="success" dismissible>
             Beer Logged! Good Job King! Keep It Up!
           </b-alert>
         </b-col>
@@ -145,6 +146,7 @@ export default {
         .then(updatedUser => {
           console.log('Beer incremented:', updatedUser);
           this.showBeerNotification = true; // Show notification
+          console.log('Notification status:', this.showBeerNotification); // Add this to check the value
           setTimeout(() => {
             this.showBeerNotification = false;
           }, 3000);
@@ -162,7 +164,7 @@ export default {
 .activity-view {
   text-align: center;
   background-color: #2b2b2b;
-  overflow: hidden;
+ /* overflow: hidden; */
   width: 100%;
   height: 100vh;
   margin: 0 auto;
@@ -264,18 +266,22 @@ export default {
 }
 
 .notification {
-  margin-top: 20px;
-  font-size: 32px;
-  color: #fff;
-  background-color: #28a745;
-  padding: 20px;
-  border-radius: 10px;
-  opacity: 0.9;
+  margin-top: 25%;
+  font-size: 25%;
+  color: #d30e0e;
+  padding: 25%;
+  border-radius: 25%;
+  opacity: 1;
   animation: fadeout 3s ease-out forwards;
   /* Animate fading out after a while */
   pointer-events: none;
   /* Disable pointer events when animating */
-}
+  background-color: #28a745 !important;
+  border: 1px solid red; /* Temporary border for visibility */
+  position: relative; /* Ensure z-index works */
+  z-index: 1000; /* Higher than other elements */
+} 
+
 
 @keyframes fadeout {
   0% {
@@ -292,7 +298,7 @@ export default {
     /* 100%: This represents the end point of the animation (the end).
     At 100%, the opacity is set to 0, meaning the element becomes fully transparent (completely invisible). */
     opacity: 0;
-  }
+  } 
 }
 
 .disabled-button {
