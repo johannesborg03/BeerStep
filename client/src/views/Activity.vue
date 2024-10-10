@@ -1,23 +1,48 @@
 <template>
   <div class="activity-view">
-    <h1>Activity Header</h1>
-    <!-- Add the content you want to display in the view -->
-    <p>Log your activity (or Beer ;)</p>
-    <div class="button-container">
-      <button class="massive-button beer" :class="{ 'disabled-button': showBeerNotification }" @click="logBeer"
-        :disabled="showBeerNotification">Beer</button>
-      <button class="massive-button log-step" @click="showStepInput = true">Step</button>
-    </div>
+    <b-container>
+      <b-row>
+        <b-col>
+          <h1 class="text-center">Activity Header</h1>
+          <p class="text-center">Log your activity (or Beer ;)</p>
+        </b-col>
+      </b-row>
 
-    <div v-if="showStepInput" class="step-input-container">
-      <input v-model="steps" type="number" placeholder="Enter number of steps" class="step-input" />
-      <button @click="logSteps" class="submit-button">Submit</button>
-    </div>
-    <div v-if="showBeerNotification" class="notification">
-      Beer Logged! Good Job King! Keep It Up!
-    </div>
+      <!-- Button container with responsive buttons -->
+      <b-row class="justify-content-center mt-3">
+        <b-col cols="12" md="5" class="text-center mb-3">
+          <b-button :disabled="showBeerNotification" @click="logBeer" variant="success" block class="massive-button beer">
+            Beer
+          </b-button>
+        </b-col>
+        <b-col cols="12" md="5" class="text-center">
+          <b-button @click="showStepInput = true" variant="primary" block class="massive-button log-step">
+            Step
+          </b-button>
+        </b-col>
+      </b-row>
+
+      <!-- Step input container with responsive input and button -->
+      <b-row v-if="showStepInput" class="justify-content-center mt-3">
+        <b-col cols="12" md="5" class="text-center">
+          <b-form-input v-model="steps" type="number" placeholder="Enter number of steps" class="mb-2" />
+          <b-button @click="logSteps" variant="success" block class="submit-button">
+            Submit
+          </b-button>
+        </b-col>
+      </b-row>
+      
+
+      <!-- Notification area -->
+      <b-row v-if="showBeerNotification" class="justify-content-center mt-3">
+        <b-col cols="12" md="5" class="text-center">
+          <b-alert :show="showBeerNotification" variant="success" dismissible>
+            Beer Logged! Good Job King! Keep It Up!
+          </b-alert>
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
-
 </template>
 
 <script>
@@ -121,6 +146,7 @@ export default {
         .then(updatedUser => {
           console.log('Beer incremented:', updatedUser);
           this.showBeerNotification = true; // Show notification
+          console.log('Notification status:', this.showBeerNotification); // Add this to check the value
           setTimeout(() => {
             this.showBeerNotification = false;
           }, 3000);
@@ -136,8 +162,13 @@ export default {
 <style scoped>
 /* Add view-specific styles */
 .activity-view {
-  padding: 20px;
   text-align: center;
+  background-color: #2b2b2b;
+ /* overflow: hidden; */
+  width: 100%;
+  height: 100vh;
+  margin: 0 auto;
+  position: relative;
 }
 
 .button-container {
@@ -235,18 +266,22 @@ export default {
 }
 
 .notification {
-  margin-top: 20px;
-  font-size: 32px;
-  color: #fff;
-  background-color: #28a745;
-  padding: 20px;
-  border-radius: 10px;
-  opacity: 0.9;
+  margin-top: 25%;
+  font-size: 25%;
+  color: #d30e0e;
+  padding: 25%;
+  border-radius: 25%;
+  opacity: 1;
   animation: fadeout 3s ease-out forwards;
   /* Animate fading out after a while */
   pointer-events: none;
   /* Disable pointer events when animating */
-}
+  background-color: #28a745 !important;
+  border: 1px solid red; /* Temporary border for visibility */
+  position: relative; /* Ensure z-index works */
+  z-index: 1000; /* Higher than other elements */
+} 
+
 
 @keyframes fadeout {
   0% {
@@ -263,7 +298,7 @@ export default {
     /* 100%: This represents the end point of the animation (the end).
     At 100%, the opacity is set to 0, meaning the element becomes fully transparent (completely invisible). */
     opacity: 0;
-  }
+  } 
 }
 
 .disabled-button {

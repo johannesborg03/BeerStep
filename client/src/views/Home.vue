@@ -52,7 +52,7 @@ main {
 .aboutImg {
     overflow: hidden;
     width: 100%;
-    height: 80vh;
+    height: 100vh;
     margin: 0 auto;
     position: relative;
 }
