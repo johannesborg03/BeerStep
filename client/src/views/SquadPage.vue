@@ -12,7 +12,7 @@
               <h2 class="squad-list-title">Your Squads</h2>
               <ul class="squad-list">
                 <li v-for="(squad, index) in squads" :key="index">
-                  {{ squad.name }} <!-- Display squad name -->
+                  {{ squad.squadName }} <!-- Display squad name -->
                 </li>
                 <li v-if="squads.length === 0" class="no-squads">No squads yet</li>
               </ul>
