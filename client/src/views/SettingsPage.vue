@@ -1,38 +1,51 @@
 <template>
-    
-    <div class="settings-view">
-        <header>
-        <h1>BeerStep</h1>
-    </header>
-        
-        <div class="Settings-Container">
-        <div class="box">
-        <h1 class="Title">User Settings</h1>
-        <p class="subtitle">Change Your Settings:</p>
-        <form @submit.prevent="submit">
-            <p>Change Your Email:</p>
-            <input type="text" id="email" v-model="input.email" class="input-field"
-            placeholder="Enter A New Email"><br><br>
-            <p class="or">
-                OR
-            </p>
-            <p>Change Your Password:</p>
-            <input type="text" id="password" v-model="input.password" class="input-field"
-            placeholder="Enter A New Password"><br><br>
-            <button type="submit" class="submit-button ">Submit</button>
-        </form>
-         <!-- Display error message if login fails -->
-         <p v-if="message" class="error-message">{{ message }}</p>
-         <div v-if="showNotification" class="notification">
-            User Successfully updated!
-         </div>
-    </div>
-
-    </div>
-    
-</div>
-    
-</template>
+    <b-container fluid class="settings-view">
+  
+      <b-row class="justify-content-center mt-5">
+        <b-col cols="12" md="6">
+          <b-card class="box">
+            <h1 class="title text-center">User Settings</h1>
+            <p class="subtitle text-center">Change Your Settings:</p>
+  
+            <b-form @submit.prevent="submit">
+              <!-- Change Email Section -->
+              <b-form-group label="Change Your Email:" label-for="email">
+                <b-form-input
+                  id="email"
+                  v-model="input.email"
+                  type="email"
+                  placeholder="Enter a New Email"
+                ></b-form-input>
+              </b-form-group>
+  
+              <!-- OR Section -->
+              <p class="or text-center">OR</p>
+  
+              <!-- Change Password Section -->
+              <b-form-group label="Change Your Password:" label-for="password">
+                <b-form-input
+                  id="password"
+                  v-model="input.password"
+                  type="password"
+                  placeholder="Enter a New Password"
+                ></b-form-input>
+              </b-form-group>
+  
+              <!-- Submit Button -->
+              <b-button type="submit" variant="warning" block>Submit</b-button>
+            </b-form>
+  
+            <!-- Error or Success Messages -->
+            <b-alert v-if="message" variant="danger" dismissible>{{ message }}</b-alert>
+            <b-alert v-if="showNotification" variant="success" dismissible>
+              User Successfully updated!
+            </b-alert>
+          </b-card>
+        </b-col>
+      </b-row>
+    </b-container>
+  </template>
+  
 
 <script>
 export default {
