@@ -2,7 +2,6 @@ var express = require ('express');
 var router = express.Router();
 
 var User = require('../models/User.js');
-var Activity = require('../models/Activity.js');
 
 var methodOverride = require('method-override');
 
@@ -20,29 +19,10 @@ router.post('/api/users', async function (req, res, next) {
 
     try {
         await user.save();
-
-        //After Saving The user, Create a activity for this user:
-        const newActivity = new Activity({
-            user: user._id,  // Associate the activity with the user
-            total_beers: 0,
-            total_steps: 0,
-            steps_needed: 0
-        });
-        // Save the new activity
-        const savedActivity = await newActivity.save();
-
-        // Push the activity into the user's activities array
-        user.activities.push(savedActivity._id);
-
-        // Save the updated user with the activity reference
-        await user.save();
-
-
         // Respond with the user and activity
         res.status(200).json({
-            message: "User and activity created successfully",
-            user: user,
-            activity: savedActivity
+            message: "User created successfully",
+            user: user
         });
     } catch (err) {
         console.error("Error while creating user:", err);  // Log the error for debugging

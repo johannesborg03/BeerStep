@@ -27,10 +27,22 @@ var userSchema = new mongoose.Schema({
     squads : [{ 
         type: mongoose.Schema.Types.ObjectId, ref: 'Squad'      // Reference to squads
     }],
-    activities: [{ 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'Activity'  // One-to-many relationship with Activity
-    }]
+    //Activity Related Fields
+    total_beers: {
+        type: Number,
+        default: 0,
+        min: 0
+    },
+    total_steps: {
+        type: Number,
+        default: 0,
+        min: 0
+    },
+    steps_needed: {
+        type: Number,
+        default: 0,
+        min: 0
+    }
 
 }); 
 
