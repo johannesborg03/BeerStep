@@ -1,24 +1,36 @@
 <template>
-  <BContainer>
-    <b-navbar type="dark" variant="dark">
-      <b-navbar-brand class="brand">BeerStep</b-navbar-brand>
-     
-      <BNav class="nav justify-content-end">
-        <BNavItem class="buttonsNav"><router-link to="/HomePage">Home</router-link></BNavItem>
-        <BNavItem class="buttonsNav"><router-link to="/SquadPage">Squads</router-link></BNavItem>
-        <BNavItem class="buttonsNav"><router-link to="/Leaderboard">Leaderboard</router-link></BNavItem>
-      </BNav>
+  <BNavbar toggleable="lg" variant="dark" v-b-color-mode="'dark'" expand="lg" class="d-flex flex-nowrap">
+    <BNavbarBrand href="#" class="brand">BeerStep</BNavbarBrand>
+    <BNavbarToggle target="nav-collapse" />
 
-      <BAvatar class="avatar" bg-variant="primary" :text="firstIndex()" size="sm" />
-      <BDropdown class="custom-dropdown" variant="transparent" v-model="menuVisible" size="sm" no-flip @click="goToSettings"> 
-        <BDropdownItem @click="goToSettings">Settings</BDropdownItem>
-        <BDropdownItem @click="logout">Logout</BDropdownItem>
-      </BDropdown>
-    </b-navbar>
- 
-    
-    
-  </BContainer>
+    <BCollapse id="nav-collapse" is-nav>
+      <!-- Left Aligned Navbar Links -->
+      <BNavbarNav>
+        <BNavItem class="buttonsNav">
+          <router-link to="/HomePage">Home</router-link>
+        </BNavItem>
+        <BNavItem class="buttonsNav">
+          <router-link to="/SquadPage">Squads</router-link>
+        </BNavItem>
+        <BNavItem class="buttonsNav">
+          <router-link to="/Leaderboard">Leaderboard</router-link>
+        </BNavItem>
+      </BNavbarNav>
+      
+      <!-- Right Aligned Navbar Items -->
+      <BNavbarNav class="ms-auto mb-2 mb-lg-0">
+        <!-- Hide Username and Avatar on Small Screens -->
+        <div class="d-none d-lg-flex align-items-center">
+          <BAvatar class="avatar" bg-variant="primary" :text="firstIndex()" size="sm" />
+          <span class="username ml-3">{{ username }}</span>
+        </div>
+        <BDropdown class="custom-dropdown ml-3" variant="transparent" size="sm" right>
+          <BDropdownItem @click="goToSettings">Settings</BDropdownItem>
+          <BDropdownItem @click="logout">Logout</BDropdownItem>
+        </BDropdown>
+      </BNavbarNav>
+    </BCollapse>
+  </BNavbar>
 </template>
 
 <script>
@@ -62,14 +74,34 @@ export default {
 <style scoped>
 .brand {
   color: #ebb112;
+  font-size: 24px;
+  margin-right: 5%;
+  margin-left: 5%;
+}
+.buttonsNav{
+  font-family: sans-serif;
+  gap: 40px;
 }
 .username {
-  font-size: 16px;
+  font-size: 13px;
+  font-weight: bold;
   color: #ffffff;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 .buttonsNav a,
 router-link {
   color: white;
   text-decoration: none;
 }
+
+.custom-dropdown{
+padding-right: 30px;
+}
+
+.nav-collapse{
+margin-right: 5%;
+}
+
+
 </style>

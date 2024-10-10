@@ -40,9 +40,8 @@ main {
 
 /* Beer Background */
 .beerBack {
-  border-radius: 2%;
   overflow: hidden;
-  width: 91vw;
+  width: 100vw;
   height: 70vh;
   margin: 0 auto;
   position: relative;
