@@ -2,24 +2,26 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-var leaderboardSchema = mongoose.Schema({
-    leaderboard_id : {
-        type : Number,
-        required : true,
-        unique : true
-    },
-    month : {
-        type : String,
-        required : true,
-        min : 3,
-        max : 20
-    },
-    squad : {
-        type : mongoose.Schema.Types.ObjectId, 
-        ref: 'Squad' 
+var leaderboardSchema = new mongoose.Schema({
+    rankings: [
+        {
+            userId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
+                required: true
+            },
+            score: {
+                type: Number,
+                default: 0 // Default score can be 0 or undefined
+            }
+        }
+    ],
+    squad: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Squad', 
+        required: false 
     }
 });
 
 var Leaderboard = mongoose.model('Leaderboards', leaderboardSchema);
-
 module.exports = Leaderboard;

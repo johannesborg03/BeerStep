@@ -3,33 +3,47 @@ var router = express.Router();
 
 var Squad = require('../models/Squad.js');
 var User = require('../models/User.js');
-const Leaderboard = require('../models/Leaderboard');  // Add this line
+const Leaderboard = require('../models/Leaderboard');  
 
 
 router.post('/api/squads', async function (req, res, next) {
     try {
+        // Create the squad with the creator in users array
         const squad = new Squad({
-            squad_id: req.body.squad_id,
             squadName: req.body.squadName,
-            created_by: req.body.created_by,
-            users: req.body.users,
-            leaderboard: req.body.leaderboard
+            created_by: req.body.created_by, // Creator's ObjectId
+            users: [req.body.created_by],    // Only the creator is added initially
+            leaderboard: null                 // Temporary null, will assign the leaderboard later
         });
 
+        // Save the squad to the database
         await squad.save();
-        res.status(201).json(squad);
-    } catch (err) {
-        res.status(500).json({ message: "Error creating squad", error: err.message });
-    }
-});
 
+        // Create the leaderboard without a squad reference
+        const leaderboard = new Leaderboard({
+            rankings: [] // Start with empty rankings
+        });
+        await leaderboard.save();
 
-router.get('/api/squads', async function (req, res, next) {
-    try {
-        const squads = await Squad.find().populate('users').populate('leaderboard');
-        res.json({ squads });
+        // Update the squad with the created leaderboard's ID
+        squad.leaderboard = leaderboard._id;
+        await squad.save();
+
+        // Update the creator's record by pushing the new squad's ID into the squads array
+        const user = await User.findById(req.body.created_by);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Add the new squad ID to the user's squads array
+        user.squads.push(squad._id);
+        await user.save();
+
+        
+        res.status(201).json({ squad, leaderboard });
     } catch (err) {
-        res.status(500).json({ message: "Error retrieving squads", error: err.message });
+        console.error('Error creating squad and updating user:', err);
+        res.status(500).json({ message: "Error creating squad and updating user", error: err.message });
     }
 });
 
