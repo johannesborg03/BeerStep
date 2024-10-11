@@ -4,6 +4,7 @@ var router = express.Router();
 var Squad = require('../models/Squad.js');
 var User = require('../models/User.js');
 const Leaderboard = require('../models/Leaderboard');  
+const { Types } = require('mongoose');
 
 
 router.post('/api/squads', async function (req, res, next) {
@@ -46,6 +47,7 @@ router.post('/api/squads', async function (req, res, next) {
         res.status(500).json({ message: "Error creating squad and updating user", error: err.message });
     }
 });
+
 router.post('/api/squads/invite', async function (req, res) {
     try {
         const { squad_id, username } = req.body; // Extract squad_id and username from the request body
@@ -99,6 +101,11 @@ router.patch('/api/squads/leave', async function (req, res, next) {
         }
         // Find the squad by name
         const squad = await Squad.findOne({ squadName }); // Find squad by name
+
+        if(!squad) {
+            console.error('Squad not found:', squad);
+            return res.status(404).json({message: 'Squad not found'});
+        }
   
         console.log('Squad found:', squad.squadName); // Debug: Log found squad details
   
@@ -135,21 +142,6 @@ router.patch('/api/squads/leave', async function (req, res, next) {
     } catch (error) {
         console.error('Error processing leave squad request:', error); // Debug: Log the error
         return res.status(500).json({ message: 'An error occurred while leaving the squad' });
-    }
-});
-
-
-
-
-router.delete('/api/squads', async function (req, res, next) {
-    try {
-        const deletedResult = await Squad.deleteMany({});
-        res.status(200).json({
-            message: "All squads deleted successfully",
-            deletedCount: deletedResult.deletedCount,
-        });
-    } catch (err) {
-        res.status(500).json({ message: "Error deleting squads", error: err.message });
     }
 });
 
