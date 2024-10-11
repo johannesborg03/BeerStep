@@ -98,12 +98,11 @@ export default {
     }
   },
   async mounted() {
-    
     await this.fetchSquads()
   },
   methods: {
     async fetchSquads() {
-      const username = localStorage.getItem('username') 
+      const username = localStorage.getItem('username')
       if (username) {
         try {
           const response = await fetch(`http://localhost:3000/api/users/${username}/squads`, {
@@ -115,7 +114,7 @@ export default {
 
           if (response.ok) {
             const data = await response.json()
-            this.squads = data.squads 
+            this.squads = data.squads
           } else {
             const errorData = await response.json()
             console.error(`Error fetching squads: ${errorData.message}`)
@@ -205,92 +204,100 @@ export default {
     },
 
     sendInvite() {
-    if (this.inviteUsername.trim()) {
+      if (this.inviteUsername.trim()) {
         const inviteData = {
-            squad_id: this.selectedSquad._id, // Get the ID of the selected squad
-            username: this.inviteUsername // The username to invite
-        };
+          squad_id: this.selectedSquad._id, // Get the ID of the selected squad
+          username: this.inviteUsername // The username to invite
+        }
 
         // POST request to send the invite
-        fetch('http://localhost:3000/api/squads/invite', { 
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(inviteData) // Send the invite data in the request body
+        fetch('http://localhost:3000/api/squads/invite', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(inviteData) // Send the invite data in the request body
         })
-        .then(response => {
+          .then(response => {
             if (response.ok) {
-                return response.json(); // Parse JSON response
+              return response.json() // Parse JSON response
             } else {
-                throw new Error('Failed to send invite'); // Throw an error for non-200 responses
+              throw new Error('Failed to send invite') // Throw an error for non-200 responses
             }
-        })
-        .then(data => {
-            console.log('Invite sent:', data);
-            alert(`Invite sent to ${this.inviteUsername} for squad ${this.selectedSquad.squadName}!`); // Success message
-            this.closeInviteModal(); // Close the modal after sending the invite
-        })
-        .catch(error => {
-            console.error('Error sending invite:', error);
-            alert('An error occurred while sending the invite. Please try again.'); // Error handling
-        });
-    } else {
-        alert('Please enter a username to invite.'); // Input validation
-    }
+          })
+          .then(data => {
+            console.log('Invite sent:', data)
+            alert(`Invite sent to ${this.inviteUsername} for squad ${this.selectedSquad.squadName}!`) // Success message
+            this.closeInviteModal() // Close the modal after sending the invite
+          })
+          .catch(error => {
+            console.error('Error sending invite:', error)
+            alert('An error occurred while sending the invite. Please try again.') // Error handling
+          })
+      } else {
+        alert('Please enter a username to invite.') // Input validation
+      }
     },
     openLeaveModal(squad) {
       this.selectedSquad = squad // Store the selected squad
       this.showLeaveModal = true // Show the modal
     },
 
+
+    async confirmLeave() {
+    const username = localStorage.getItem('username'); // Get the current user's username
+
+    if (!username) {
+        alert('No username found, please log in again.');
+        return;
+    }
+
+    if (this.selectedSquad && this.selectedSquad.squadName) { // Check for squadName instead of _id
+        const leaveData = {
+            squadName: this.selectedSquad.squadName, // Pass the squad name in the request body
+            username // Pass the username in the request body
+        };
+
+        try {
+            console.log(leaveData);
+
+            // PATCH request to leave the squad
+            const response = await fetch('http://localhost:3000/api/squads/leave', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(leaveData) // Send the squad name and username in the request body
+            });
+
+            // Check the response
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Successfully left the squad:', data.message);
+                alert(`You have left the squad "${this.selectedSquad.squadName}".`);
+                this.showLeaveModal = false;
+                this.selectedSquad = null;
+                await this.fetchSquads(); // Refresh the squads list
+            } else {
+                const errorData = await response.json();
+                throw new Error(`Failed to leave squad: ${errorData.message}`);
+            }
+        } catch (error) {
+            console.error('Error while leaving the squad:', error);
+            alert('An error occurred while trying to leave the squad. Please try again.');
+        }
+    } else {
+        alert('No squad selected to leave.');
+    }
+    },    
     // Close the Leave Squad Modal
     closeLeaveModal() {
       this.showLeaveModal = false // Hide the modal
-    },
-
-    async confirmLeave() {
-  const username = localStorage.getItem('username'); // Get the current user's username
-
-  if (!username) {
-    alert('No username found, please log in again.');
-    return;
-  }
-
-  if (this.selectedSquad && this.selectedSquad._id) {
-    try {
-      const response = await fetch(`http://localhost:3000/api/squads/${this.selectedSquad._id}/leave`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username }) // Send the username in the request body
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Successfully left the squad:', data.message);
-        alert(`You have left the squad "${this.selectedSquad.squadName}".`);
-
-        // Close the modal and refresh the squads list
-        this.showLeaveModal = false;
-        this.selectedSquad = null;
-
-        // Fetch the updated squads list
-        await this.fetchSquads();
-      } else {
-        const errorData = await response.json();
-        alert(`Error leaving squad: ${errorData.message}`);
-      }
-    } catch (error) {
-      console.error('Error while leaving the squad:', error);
-      alert('An error occurred while trying to leave the squad. Please try again.');
     }
-  } else {
-    alert('No squad selected to leave.');
-  }
+
     
-    }}}
+  }
+}
 </script>
 
 <style scoped>

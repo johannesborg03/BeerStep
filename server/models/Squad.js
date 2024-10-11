@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-var squadSchema = mongoose.Schema({
+var squadSchema = new mongoose.Schema({
     squadName : {
         type : String,
         required : true,
