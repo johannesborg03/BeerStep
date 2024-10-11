@@ -4,7 +4,6 @@ var router = express.Router();
 var Squad = require('../models/Squad.js');
 var User = require('../models/User.js');
 const Leaderboard = require('../models/Leaderboard');  
-const { Types } = require('mongoose');
 
 
 router.post('/api/squads', async function (req, res, next) {
@@ -47,38 +46,6 @@ router.post('/api/squads', async function (req, res, next) {
         res.status(500).json({ message: "Error creating squad and updating user", error: err.message });
     }
 });
-
-
-router.get('/api/squads/:squad_id', async function (req, res, next) {
-    try {
-        const squad = await Squad.findOne({ squad_id: req.params.squad_id }).populate('users').populate('leaderboard');
-        if (!squad) {
-            return res.status(404).json({ message: "Squad not found" });
-        }
-        res.json(squad);
-    } catch (err) {
-        res.status(500).json({ message: "Error retrieving squad", error: err.message });
-    }
-});
-
-
-router.put('/api/squads/:squad_id', async function (req, res, next) {
-    try {
-        const updatedSquad = await Squad.findOneAndUpdate(
-            { squad_id: req.params.squad_id },
-            req.body,
-            { new: true, runValidators: true }
-        ).populate('users').populate('leaderboard');
-        
-        if (!updatedSquad) {
-            return res.status(404).json({ message: "Squad not found" });
-        }
-        res.json(updatedSquad);
-    } catch (err) {
-        res.status(500).json({ message: "Error updating squad", error: err.message });
-    }
-});
-
 router.post('/api/squads/invite', async function (req, res) {
     try {
         const { squad_id, username } = req.body; // Extract squad_id and username from the request body
