@@ -101,16 +101,18 @@ export default {
   }
 
   .balance {
-    font-size: 1em;
+    display: none;
   }
 
   .headline {
-    font-size: 1em;
+    margin-top: 50%;
+    margin-left: 10%;
+    font-size: 1.7em;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   }
 
   .main-title {
-    font-size: 1.5em;
+    font-size: 2.0em;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   }
 
@@ -123,6 +125,7 @@ export default {
     width: 50% !important;
     font-size: 0.9em; 
     padding: 10px 15px; 
+    margin-left: 10%;
   }
 
  
