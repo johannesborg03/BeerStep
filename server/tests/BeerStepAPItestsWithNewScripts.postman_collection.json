@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "82d64308-394a-47e8-af21-fbbab5628c18",
+		"_postman_id": "719b484e-b839-4d74-ace4-4fd724621689",
 		"name": "BeerStep API tests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "38271728"
+		"_exporter_id": "32895985"
 	},
 	"item": [
 		{
@@ -320,285 +320,15 @@
 			"response": []
 		},
 		{
-			"name": "POST/SQUAD",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 201 success\", function () {",
-							"    pm.response.to.have.status(201);",
-							"});",
-							"",
-							"",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"squad_id\" : 1,\n    \"squadName\" : \"Gamers\",\n    \"created_by\" : \"John\"\n\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/api/squads",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"squads"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET/SQUADS",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200 for success\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/api/squads",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"squads"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET/SQUAD_ID",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200 for success\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/api/squads/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"squads",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "PUT/SQUAD_ID",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200 for success\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"squad_id\" : 2,\n    \"squadName\" : \"Non-Gamers\",\n    \"created_by\" : \"Johnny\"\n\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/api/squads/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"squads",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "PATCH/SQUAD_ID",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200 for success\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "PATCH",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"squad_id\" : 1,\n    \"squadName\" : \"Gamers\",\n    \"created_by\" : \"John\"\n\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/api/squads/2",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"squads",
-						"2"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "DELETE/SQUAD_ID",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200 for success\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/api/squads/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"squads",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "DELETE/SQUADS",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200 for success\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/api/squads/",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"squads",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "POST INVITE USER TO SQUAD",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
+							"",
+							"",
+							"",
 							"pm.test(\"Status code is 404 for not found\", function () {",
 							"    pm.response.to.have.status(404);",
 							"});"
@@ -606,6 +336,81 @@
 						"type": "text/javascript",
 						"packages": {}
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Function to create a user\r",
+							"function createUser() {\r",
+							"    return new Promise((resolve, reject) => {\r",
+							"        pm.sendRequest({\r",
+							"            url: 'http://localhost:3000/api/users', // Adjust the URL to your user creation endpoint\r",
+							"            method: 'POST',\r",
+							"            header: {\r",
+							"                'Content-Type': 'application/json'\r",
+							"            },\r",
+							"            body: {\r",
+							"                mode: 'raw',\r",
+							"                raw: JSON.stringify({\r",
+							"                    username: 'JohnDoe', // Example username\r",
+							"                    email: 'johndoe@example.com', // Example email\r",
+							"                    password: 'password123' // Example password\r",
+							"                })\r",
+							"            }\r",
+							"        }, (err, res) => {\r",
+							"            if (err) {\r",
+							"                reject(err);\r",
+							"            } else {\r",
+							"                const user = res.json();\r",
+							"                pm.environment.set('userId', user._id); // Store user ID in an environment variable\r",
+							"                resolve(user);\r",
+							"            }\r",
+							"        });\r",
+							"    });\r",
+							"}\r",
+							"\r",
+							"// Function to create a squad using the created user\r",
+							"function createSquad(userId) {\r",
+							"    return new Promise((resolve, reject) => {\r",
+							"        pm.sendRequest({\r",
+							"            url: 'http://localhost:3000/api/squads', // Adjust the URL to your squad creation endpoint\r",
+							"            method: 'POST',\r",
+							"            header: {\r",
+							"                'Content-Type': 'application/json'\r",
+							"            },\r",
+							"            body: {\r",
+							"                mode: 'raw',\r",
+							"                raw: JSON.stringify({\r",
+							"                    name: 'Squad Alpha', // Example squad name\r",
+							"                    created_by: userId, // Use the userId we just created\r",
+							"                    users: [userId] // Add the same user to the squad\r",
+							"                })\r",
+							"            }\r",
+							"        }, (err, res) => {\r",
+							"            if (err) {\r",
+							"                reject(err);\r",
+							"            } else {\r",
+							"                const squad = res.json();\r",
+							"                pm.environment.set('squadId', squad._id); // Store squad ID in an environment variable\r",
+							"                resolve(squad);\r",
+							"            }\r",
+							"        });\r",
+							"    });\r",
+							"}\r",
+							"\r",
+							"createUser()\r",
+							"    .then(user => {\r",
+							"        return createSquad(user._id);\r",
+							"    })\r",
+							"    .catch(err => {\r",
+							"        console.error('Error creating user or squad:', err);\r",
+							"        pm.environment.set('error', err);\r",
+							"    });"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
 				}
 			],
 			"request": {
@@ -613,7 +418,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n   \"userID\" : 1\n}",
+					"raw": "{\n    \"squadId\": \"{{squadId}}\", // Use the squadId created in the pre-request script\n    \"username\": \"JohnDoe\" // Username of the user\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -621,7 +426,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/squads/66ed80d839f7f7849d85f4ae/invite",
+					"raw": "http://localhost:3000/api/squads/invite",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -630,7 +435,6 @@
 					"path": [
 						"api",
 						"squads",
-						"66ed80d839f7f7849d85f4ae",
 						"invite"
 					]
 				}

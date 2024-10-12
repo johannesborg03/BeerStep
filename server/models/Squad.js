@@ -2,36 +2,30 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-var squadSchema = mongoose.Schema({
-    squad_id : {
-        type : Number,
-        required : true,
-        unique : true
-    },
+var squadSchema = new mongoose.Schema({
     squadName : {
         type : String,
         required : true,
-        unique : false,
+        unique : true,
         min : 1,
         max : 25
     },
     created_by : {
-        type : String,
+        type : mongoose.Schema.Types.ObjectId,
         required : true,
         unique : false
     },
     users: [{ 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'User'  // Reference to users
+        ref: 'User'
     }],
     leaderboard : {
         type: mongoose.Schema.Types.ObjectId,
         ref : 'Leaderboard',
-        unique : true
+        unique: false
     }
-
 });
 
-var Squad = mongoose.model('Squads', squadSchema);
+var Squad = mongoose.model('Squad', squadSchema);
 
 module.exports = Squad;
