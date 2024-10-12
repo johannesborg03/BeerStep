@@ -203,40 +203,41 @@ export default {
       this.showInviteModal = false // Hide the modal
     },
 
-    sendInvite() {
-      if (this.inviteUsername.trim()) {
-        const inviteData = {
-          squad_id: this.selectedSquad._id, // Get the ID of the selected squad
-          username: this.inviteUsername // The username to invite
-        }
+    async sendInvite() {
+    if (this.inviteUsername.trim()) {
+        const squad_id = this.selectedSquad._id;
+        const username = this.inviteUsername;
 
-        // POST request to send the invite
-        fetch('http://localhost:3000/api/squads/invite', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(inviteData) // Send the invite data in the request body
-        })
-          .then(response => {
-            if (response.ok) {
-              return response.json() // Parse JSON response
-            } else {
-              throw new Error('Failed to send invite') // Throw an error for non-200 responses
+        if (squad_id && username) {
+
+
+            try {
+                // PATCH request to send the invite
+                const response = await fetch(`http://localhost:3000/api/squads/${squad_id}/users/${username}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (response.ok) {
+                    const data = await response.json(); // Parse JSON response
+                    console.log('Invite sent:', data);
+                    alert(`Invite sent to ${this.inviteUsername} for squad ${this.selectedSquad.squadName}!`); // Success message
+                    this.closeInviteModal(); // Close the modal after sending the invite
+                } else {
+                    throw new Error('Failed to send invite'); // Throw an error for non-200 responses
+                }
+            } catch (error) {
+                console.error('Error sending invite:', error);
+                alert('An error occurred while sending the invite. Please try again.'); // Error handling
             }
-          })
-          .then(data => {
-            console.log('Invite sent:', data)
-            alert(`Invite sent to ${this.inviteUsername} for squad ${this.selectedSquad.squadName}!`) // Success message
-            this.closeInviteModal() // Close the modal after sending the invite
-          })
-          .catch(error => {
-            console.error('Error sending invite:', error)
-            alert('An error occurred while sending the invite. Please try again.') // Error handling
-          })
-      } else {
-        alert('Please enter a username to invite.') // Input validation
-      }
+        } else {
+            alert('Invalid squad or username.'); // Additional validation if necessary
+        }
+    } else {
+        alert('Please enter a username to invite.'); // Input validation
+    }
     },
     openLeaveModal(squad) {
       this.selectedSquad = squad // Store the selected squad
@@ -252,22 +253,17 @@ export default {
         return;
     }
 
-    if (this.selectedSquad && this.selectedSquad.squadName) { // Check for squadName instead of _id
-        const leaveData = {
-            squadName: this.selectedSquad.squadName, // Pass the squad name in the request body
-            username // Pass the username in the request body
-        };
+    if (this.selectedSquad && this.selectedSquad._id) { // Check for squad _id instead of squadName
+        const squad_id = this.selectedSquad._id; // Use _id to match the backend requirement
 
         try {
-            console.log(leaveData);
-
-            // PATCH request to leave the squad
-            const response = await fetch('http://localhost:3000/api/squads/leave', {
-                method: 'PATCH',
+            // DELETE request to leave the squad
+            const response = await fetch(`http://localhost:3000/api/squads/${squad_id}/users/${username}`, {
+                method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(leaveData) // Send the squad name and username in the request body
+                }
+                // No body needed for DELETE request
             });
 
             // Check the response
