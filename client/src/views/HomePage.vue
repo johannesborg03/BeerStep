@@ -14,11 +14,11 @@
    
    
   <BCol class="quotes text-start">
-    <BCard class="card-quetes">
+    <BCard class="card-quotes">
       <p>Walk off the beer and enjoy the next one guilt-free!</p>
     </BCard>
     </BCol>
-    
+  
     <BCol></BCol>
 
     <BCol class="goal text-end">
@@ -88,7 +88,13 @@ margin-left: 5%;
 
 }
 
-
+.card-quotes{
+  background-color: #292929; 
+  color: white; 
+  height: 80%; 
+  text-align: center; 
+  padding-top: 10%;
+}
 .goal{
 display: flex; 
 flex-direction: column; 
