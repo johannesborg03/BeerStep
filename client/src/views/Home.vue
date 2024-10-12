@@ -1,7 +1,7 @@
 <template>
     <BRow class="textArea text-start">
       <h1 class="main-title">BeerStep</h1>
-      <!-- Column with text, remains unchanged -->
+      
       <BCol class="textSec">
         <p class="balance">Keep the balance</p>
         <h1 class="headline display-4 mb-2">Healthy drinking, made easy with BeerStep</h1>
@@ -14,11 +14,11 @@
       <BCol class="text-end ">
         <img v-bind:src="landingImg" class ="backgroundImg" style="height:90vh;">
 
-        <!-- Log In button positioned over the image -->
         <router-link to="/LogIn">
           <BButton variant="warning" class="login-button">Log In</BButton>
         </router-link>
       </BCol>
+      
     </BRow>
 </template>
 

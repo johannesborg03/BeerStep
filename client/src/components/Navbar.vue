@@ -1,5 +1,5 @@
 <template>
-  <BNavbar toggleable="lg" variant="dark" v-b-color-mode="'dark'" expand="lg" class="d-flex flex-nowrap">
+  <BNavbar toggleable="lg" variant="dark" v-b-color-mode='dark'>
     <BNavbarBrand href="#" class="brand">BeerStep</BNavbarBrand>
     <BNavbarToggle target="nav-collapse" />
 
