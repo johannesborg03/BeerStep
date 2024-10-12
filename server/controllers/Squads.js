@@ -48,9 +48,12 @@ router.post('/api/squads', async function (req, res, next) {
     }
 });
 
-router.post('/api/squads/invite', async function (req, res) {
+
+// Add specific user to specific squad
+router.patch('/api/squads/:id/users/:username', async function (req, res) {
     try {
-        const { squad_id, username } = req.body; // Extract squad_id and username from the request body
+        const squad_id = req.params.id;
+        const username = req.params.username; 
 
         // Find the squad by its ID
         const squad = await Squad.findById(squad_id);
