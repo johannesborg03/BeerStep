@@ -49,11 +49,12 @@ router.get('/api/leaderboards', async function (req, res, ){
 router.get('/api/leaderboards/:leaderboard_id', async function (req, res) {
     try{
     var leaderboard_id = req.params.leaderboard_id;
-    const leaderboard = await Leaderboard.findOne({leaderboard_id : leaderboard_id});
+    const leaderboard = await Leaderboard.findById(leaderboard_id).populate('rankings.userId', 'username');
     if (!leaderboard){
         return res.status(404).json({"message": "No such Leaderboard"});
     }
     leaderboard.calculateScores();
+    console.log(leaderboard);
     res.json(leaderboard);
 } catch (err) {
     res.status(500).json({"message" : "Server error", "error": err.message});
