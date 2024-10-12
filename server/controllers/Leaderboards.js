@@ -53,6 +53,7 @@ router.get('/api/leaderboards/:leaderboard_id', async function (req, res) {
     if (!leaderboard){
         return res.status(404).json({"message": "No such Leaderboard"});
     }
+    leaderboard.calculateScores();
     res.json(leaderboard);
 } catch (err) {
     res.status(500).json({"message" : "Server error", "error": err.message});
