@@ -48,9 +48,12 @@ router.post('/api/squads', async function (req, res, next) {
     }
 });
 
-router.post('/api/squads/invite', async function (req, res) {
+
+// Add specific user to specific squad
+router.patch('/api/squads/:id/users/:username', async function (req, res) {
     try {
-        const { squad_id, username } = req.body; // Extract squad_id and username from the request body
+        const squad_id = req.params.id;
+        const username = req.params.username; 
 
         // Find the squad by its ID
         const squad = await Squad.findById(squad_id);
@@ -86,42 +89,29 @@ router.post('/api/squads/invite', async function (req, res) {
     }
 });
 
-router.patch('/api/squads/leave', async function (req, res, next) {
-    console.log("endpoint reached");
+// Delete specific user from specific squad based on username
+router.delete('/api/squads/:id/users/:username', async function (req, res, next) {
     try {
-        const { squadName, username } = req.body;  // Get squadName and username from request body
-  
-        console.log('Received request to leave squad:', { squadName, username }); // Debug: Log request info
-        
+        const squad_id = req.params.id;
+        const username = req.params.username;
 
+        
+        // Find user by username
         const user = await User.findOne({ username });
         if (!user) {
-            console.error('User not found:', username); // Debug: Log if user not found
             return res.status(404).json({ message: 'User not found' });
         }
-        // Find the squad by name
-        const squad = await Squad.findOne({ squadName }); // Find squad by name
+        // Find the squad by Id
+        const squad = await Squad.findById(squad_id); // Find squad by name
 
         if(!squad) {
-            console.error('Squad not found:', squad);
             return res.status(404).json({message: 'Squad not found'});
         }
-  
-        console.log('Squad found:', squad.squadName); // Debug: Log found squad details
-  
-        // Find the user by username
-        
-  
-        console.log('User found:', user.username); // Debug: Log found user details
-  
         // Check if the user is part of the squad
         const userIndex = squad.users.indexOf(user._id);
         if (userIndex === -1) {
-            console.error('User is not a member of the squad:', user.username); // Debug: Log if user is not a member
             return res.status(400).json({ message: 'User is not a member of this squad' });
         }
-  
-        console.log('User is part of the squad, removing...'); // Debug: Log removal process
   
         // Remove the user from the squad
         squad.users.splice(userIndex, 1);
