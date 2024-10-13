@@ -148,8 +148,8 @@ export default {
 }
 
 .avatar{
-  width:8%;
-  height: 8%;
+  width:9%;
+  height: 9%;
   margin-bottom: 5%;
 }
 
@@ -202,4 +202,17 @@ margin-top: 3%;
   animation: fadeout 3s ease-out forwards; /* Animate fading out after a while */
   pointer-events: none; /* Disable pointer events when animating */
 }
+
+@media (max-width: 768px) {
+
+.box{
+padding: 5%;
+}
+
+.avatar{
+height: 15%;
+width: 15%;
+}
+}
+
 </style>
