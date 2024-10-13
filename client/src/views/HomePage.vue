@@ -140,9 +140,5 @@ display: none;
 margin-top: 200px;
 }
 
-.card-quotes{
-
-}
-
 }
 </style>
