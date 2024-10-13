@@ -1,23 +1,26 @@
 <template>
     <BContainer fluid class="settings-view">
 
-      <BRow class="" style="margin-top: 5%;">
+      <BRow class="">
        
-          <BCard class="box">
+          <BCard class="box" >
             <h1 class="title ">User Settings</h1>
-  
+            <p style=" text-align: start; margin-top: 5%;">Profil</p>  
 
-            <BCol class= "text-start">
-              <p style="margin-top: 5%;">Profil</p>
-              <BAvatar class ="avatar" src="" />
+             <BRow class="d-flex align-items-center justify-content-center">
+            <BCol class="text-start d-flex align-items-center">
+              <BAvatar class="avatar" src="" />
+              <BCol class="avatar-Buttons d-flex ms-3">
+                <BButton variant="warning" class="me-2">Change Avatar</BButton>
+                <BButton variant="danger">Delete Avatar</BButton>
+              </BCol>
             </BCol>
-            <BCol class="avatar-Buttons text-center"><BButton variant ="warning">Change Avatar</BButton>
-              <BButton variant ="danger">Delete Avatar</BButton>
-          </BCol>
+          </BRow>
           
             <BForm @submit.prevent="submit">
               <!-- Change Email Section -->
-              <b-form-group class ="inputfield" label="Change Your Email:" label-for="email">
+              <p class ="change-text">Change Password</p>
+              <b-form-group class ="inputfield">
                 <b-form-input
                   id="email"
                   v-model="input.email"
@@ -28,7 +31,8 @@
   
   
               <!-- Change Password Section -->
-              <b-form-group class ="inputfield" label="Change Your Password:" label-for="password">
+               <p class ="change-text">Change Password</p>
+              <b-form-group class ="inputfield">
                 <b-form-input
                   id="password"
                   v-model="input.password"
@@ -139,12 +143,14 @@ export default {
     height: 100vh;
     display: flex;
     flex-direction: column;
-
+    justify-content: center; 
+    align-items: center;
 }
 
 .avatar{
-  width:7%;
-  height: 7%;
+  width:8%;
+  height: 8%;
+  margin-bottom: 5%;
 }
 
 .avatar-Buttons{
@@ -155,12 +161,14 @@ margin-bottom: 5%;
 .btn{
 border-radius: 15px;
 margin-top: 5%;
+margin-bottom: 5%;
 }
 
 .box {
-    width: 50%;
     background-color: rgb(238, 238, 238);
     border-radius: 3%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional for visual effect */
+    margin-bottom: 15%;
 }
 
 
@@ -173,19 +181,15 @@ margin-top: 5%;
 
 .inputfield{
 text-align: start;
+font-size: 16px;
 }
 
-
-.submit-button {
-    width: 400px;
-    height: 50px;
-    color: white;
-    border: none;
-    border-radius: 18px;
-    font-size: 16px;
-    background-color: #ebb112;
-    margin-bottom: 2%; 
+.change-text{
+text-align: start;
+margin-left: 2%;
+margin-top: 3%;
 }
+
 .notification {
   margin-top: 2%;
   margin-bottom: 0%;
@@ -198,18 +202,4 @@ text-align: start;
   animation: fadeout 3s ease-out forwards; /* Animate fading out after a while */
   pointer-events: none; /* Disable pointer events when animating */
 }
-@keyframes fadeout {
-  0% {                    /* 0%: This represents the starting point of the animation (the beginning).
-                           At 0%, the opacity is set to 0.9, which means the element is almost fully visible but slightly transparent. */
-    opacity: 1;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {                  /* 100%: This represents the end point of the animation (the end).
-    At 100%, the opacity is set to 0, meaning the element becomes fully transparent (completely invisible). */
-    opacity: 0;
-  }
-}
-
 </style>
