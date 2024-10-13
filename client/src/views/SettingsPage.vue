@@ -19,7 +19,7 @@
           
             <BForm @submit.prevent="submit">
               <!-- Change Email Section -->
-              <p class ="change-text">Change Password</p>
+              <p class ="change-text">Change Email</p>
               <b-form-group class ="inputfield">
                 <b-form-input
                   id="email"
@@ -187,19 +187,6 @@ font-size: 16px;
 text-align: start;
 margin-left: 2%;
 margin-top: 3%;
-}
-
-.notification {
-  margin-top: 2%;
-  margin-bottom: 0%;
-  font-size: 25%;
-  color: #c60c0c;
-  background-color: #2c18c6;
-  padding: 2%;
-  border-radius: 25%;
-  opacity: 0.9;
-  animation: fadeout 3s ease-out forwards; /* Animate fading out after a while */
-  pointer-events: none; /* Disable pointer events when animating */
 }
 
 @media (max-width: 768px) {
