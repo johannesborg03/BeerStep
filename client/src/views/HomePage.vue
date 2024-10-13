@@ -2,7 +2,7 @@
   <div class ="main bg-dark">
   <BRow>
       <div class="beerBack">
-        <b-img src="/src/assets/beerBackground.jpg" fluid class="bg-cover" />
+        <b-img src="/src/assets/set&homeBackground.jpg" fluid class="bg-cover" />
       </div>
     <BCol class ="overlay">
       <div class="stats">
@@ -14,6 +14,7 @@
    
    
   <BCol class="quotes text-start">
+    <p style="color: #ebb112;">Quote of the week</p>
     <BCard class="card-quotes">
       <p>Walk off the beer and enjoy the next one guilt-free!</p>
     </BCard>
@@ -22,7 +23,7 @@
     <BCol class= "middleColumn"></BCol>
 
     <BCol class="goal text-end">
-
+ <p style="color: #ebb112; font-size:20px; ">Personal Goal</p>
   <BCard class= "card-goal">
       <pre v-if="submittedGoal" class="goal-display">My Goal: {{ submittedGoal }}</pre>
 
@@ -59,8 +60,9 @@ const submitGoal = () => {
 .beerBack {
   position: relative;
   width: 100%;
-  height: 65vh; 
+  height: 64vh; 
   overflow: hidden;
+  box-shadow: #292929;
 }
 
 .overlay {
@@ -91,7 +93,7 @@ margin-left: 5%;
 .card-quotes{
   background-color: #292929; 
   color: white; 
-  height: 80%; 
+  height: 70%; 
   text-align: center; 
   padding-top: 10%;
 }

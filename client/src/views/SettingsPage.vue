@@ -1,15 +1,23 @@
 <template>
-    <b-container fluid class="settings-view">
+    <BContainer fluid class="settings-view">
+
+      <BRow class="" style="margin-top: 5%;">
+       
+          <BCard class="box">
+            <h1 class="title ">User Settings</h1>
   
-      <b-row class="justify-content-center mt-5">
-        <b-col cols="12" md="6">
-          <b-card class="box">
-            <h1 class="title text-center">User Settings</h1>
-            <p class="subtitle text-center">Change Your Settings:</p>
-  
-            <b-form @submit.prevent="submit">
+
+            <BCol class= "text-start">
+              <p style="margin-top: 5%;">Profil</p>
+              <BAvatar class ="avatar" src="" />
+            </BCol>
+            <BCol class="avatar-Buttons text-center"><BButton variant ="warning">Change Avatar</BButton>
+              <BButton variant ="danger">Delete Avatar</BButton>
+          </BCol>
+          
+            <BForm @submit.prevent="submit">
               <!-- Change Email Section -->
-              <b-form-group label="Change Your Email:" label-for="email">
+              <b-form-group class ="inputfield" label="Change Your Email:" label-for="email">
                 <b-form-input
                   id="email"
                   v-model="input.email"
@@ -18,22 +26,20 @@
                 ></b-form-input>
               </b-form-group>
   
-              <!-- OR Section -->
-              <p class="or text-center">OR</p>
   
               <!-- Change Password Section -->
-              <b-form-group label="Change Your Password:" label-for="password">
+              <b-form-group class ="inputfield" label="Change Your Password:" label-for="password">
                 <b-form-input
                   id="password"
                   v-model="input.password"
                   type="password"
-                  placeholder="Enter a New Password"
+                  placeholder="Enter a New Password" label-class=""
                 ></b-form-input>
               </b-form-group>
   
               <!-- Submit Button -->
-              <b-button type="submit" variant="warning" block>Submit</b-button>
-            </b-form>
+              <BButton class= "btn" type="submit" variant="warning w-50" block>Submit</BButton>
+            </BForm>
   
             <!-- Error or Success Messages -->
             <b-alert v-if="message" variant="danger" dismissible>{{ message }}</b-alert>
@@ -41,14 +47,17 @@
                 User successfully updated!
             </b-alert>
 
-          </b-card>
-        </b-col>
-      </b-row>
-    </b-container>
+          </BCard>
+     
+      </BRow>
+    </BContainer>
+ 
   </template>
   
 
 <script>
+import { BCard } from 'bootstrap-vue-next';
+
 export default {
    name: 'Submit',
    data() {
@@ -122,8 +131,8 @@ export default {
 
 <style scoped>
 .settings-view {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-image: url('/src/assets/logInBack.jpg');
+    font-family:  Tahoma;
+    background-image: url('/src/assets/set&homeBackground.jpg');
     background-size: cover;
     background-position: center;
     margin: 0;
@@ -133,69 +142,39 @@ export default {
 
 }
 
-.or {
-    margin-top: 0%;
-    font-size:large;
-    padding-top: 2%;
-    padding-bottom: 2%;
-    font-weight: 400;
-    color: black;
-    margin-bottom: 5%;
-    font-weight: 1000;
+.avatar{
+  width:7%;
+  height: 7%;
 }
 
-header {
-    text-align: center;
-    color: White;
-    font-size: 16px;
-    padding: 20px;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+.avatar-Buttons{
+margin-right: 10%;
+margin-bottom: 5%;
 }
 
-.settings-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
+.btn{
+border-radius: 15px;
+margin-top: 5%;
 }
 
 .box {
     width: 50%;
     background-color: rgb(238, 238, 238);
     border-radius: 3%;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    height: 75vh;
-    color: black;    
-    margin-left: 25%;
 }
+
 
 .title {
     color: black;
     margin: 0;
-    font-weight: 400;
+    font-size: 30px;
+    text-align: start;
 }
 
-.subtitle {
-    font-size:large;
-    padding-top: 2%;
-    padding-bottom: 2%;
-    font-weight: 400;
-    color: black;
-    margin-bottom: 0%;
-    font-weight: 1000;
+.inputfield{
+text-align: start;
 }
 
-.input-field {
-    width: 380px;
-    height: 30px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 18px;
-    font-size: 14px;
-}
 
 .submit-button {
     width: 400px;
