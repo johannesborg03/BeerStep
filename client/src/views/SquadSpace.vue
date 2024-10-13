@@ -1,11 +1,11 @@
 <template>
     <BContainer fluid class="page-wrapper">
-        <BRow class="" style="min-height: 100vh; width: 60%;">
+        <BRow class="brow">
             <BCol>
                 <BCard class="text-center" style ="margin-top: 5%;">
                     <BRow class="d-flex align-items-center">
                         <BCol class="Avatar text-start">
-                            <BAvatar></BAvatar>
+                            <BAvatar class ="avatar"></BAvatar>
                         </BCol>
                         <BCol class="inputfield text-center">
                             <BFormInput v-model="message" placeholder="Share or Ask Something" />
@@ -61,6 +61,11 @@ export default {
 </script>
 
 <style scoped>
+
+.brow{
+    min-height: 100vh; 
+    width: 60%;
+}
 .page-wrapper {
     background-image: url('@/assets/squad.jpg');
     background-size: cover;
@@ -110,4 +115,20 @@ li {
 
     color: white;
 }
+
+@media (max-width: 768px) {
+
+.avatar{
+display: none;
+}
+
+.brow{
+width: 95%;
+}
+}
+
+.title{
+display: none;
+}
+
 </style>
