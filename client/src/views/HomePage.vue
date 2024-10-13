@@ -19,11 +19,11 @@
     </BCard>
     </BCol>
   
-    <BCol></BCol>
+    <BCol class= "middleColumn"></BCol>
 
     <BCol class="goal text-end">
 
-  <BCard style = "width: 100%; background-color: #292929;">
+  <BCard class= "card-goal">
       <pre v-if="submittedGoal" class="goal-display">My Goal: {{ submittedGoal }}</pre>
 
       <BFormInput id="inputfield" v-model="goal" placeholder="Enter your goal..." />
@@ -102,6 +102,11 @@ align-items: center;
 margin: 2% 7%;
 }
 
+.card-goal{
+width: 100%; 
+background-color: #292929;
+}
+
 #inputfield{
   width: 100%; background-color: #333; 
   margin-top: 20px; 
@@ -119,5 +124,25 @@ margin-bottom:20px;
   text-decoration: underline;
   font-size: 20px;
  text-align: center;
+}
+
+@media (max-width: 768px) {
+
+.quotes{
+  display: none;
+}
+
+.middleColumn{
+display: none;
+}
+
+.overlay{
+margin-top: 200px;
+}
+
+.card-quotes{
+
+}
+
 }
 </style>
