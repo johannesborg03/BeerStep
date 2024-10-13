@@ -1,4 +1,4 @@
-<template bg-dark>
+<template>
   <div class ="main bg-dark">
   <BRow>
       <div class="beerBack">

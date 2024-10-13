@@ -115,7 +115,7 @@ export default {
 
 .text-center {
   border-radius: 20px;
-  margin-bottom: 100px;
+  margin-bottom: 200px;
 }
 
 .mb-3 {
