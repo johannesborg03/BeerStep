@@ -2,13 +2,21 @@
   <div class="Leaderboard">
     <h1>Leaderboard</h1>
     <div>
+      <!-- Squad Dropdown to select squad -->
       <label for="squadSelect">Select Squad:</label>
       <select v-model="selectedSquad" @change="fetchLeaderboardData" class="squad-select">
         <option v-for="squad in squads" :key="squad._id" :value="squad">
           {{ squad.squadName }}
         </option>
       </select>
+
+      <!-- Global Leaderboard Button -->
+      <button @click="fetchGlobalLeaderboardData" class="global-leaderboard-button">
+        View Global Leaderboard
+      </button>
     </div>
+
+    <!-- Leaderboard Table -->
     <table class="leaderboard-table">
       <thead>
         <tr>
@@ -105,6 +113,36 @@ export default {
       } catch (error) {
         console.error('Error fetching leaderboard:', error);
         alert('Error fetching leaderboard. Please try again.');
+      }
+    },
+
+    // New Method to fetch the Global Leaderboard
+    async fetchGlobalLeaderboardData() {
+      try {
+        console.log("Entered method");
+        // Fetch the global leaderboard data
+        const response = await fetch('http://localhost:3000/api/leaderboards/type/global', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        console.log("call good");
+        if (response.ok) {
+          const leaderboard = await response.json();
+          // Populate the leaderboardData with global user data and scores
+          this.leaderboardData = leaderboard.map((entry) => ({
+            user: entry.username, // Use the username directly from the global leaderboard data
+            score: entry.score,
+          }));
+        } else {
+          const errorData = await response.json();
+          console.error('Error fetching global leaderboard:', errorData.message);
+          alert('Error fetching global leaderboard. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error fetching global leaderboard:', error);
+        alert('Error fetching global leaderboard. Please try again.');
       }
     },
   },
