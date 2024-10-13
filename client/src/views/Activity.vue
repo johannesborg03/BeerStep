@@ -42,14 +42,19 @@
         </b-col>
       </b-row>
 
-      <!-- Notification area -->
-      <b-row v-if="showBeerNotification" class="justify-content-center mt-3">
-        <b-col cols="12" md="5" class="text-center">
-          <b-alert :show="showBeerNotification" variant="success" dismissible>
-            Beer Logged! Good Job King! Keep It Up!
-          </b-alert>
-        </b-col>
-      </b-row>
+      <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="liveToast" class="toast bg-dark" role="alert" style="color: white;" aria-live="assertive" aria-atomic="true" :class="{'show': showToast}">
+          <div class="toast-header bg-dark" style="color: white;">
+            <strong class="me-auto">Activity Tracker</strong>
+            <small>Just now</small>
+            <button type="button" class="btn-close" @click="showToast = false" aria-label="Close"></button>
+          </div>
+          <div class="toast-body">
+            {{ toastMessage }}
+          </div>
+        </div>
+      </div>
+
     </b-container>
   </div>
 </template>
@@ -61,7 +66,6 @@ export default {
       showStepInput: false, // Track whether the step input should be shown
       steps: '', // Track the number of steps entered
       showBeerCanvas: false, // Controls visibility of beer selection OffCanvas
-      // Modified beerChoices with name, avatar and kcal
       beerChoices: [
         {
           name: 'Lager',
@@ -84,7 +88,8 @@ export default {
           kcal: 170,
         },
       ],
-      showBeerNotification: false, // Track beer notification visibility
+      showToast: false, // Controls the visibility of the toast
+      toastMessage: '', // Holds the message for the toast
     };
   },
   methods: {
@@ -93,12 +98,20 @@ export default {
       this.showBeerCanvas = !this.showBeerCanvas;
     },
 
+    // Show toast with a message
+    showToastNotification(message) {
+      this.toastMessage = message;
+      this.showToast = true;
+      setTimeout(() => {
+        this.showToast = false;
+      }, 3000); // Auto-hide after 3 seconds
+    },
+
     // Handle step submission logic
     logSteps() {
       console.log('Steps logged:', this.steps);
       const username = localStorage.getItem('username');
 
-      // Fetch user data to get current total_steps and steps_needed
       fetch(`http://localhost:3000/api/users/${username}`)
         .then((response) => {
           if (!response.ok) {
@@ -114,7 +127,6 @@ export default {
             newStepsNeeded = 0;
           }
 
-          // Send a PATCH request to update the steps
           return fetch(`http://localhost:3000/api/users/${username}`, {
             method: 'PATCH',
             headers: {
@@ -136,9 +148,11 @@ export default {
           console.log('Steps Added:', updatedUser);
           this.steps = ''; // Reset the step input field
           this.showStepInput = false; // Hide the input field after submission
+          this.showToastNotification('Steps successfully logged!');
         })
         .catch((error) => {
           console.error('Error logging steps:', error);
+          this.showToastNotification('Failed to log steps. Please try again.');
         });
     },
 
@@ -147,7 +161,6 @@ export default {
       console.log('Selected beer:', selectedBeer);
       const username = localStorage.getItem('username');
 
-      // Fetch user data to get current total_beers
       fetch(`http://localhost:3000/api/users/${username}`)
         .then((response) => {
           if (!response.ok) {
@@ -156,10 +169,8 @@ export default {
           return response.json();
         })
         .then((user) => {
-          // Increment total_beers by 1
           const newTotalBeers = user.total_beers + 1;
 
-          // Send a PATCH request to update the total_beers
           return fetch(`http://localhost:3000/api/users/${username}`, {
             method: 'PATCH',
             headers: {
@@ -176,27 +187,24 @@ export default {
         })
         .then((updatedUser) => {
           console.log('Beer incremented:', updatedUser);
-          this.showBeerNotification = true; // Show the beer logged notification
-          setTimeout(() => {
-            this.showBeerNotification = false;
-          }, 3000);
+          this.showToastNotification('Beer successfully logged!');
           this.showBeerCanvas = false; // Close the OffCanvas after selection
         })
         .catch((error) => {
           console.error('Error logging beer:', error);
+          this.showToastNotification('Failed to log beer. Please try again.');
         });
     },
   },
 };
 </script>
 
-
 <style scoped>
 /* Add view-specific styles */
 .activity-view {
   text-align: center;
   background-color: #2b2b2b;
- /* overflow: hidden; */
+ overflow: hidden; 
   width: 100%;
   height: 100vh;
   margin: 0 auto;
