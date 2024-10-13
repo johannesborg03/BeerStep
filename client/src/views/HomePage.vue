@@ -19,18 +19,13 @@
       <p>Walk off the beer and enjoy the next one guilt-free!</p>
     </BCard>
     </BCol>
-  
     <BCol class= "middleColumn"></BCol>
-
     <BCol class="goal text-end">
  <p style="color: #ebb112; font-size:20px; ">Personal Goal</p>
   <BCard class= "card-goal">
       <pre v-if="submittedGoal" class="goal-display">My Goal: {{ submittedGoal }}</pre>
-
       <BFormInput id="inputfield" v-model="goal" placeholder="Enter your goal..." />
-    
       <BButton variant="warning" @click="submitGoal" class="button">Submit Goal</BButton>
-
   </BCard>
 </BCol>
 

@@ -3,13 +3,13 @@
     <b-container>
       <b-row>
         <b-col>
-          <h1 class="text-center">Activity Header</h1>
-          <p class="text-center">Log your activity (or Beer ;)</p>
+          <h1 class="text-center" style =" color: white; margin-top: 5% ;">Activity Header</h1>
+          <p class="text-center"style =" color: white;">Log your activity (or Beer ;)</p>
         </b-col>
       </b-row>
 
       <!-- Button container with responsive buttons -->
-      <b-row class="justify-content-center mt-3">
+      <b-row class="justify-content-center">
         <b-col cols="12" md="5" class="text-center mb-3">
           <b-button :disabled="showBeerNotification" @click="logBeer" variant="success" block class="massive-button beer">
             Beer
@@ -169,6 +169,9 @@ export default {
   height: 100vh;
   margin: 0 auto;
   position: relative;
+  background-image: url('@/assets/squad.jpg');
+  background-size: cover;
+  background-position: center;
 }
 
 .button-container {
