@@ -2,30 +2,34 @@
   <div class="Leaderboard">
     <h1>Leaderboard</h1>
     <div>
+      <!-- Squad Dropdown to select squad -->
       <label for="squadSelect">Select Squad:</label>
       <select v-model="selectedSquad" @change="fetchLeaderboardData" class="squad-select">
-        <option v-for="squad in squads" :key="squad._id" :value="squad.squad_id">
+        <option v-for="squad in squads" :key="squad._id" :value="squad">
           {{ squad.squadName }}
         </option>
       </select>
+
+      <!-- Global Leaderboard Button -->
+      <button @click="fetchGlobalLeaderboardData" class="global-leaderboard-button">
+        View Global Leaderboard
+      </button>
     </div>
+
+    <!-- Leaderboard Table -->
     <table class="leaderboard-table">
       <thead>
         <tr>
           <th>Rank</th>
           <th>User</th>
-          <th>Steps Taken</th>
-          <th>Beers Consumed</th>
           <th>Points</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(entry, index) in leaderboardData" :key="index">
           <td>{{ index + 1 }}</td>
-          <td>{{ entry.username }}</td>
-          <td>{{ entry.stepsTaken }}</td>
-          <td>{{ entry.beersConsumed }}</td>
-          <td>{{ calculatePoints(entry.stepsTaken, entry.beersConsumed) }}</td>
+          <td>{{ entry.user }}</td>
+          <td>{{ entry.score }}</td>
         </tr>
       </tbody>
     </table>
@@ -37,33 +41,115 @@ export default {
   name: 'Leaderboard',
   data() {
     return {
-      leaderboardData: [
-        { username: 'John Doe', stepsTaken: 10000, beersConsumed: 5 },
-        { username: 'Jane Smith', stepsTaken: 12000, beersConsumed: 3 },
-        { username: 'Alex Johnson', stepsTaken: 8000, beersConsumed: 2 },
-        { username: 'Emily Davis', stepsTaken: 9000, beersConsumed: 6 },
-        { username: 'Michael Brown', stepsTaken: 11000, beersConsumed: 4 }
-      ],
-      squads: [
-        { squad_id: 1, squadName: 'Alpha Squad' },
-        { squad_id: 2, squadName: 'Beta Squad' },
-        { squad_id: 3, squadName: 'Gamma Squad' }
-      ],
-      selectedSquad: 1
-    }
+      leaderboardData: [], // To store leaderboard rankings
+      squads: [], // To store the fetched squads
+      selectedSquad: null, // Stores the selected squad object
+    };
   },
   methods: {
-    calculatePoints(steps, beers) {
-      return (steps - beers) * 100
+    async fetchSquads() {
+      const username = localStorage.getItem('username'); // Get the username from localStorage
+      if (!username) {
+        alert('No username found. Please log in again.');
+        return;
+      }
+
+      try {
+        // Fetch the squads for the user
+        const response = await fetch(`http://localhost:3000/api/users/${username}/squads`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          this.squads = data.squads; // Populate the squads array with the API response
+          if (this.squads.length > 0) {
+            this.selectedSquad = this.squads[0]; // Select the first squad by default
+            this.fetchLeaderboardData(); // Fetch leaderboard for the first squad
+          }
+        } else {
+          const errorData = await response.json();
+          console.error('Error fetching squads:', errorData.message);
+          alert('Error fetching squads. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error fetching squads:', error);
+        alert('Error fetching squads. Please try again.');
+      }
     },
-    fetchLeaderboardData() {
-      console.log(`Fetching leaderboard for squad ID: ${this.selectedSquad}`)
-    }
+
+    async fetchLeaderboardData() {
+      if (!this.selectedSquad) {
+        return; // Do nothing if no squad is selected
+      }
+    
+      const leaderboardId = this.selectedSquad.leaderboard; // Get leaderboard_id from the selected squad
+      console.log(leaderboardId);
+
+      try {
+        // Fetch the leaderboard data using the leaderboard_id
+        const response = await fetch(`http://localhost:3000/api/leaderboards/${leaderboardId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          const leaderboard = await response.json();
+          // Populate the leaderboardData with user data and scores
+          this.leaderboardData = leaderboard.rankings.map((ranking) => ({
+            user: ranking.userId.username, // Assuming the `userId` is populated with the user object containing `username`
+            score: ranking.score,
+          }));
+        } else {
+          const errorData = await response.json();
+          console.error('Error fetching leaderboard:', errorData.message);
+          alert('Error fetching leaderboard. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error fetching leaderboard:', error);
+        alert('Error fetching leaderboard. Please try again.');
+      }
+    },
+
+    // New Method to fetch the Global Leaderboard
+    async fetchGlobalLeaderboardData() {
+      try {
+        console.log("Entered method");
+        // Fetch the global leaderboard data
+        const response = await fetch('http://localhost:3000/api/leaderboards/type/global', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        console.log("call good");
+        if (response.ok) {
+          const leaderboard = await response.json();
+          // Populate the leaderboardData with global user data and scores
+          this.leaderboardData = leaderboard.map((entry) => ({
+            user: entry.username, // Use the username directly from the global leaderboard data
+            score: entry.score,
+          }));
+        } else {
+          const errorData = await response.json();
+          console.error('Error fetching global leaderboard:', errorData.message);
+          alert('Error fetching global leaderboard. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error fetching global leaderboard:', error);
+        alert('Error fetching global leaderboard. Please try again.');
+      }
+    },
   },
   mounted() {
-    this.fetchLeaderboardData()
-  }
-}
+    this.fetchSquads(); // Fetch the squads when the component is mounted
+  },
+};
 </script>
 
 <style scoped>
@@ -103,7 +189,7 @@ thead {
 th, td {
   padding: 15px;
   text-align: left;
-  font-size: 1.5rem; /* Increase font size for better visibility */
+  font-size: 1.5rem; 
 }
 
 th {
@@ -133,8 +219,6 @@ td {
     padding: 10px;
   }
 }
-
-/* Consistent Button Styles */
 .massive-button {
   font-family: 'sans-serif';
   width: 600px;

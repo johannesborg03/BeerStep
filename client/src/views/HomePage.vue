@@ -6,7 +6,7 @@
       </div>
     <BCol class ="overlay">
       <div class="stats">
-        <h2>2300</h2>
+        <h2>{{stepsNeeded}}</h2>
         <p>Steps Needed</p>
       </div>
       <router-link to="/Activity" class="btn btn-danger w-25">Log activity</router-link>
@@ -38,24 +38,56 @@
 </div>
 </template>
 
+<script>
+import { ref, onMounted } from 'vue'
 
-<script setup lang="ts">
+export default {
+  setup() {
+    const goal = ref('')
+    const submittedGoal = ref('')
+    const stepsNeeded = ref(0)
+    const username = ref('')
 
-import { ref } from 'vue'
+    const displaySteps = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/users/${username.value}`)
+        if (!response.ok) {
+          throw new Error(`Error fetching user data: ${response.statusText}`)
+        }
+        const data = await response.json()
+        stepsNeeded.value = data.stepsNeeded || 0  // Fallback in case the field doesn't exist
+      } catch (error) {
+        console.error('Error fetching steps:', error)
+      }
+    }
 
-const goal = ref('')           // Holds the goal input
-const submittedGoal = ref('')  // Holds the submitted goal
+    // Submit goal function
+    const submitGoal = () => {
+      if (goal.value.trim()) {
+        submittedGoal.value = goal.value
+        goal.value = ''
+      }
+    }
 
-const submitGoal = () => {
-  if (goal.value.trim()) {      // Ensure goal is not empty
-    submittedGoal.value = goal.value
-    goal.value = ''             // Clear input after submission
+    // Fetch username and steps on component mount
+    onMounted(() => {
+      username.value = localStorage.getItem('username') || 'Guest'  // Get username from localStorage
+      console.log('Username:', username.value)
+      displaySteps()  // Fetch steps after retrieving the username
+    })
+
+    return {
+      goal,
+      submittedGoal,
+      stepsNeeded,
+      submitGoal,
+    }
   }
 }
 </script>
 
-<style scoped>
 
+<style scoped>
 
 .beerBack {
   position: relative;

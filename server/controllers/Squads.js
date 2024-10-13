@@ -22,8 +22,12 @@ router.post('/api/squads', async function (req, res, next) {
 
         // Create the leaderboard without a squad reference
         const leaderboard = new Leaderboard({
-            rankings: [] // Start with empty rankings
+            rankings: [{
+                userId: req.body.created_by, // Add the creator to the rankings
+                score: 0                      // Initial score can be set to 0
+            }]
         });
+        await leaderboard.save();
         await leaderboard.save();
 
         // Update the squad with the created leaderboard's ID
@@ -39,6 +43,10 @@ router.post('/api/squads', async function (req, res, next) {
         // Add the new squad ID to the user's squads array
         user.squads.push(squad._id);
         await user.save();
+
+        // Add squad ID to leaderboard
+        leaderboard.squad = squad._id;
+        await leaderboard.save();
 
         
         res.status(201).json({ squad, leaderboard });
@@ -75,6 +83,19 @@ router.patch('/api/squads/:id/users/:username', async function (req, res) {
         // Add the user to the squad
         squad.users.push(user._id);
         await squad.save();
+
+
+        const leaderboard = await Leaderboard.findById(squad.leaderboard);
+        if (!leaderboard) {
+            return res.status(404).json({ message: "Leaderboard not found" });
+        }
+
+        // Add the new user to the leaderboard rankings
+        leaderboard.rankings.push({
+            userId: user,
+            score: 0 // Initialize the score for the new member
+        });
+        await leaderboard.save();
 
         // Add the squad to the user's list of squads
         user.squads.push(squad._id);
@@ -123,7 +144,23 @@ router.delete('/api/squads/:id/users/:username', async function (req, res, next)
         } else {
             console.error('Squad not found in user\'s squads:', squad._id); // Debug: Log if squad ID is missing in user's squads
         }
-  
+        
+        // Find the leaderboard for the squad
+        const leaderboard = await Leaderboard.findById(squad.leaderboard);
+        if (leaderboard) {
+            // Remove user from the leaderboard rankings
+            const rankingIndex = leaderboard.rankings.findIndex(r => r.userId.equals(user._id));
+            if (rankingIndex !== -1) {
+                leaderboard.rankings.splice(rankingIndex, 1);
+            } else {
+                console.log('User not found in leaderboard rankings:', user.username);
+            }
+            // Save the updated leaderboard
+            await leaderboard.save();
+        } else {
+            console.error('Leaderboard not found for squad:', squad_id);
+        }
+
         // Save the updated squad and user
         await Promise.all([squad.save(), user.save()]);
   
