@@ -16,10 +16,11 @@
           </b-button>
 
           <!-- OffCanvas for beer selection -->
-          <b-offcanvas v-model="showBeerCanvas" title="Choose Your Beer" :placement="'bottom'">
+          <b-offcanvas v-model="showBeerCanvas" title="Choose Your Beer" :placement="'bottom'" class="bg-dark" style="color: white; height: 40%;">
             <b-list-group>
-              <b-list-group-item v-for="(beer, index) in beerChoices" :key="index" @click="logBeer(beer)">
-                {{ beer }}
+              <b-list-group-item class="bg-dark" v-for="(beer, index) in beerChoices" :key="index" @click="logBeer(beer)" style="color: white;">
+                <b-avatar :src="beer.avatar" class="mr-2" />
+                {{ beer.name }} - {{ beer.kcal }} kcal
               </b-list-group-item>
             </b-list-group>
           </b-offcanvas>
@@ -60,7 +61,29 @@ export default {
       showStepInput: false, // Track whether the step input should be shown
       steps: '', // Track the number of steps entered
       showBeerCanvas: false, // Controls visibility of beer selection OffCanvas
-      beerChoices: ['Lager', 'IPA', 'Stout', 'Pilsner'], // Example beer choices
+      // Modified beerChoices with name, avatar and kcal
+      beerChoices: [
+        {
+          name: 'Lager',
+          avatar: 'src/assets/ljus.png', 
+          kcal: 180,
+        },
+        {
+          name: 'IPA',
+          avatar: 'src/assets/ipa.png',
+          kcal: 220,
+        },
+        {
+          name: 'Stout',
+          avatar: 'src/assets/stout.png', 
+          kcal: 250,
+        },
+        {
+          name: 'Pilsner',
+          avatar: 'src/assets/plisner.png',
+          kcal: 170,
+        },
+      ],
       showBeerNotification: false, // Track beer notification visibility
     };
   },
