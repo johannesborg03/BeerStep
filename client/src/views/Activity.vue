@@ -3,17 +3,26 @@
     <b-container>
       <b-row>
         <b-col>
-          <h1 class="text-center" style =" color: white; margin-top: 5% ;">Activity Header</h1>
-          <p class="text-center"style =" color: white;">Log your activity (or Beer ;)</p>
+          <h1 class="text-center" style="color: white; margin-top: 5%;">Activity Header</h1>
+          <p class="text-center" style="color: white;">Log your activity (or Beer ;)</p>
         </b-col>
       </b-row>
 
       <!-- Button container with responsive buttons -->
       <b-row class="justify-content-center">
         <b-col cols="12" md="5" class="text-center mb-3">
-          <b-button :disabled="showBeerNotification" @click="logBeer" variant="success" block class="massive-button beer">
+          <b-button @click="toggleCanvas" variant="success" block class="massive-button beer">
             Beer
           </b-button>
+
+          <!-- OffCanvas for beer selection -->
+          <b-offcanvas v-model="showBeerCanvas" title="Choose Your Beer" :placement="'bottom'">
+            <b-list-group>
+              <b-list-group-item v-for="(beer, index) in beerChoices" :key="index" @click="logBeer(beer)">
+                {{ beer }}
+              </b-list-group-item>
+            </b-list-group>
+          </b-offcanvas>
         </b-col>
         <b-col cols="12" md="5" class="text-center">
           <b-button @click="showStepInput = true" variant="primary" block class="massive-button log-step">
@@ -31,7 +40,6 @@
           </b-button>
         </b-col>
       </b-row>
-      
 
       <!-- Notification area -->
       <b-row v-if="showBeerNotification" class="justify-content-center mt-3">
@@ -47,41 +55,43 @@
 
 <script>
 export default {
-  name: 'activityView',
   data() {
     return {
-      showStepInput: false, /* Track wether input should be shown */
-      steps: '', /* Track number of steps */
-      showBeerNotification: false
-    }
+      showStepInput: false, // Track whether the step input should be shown
+      steps: '', // Track the number of steps entered
+      showBeerCanvas: false, // Controls visibility of beer selection OffCanvas
+      beerChoices: ['Lager', 'IPA', 'Stout', 'Pilsner'], // Example beer choices
+      showBeerNotification: false, // Track beer notification visibility
+    };
   },
-
   methods: {
+    // Toggle the beer selection OffCanvas
+    toggleCanvas() {
+      this.showBeerCanvas = !this.showBeerCanvas;
+    },
+
+    // Handle step submission logic
     logSteps() {
-      /* Add your logic to handle the steps (e.g., save it, or perform an action) */
-      console.log('Steps logged:', this.steps)
-
-
+      console.log('Steps logged:', this.steps);
       const username = localStorage.getItem('username');
 
-      // Get the current total_steps and steps_needed Values
+      // Fetch user data to get current total_steps and steps_needed
       fetch(`http://localhost:3000/api/users/${username}`)
-        .then(response => {
+        .then((response) => {
           if (!response.ok) {
             throw new Error(`Error fetching user data: ${response.statusText}`);
           }
           return response.json();
         })
+        .then((user) => {
+          const newTotalSteps = user.total_steps + parseInt(this.steps);
 
-        .then(user => {
-          const newTotalSteps = user.total_steps + parseInt(this.steps); //IS THIS POSSIBLE?
-
-          let newStepsNeeded = user.steps_needed - parseInt(this.steps); //Dont Let It Go Under 0
+          let newStepsNeeded = user.steps_needed - parseInt(this.steps);
           if (newStepsNeeded < 0) {
             newStepsNeeded = 0;
           }
 
-          // Send a PATCH request to update the new values
+          // Send a PATCH request to update the steps
           return fetch(`http://localhost:3000/api/users/${username}`, {
             method: 'PATCH',
             headers: {
@@ -89,75 +99,74 @@ export default {
             },
             body: JSON.stringify({
               total_steps: newTotalSteps,
-              steps_needed: newStepsNeeded
-            }), // CAN YOU DO THIS??
+              steps_needed: newStepsNeeded,
+            }),
           });
         })
-        .then(response => {
+        .then((response) => {
           if (!response.ok) {
             throw new Error(`Error updating steps count: ${response.statusText}`);
           }
           return response.json();
         })
-        .then(updatedUser => {
+        .then((updatedUser) => {
           console.log('Steps Added:', updatedUser);
-          // Reset the input field and hide it again after submission
-          this.steps = '';
-          this.showStepInput = false;
+          this.steps = ''; // Reset the step input field
+          this.showStepInput = false; // Hide the input field after submission
         })
-        .catch(error => {
+        .catch((error) => {
           console.error('Error logging steps:', error);
         });
     },
 
-    logBeer() {
-      console.log('Beer logged');
-
-
+    // Handle beer selection and logging
+    logBeer(selectedBeer) {
+      console.log('Selected beer:', selectedBeer);
       const username = localStorage.getItem('username');
 
-      // Step 1: Get the current total_beers value
+      // Fetch user data to get current total_beers
       fetch(`http://localhost:3000/api/users/${username}`)
-        .then(response => {
+        .then((response) => {
           if (!response.ok) {
             throw new Error(`Error fetching user data: ${response.statusText}`);
           }
           return response.json();
         })
-        .then(user => {
-          // Step 2: Increment total_beers
-          const newTotalBeers = user.total_beers + 1; // Increment by 1
+        .then((user) => {
+          // Increment total_beers by 1
+          const newTotalBeers = user.total_beers + 1;
 
-          // Step 3: Send a PATCH request to update the total_beers
+          // Send a PATCH request to update the total_beers
           return fetch(`http://localhost:3000/api/users/${username}`, {
             method: 'PATCH',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ total_beers: newTotalBeers }), // Use the incremented value
+            body: JSON.stringify({ total_beers: newTotalBeers }),
           });
         })
-        .then(response => {
+        .then((response) => {
           if (!response.ok) {
             throw new Error(`Error updating beer count: ${response.statusText}`);
           }
           return response.json();
         })
-        .then(updatedUser => {
+        .then((updatedUser) => {
           console.log('Beer incremented:', updatedUser);
-          this.showBeerNotification = true; // Show notification
-          console.log('Notification status:', this.showBeerNotification); // Add this to check the value
+          this.showBeerNotification = true; // Show the beer logged notification
           setTimeout(() => {
             this.showBeerNotification = false;
           }, 3000);
+          this.showBeerCanvas = false; // Close the OffCanvas after selection
         })
-        .catch(error => {
+        .catch((error) => {
           console.error('Error logging beer:', error);
         });
-    }
-  }
-}
+    },
+  },
+};
 </script>
+
 
 <style scoped>
 /* Add view-specific styles */
@@ -267,23 +276,6 @@ export default {
 .submit-button:hover {
   background-color: #218838;
 }
-
-.notification {
-  margin-top: 25%;
-  font-size: 25%;
-  color: #d30e0e;
-  padding: 25%;
-  border-radius: 25%;
-  opacity: 1;
-  animation: fadeout 3s ease-out forwards;
-  /* Animate fading out after a while */
-  pointer-events: none;
-  /* Disable pointer events when animating */
-  background-color: #28a745 !important;
-  border: 1px solid red; /* Temporary border for visibility */
-  position: relative; /* Ensure z-index works */
-  z-index: 1000; /* Higher than other elements */
-} 
 
 
 @keyframes fadeout {
