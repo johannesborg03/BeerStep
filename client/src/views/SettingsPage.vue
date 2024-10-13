@@ -60,7 +60,6 @@
   
 
 <script>
-import { BCard } from 'bootstrap-vue-next';
 
 export default {
    name: 'Submit',
