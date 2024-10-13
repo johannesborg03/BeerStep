@@ -1,5 +1,5 @@
 <template>
-  <div class ="main bg-dark">
+  <div class ="main bg-dark" style="min-height: 100vh;">
   <BRow>
       <div class="beerBack">
         <b-img src="/src/assets/set&homeBackground.jpg" fluid class="bg-cover" />
