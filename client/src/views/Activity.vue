@@ -65,8 +65,12 @@
         </div>
       </div>
 
+
+      
       <b-row v-if="showMilestoneForm" class="justify-content-center mb-3">
-        <b-col cols="12" md="8">
+        <BRow class="bcard">
+          <BCard class="box">
+        <b-col cols="12" md="8" class="milestone-form">
           <b-form @submit.prevent="createMilestone">
             <b-form-group label="Milestone Title">
               <b-form-input v-model="milestone.title" required placeholder="Enter milestone title"></b-form-input>
@@ -87,7 +91,10 @@
             <b-button type="submit" variant="success">Save Milestone</b-button>
           </b-form>
         </b-col>
+      </BCard>
+    </BRow>
       </b-row>
+    
 
       
       <b-row v-if="milestones.length > 0" class="mt-3">
@@ -621,23 +628,31 @@ export default {
 
 
 .milestone-form {
-  background-color: #f8f9fa;
-  padding: 20px;
-  border-radius: 10px;
+  
+  margin: auto; /* Centers the form horizontally */
+
+}
+
+.box {
+    background-color: rgb(238, 238, 238);
+    border-radius: 3%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15%;
+    width: 50%; /* Adjust the width */
+    padding: 0; /* Add padding */
+}
+
+.bcard {
+  justify-content: center;
+  display: flex; /* Aligns content inside */
+  width: 100%;
 }
 
 .milestone-list {
   list-style-type: none;
-  padding: 0;
+  width: 100%;
 }
 
-.milestone-list-item {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-}
 
 
 
