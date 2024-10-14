@@ -30,51 +30,43 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
-
 export default {
-  setup() {
-    const goal = ref("");
-    const submittedGoal = ref("");
-    const stepsNeeded = ref(0);
-    const username = ref("");
+  data() {
+    return {
+      goal: "",            
+      submittedGoal: "",   
+      stepsNeeded: 0,      
+      username: "",     
+    };
+  },
 
-    const displaySteps = async () => {
+  mounted() {
+    this.username = localStorage.getItem("username") || "Guest";
+    this.displaySteps(); 
+  },
+
+  methods: {
+  
+    async displaySteps() {
       try {
-        const response = await fetch(
-          `http://localhost:3000/api/users/${username.value}`
-        );
+        const response = await fetch(`http://localhost:3000/api/users/${this.username}`);
         if (!response.ok) {
           throw new Error(`Error fetching user data: ${response.statusText}`);
         }
         const data = await response.json();
-        stepsNeeded.value = data.steps_needed || 0; // Use steps_needed for consistency
+        this.stepsNeeded = data.steps_needed || 0;
       } catch (error) {
         console.error("Error fetching steps:", error);
       }
-    };
+    },
 
-    // Submit goal function
-    const submitGoal = () => {
-      if (goal.value.trim()) {
-        submittedGoal.value = goal.value;
-        goal.value = "";
+    // Submit goal and clear input field
+    submitGoal() {
+      if (this.goal.trim()) {
+        this.submittedGoal = this.goal;
+        this.goal = ""; 
       }
-    };
-
-    // Fetch username and steps on component mount
-    onMounted(() => {
-      username.value = localStorage.getItem("username") || "Guest"; // Get username from localStorage
-      console.log("Username:", username.value);
-      displaySteps(); // Fetch steps after retrieving the username
-    });
-
-    return {
-      goal,
-      submittedGoal,
-      stepsNeeded,
-      submitGoal,
-    };
+    },
   },
 };
 </script>
