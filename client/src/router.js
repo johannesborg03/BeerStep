@@ -10,8 +10,8 @@ import SettingsPage from './views/SettingsPage.vue'
 import SquadPage from './views/SquadPage.vue'
 
 const routes = [
-  { path: '/LogIn', name: 'LogIn', component: LogIn , meta: { hideNavbar: true } },
-  { path: '/Register', name: 'Register', component: Register, meta: { hideNavbar: true }  },
+  { path: '/LogIn', name: 'LogIn', component: LogIn, meta: { hideNavbar: true } },
+  { path: '/Register', name: 'Register', component: Register, meta: { hideNavbar: true } },
   { path: '/HomePage', name: 'HomePage', component: HomePage },
   { path: '/', name: 'Home', component: Home, meta: { hideNavbar: true } },
   { path: '/Activity', name: 'Activity', component: Activity },
