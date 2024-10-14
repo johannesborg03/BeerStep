@@ -152,10 +152,8 @@ display: none;
 .brow{
 width: 95%;
 }
-}
-
 .title{
 display: none;
 }
-
+}
 </style>

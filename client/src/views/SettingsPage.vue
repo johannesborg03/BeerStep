@@ -7,8 +7,8 @@
 
         <BRow class="d-flex align-items-center justify-content-center">
           <BCol class="text-start d-flex align-items-center">
-            <BAvatar class="avatar" :src="avatar"  v-if="avatar" />
-<BAvatar class="avatar" :text="firstIndex()" v-else />
+            <BAvatar class="avatar" :src="avatar" v-if="avatar" />
+            <BAvatar class="avatar" :text="firstIndex()" v-else />
             <BCol class="avatar-Buttons d-flex ms-3">
               <BButton variant="warning" class="me-2" @click="changeAvatar">Change Avatar</BButton>
               <BButton variant="danger" @click="deleteAvatar">Delete Avatar</BButton>
@@ -48,6 +48,20 @@
         <b-alert v-if="showNotification" variant="success" dismissible>
           User successfully updated!
         </b-alert>
+
+        <!-- Toast Notification -->
+        <div class="toast-container position-fixed top-0 end-0 p-3">
+          <div id="liveToast" class="toast bg-dark" role="alert" style="color: white;" aria-live="assertive" aria-atomic="true" :class="{'show': showToast}">
+            <div class="toast-header bg-dark" style="color: white;">
+              <strong class="me-auto">User Settings</strong>
+              <small>Just now</small>
+              <button type="button" class="btn-close" @click="showToast = false" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+              {{ toastMessage }}
+            </div>
+          </div>
+        </div>
       </BCard>
     </BRow>
   </BContainer>
@@ -70,7 +84,9 @@ export default {
       avatarChoices: [
         { avatar: 'src/assets/avatar1.jpg' },
         { avatar: 'src/assets/avatar2.jpg' }
-      ]
+      ],
+      showToast: false,      // For controlling the toast display
+      toastMessage: '',      // Message for the toast
     };
   },
   mounted() {
@@ -82,9 +98,9 @@ export default {
       return this.username.charAt(0).toUpperCase(); 
     },
     changeAvatar() {
-  // Toggle between the two avatars at index 0 and 1
-  this.avatar = this.avatar === this.avatarChoices[0].avatar ? this.avatarChoices[1].avatar : this.avatarChoices[0].avatar;
-},
+      // Toggle between the two avatars at index 0 and 1
+      this.avatar = this.avatar === this.avatarChoices[0].avatar ? this.avatarChoices[1].avatar : this.avatarChoices[0].avatar;
+    },
     deleteAvatar() {
       this.avatar = null; // Reset avatar to default (first letter of username)
     },
@@ -129,21 +145,27 @@ export default {
         this.input.email = "";
         this.input.password = "";
 
-        // Show Notification for 3 seconds:
-        setTimeout(() => {
-          this.showNotification = false;
-        }, 3000);
+        // Show success toast message
+        this.showToastMessage("User information updated successfully!");
+
       } catch (error) {
         console.error('Error updating user:', error);
         this.message = 'An error occurred while updating user. Please try again.';
       } finally {
         this.isSubmitting = false; // End submission state
       }
+    },
+    showToastMessage(message) {
+      this.toastMessage = message;
+      this.showToast = true;
+      // Automatically hide the toast after 3 seconds
+      setTimeout(() => {
+        this.showToast = false;
+      }, 3000);
     }
   }
 }
 </script>
-
 
 <style scoped>
 .settings-view {
