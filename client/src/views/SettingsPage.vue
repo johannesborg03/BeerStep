@@ -266,8 +266,13 @@ font-size: 18px;
 .current-username, .current-email  {
   text-align: left;
   margin: 0;
+  margin-left: 5px;
 }
 
+.divider{
+margin-left: 5px;
+margin-right: 5px;
+}
 @media (max-width: 1500px) {
 
   .bcard{
