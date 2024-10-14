@@ -1,7 +1,7 @@
 <template>
     <BContainer fluid class="settings-view">
 
-      <BRow class="">
+      <BRow class="bcard">
        
           <BCard class="box" >
             <h1 class="title ">User Settings</h1>
@@ -9,7 +9,7 @@
 
              <BRow class="d-flex align-items-center justify-content-center">
             <BCol class="text-start d-flex align-items-center">
-              <BAvatar class="avatar" src="" />
+              <BAvatar class="avatar":text="firstIndex()"/>
               <BCol class="avatar-Buttons d-flex ms-3">
                 <BButton variant="warning" class="me-2">Change Avatar</BButton>
                 <BButton variant="danger">Delete Avatar</BButton>
@@ -58,78 +58,89 @@
  
   </template>
   
-
-<script>
-
-export default {
-   name: 'Submit',
-   data() {
-       return {
-           input: {
-               email: "",
-               password: ""
-           },
-           message: "",
-           showNotification: false
-       };
-   },
-   methods: {
-    async submit () {
+  <script>
+  export default {
+    name: 'Submit',
+    data() {
+      return {
+        input: {
+          email: "",
+          password: ""
+        },
+        username: "", // Added username to data()
+        message: "",
+        showNotification: false,
+        isSubmitting: false // Track submission state
+      };
+    },
+    mounted() {
+      const storedUsername = localStorage.getItem('username');
+      this.username = storedUsername && storedUsername.trim() !== '' ? storedUsername : 'Guest'; // Ensure proper handling
+    },
+    methods: {
+      async submit() {
+        this.isSubmitting = true; // Start submission state
         try {
-            const username = this.$route.params.username; // Get the username from route parameters
-            console.log(username);
-            const updatedUser = {};
-            if (this.input.email) {
-                updatedUser.email = this.input.email;
-            }
-            if (this.input.password) {
-                updatedUser.password = this.input.password;
-            }
-
-            //If no fields are entered show error message:
-            if(Object.keys(updatedUser).length === 0) {
-                this.message = 'Please fill in atleast one field to update.';
-                return;
-            }
-
-            const response = await fetch(`http://localhost:3000/api/users/${username}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(updatedUser)
-            });
-            
-            if(response.ok) {
-                const updatedData = await response.json();
-                console.log('User Updated Successfully');
-              //  this.successMessage = 'User Updated Successfully!';
-                this.message = '';
-
-                //Show Notification and Clear Input fields
-                this.showNotification = true;
-                this.input.email = "";
-                this.input.password = "";
-                //Show Notification for 3 seconds:
-                setTimeout(() => {
-                    this.showNotification = false
-                }, 3000);
-            } else {
-                const errorData = await response.json();
-                this.message = errorData.message || 'Error updating user. Please try again.';
-               // this.successMessage = '';
-            }
-         } catch (error) {
-                console.error('Error updating user:', error);
-                this.message = 'An error occured while updating user. Please try again.';
-               // this.successMessage = '';
-            }
+          const username = this.$route.params.username; // Get the username from route parameters
+          console.log(username);
+          const updatedUser = {};
+          if (this.input.email) {
+            updatedUser.email = this.input.email;
+          }
+          if (this.input.password) {
+            updatedUser.password = this.input.password;
+          }
+  
+          // If no fields are entered, show an error message:
+          if (Object.keys(updatedUser).length === 0) {
+            this.message = 'Please fill in at least one field to update.';
+            this.isSubmitting = false;
+            return;
+          }
+  
+          const response = await fetch(`http://localhost:3000/api/users/${username}`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedUser)
+          });
+  
+          if (!response.ok) {
+            throw new Error(`Server responded with status ${response.status}`);
+          }
+  
+          const updatedData = await response.json();
+          console.log('User Updated Successfully');
+          this.message = '';
+  
+          // Show Notification and Clear Input fields
+          this.showNotification = true;
+          this.input.email = "";
+          this.input.password = "";
+          this.$refs.emailInput.blur(); // Blur input after submission
+  
+          // Show Notification for 3 seconds:
+          setTimeout(() => {
+            this.showNotification = false;
+          }, 3000);
+  
+          this.$nextTick(() => {
+            this.$refs.notification.focus(); // Focus on notification for accessibility
+          });
+        } catch (error) {
+          console.error('Error updating user:', error);
+          this.message = 'An error occurred while updating user. Please try again.';
+        } finally {
+          this.isSubmitting = false; // End submission state
         }
- 
-}
-}
-
-</script>
+      },
+      firstIndex() {
+        return this.username ? this.username.charAt(0).toUpperCase() : ''; // Handle empty username
+      }
+    }
+  }
+  </script>
 
 
 <style scoped>
@@ -147,8 +158,8 @@ export default {
 }
 
 .avatar{
-  width:9%;
-  height: 9%;
+  width: 40px;
+  height: 40px;
   margin-bottom: 5%;
 }
 
@@ -170,6 +181,9 @@ margin-bottom: 5%;
     margin-bottom: 15%;
 }
 
+.bcard{
+  width: 30%;
+}
 
 .title {
     color: black;
@@ -196,8 +210,12 @@ padding: 5%;
 }
 
 .avatar{
-height: 15%;
-width: 15%;
+height: 30px;
+width: 30px;
+}
+
+.bcard{
+width: 90%;
 }
 }
 
