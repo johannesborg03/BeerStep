@@ -56,6 +56,55 @@
           </b-button>
         </b-col>
       </b-row>
+
+      <div class="d-flex justify-content-center mb-3">
+        <div class="milestones">
+          <b-button @click="toggleMilestoneForm" class="milestones-button">
+            Milestones
+          </b-button>
+        </div>
+      </div>
+
+      <b-row v-if="showMilestoneForm" class="justify-content-center mb-3">
+        <b-col cols="12" md="8">
+          <b-form @submit.prevent="createMilestone">
+            <b-form-group label="Milestone Title">
+              <b-form-input v-model="milestone.title" required placeholder="Enter milestone title"></b-form-input>
+            </b-form-group>
+
+            <b-form-group label="Milestone Description">
+              <b-form-textarea v-model="milestone.description" required placeholder="Enter milestone description"></b-form-textarea>
+            </b-form-group>
+
+            <b-form-group label="Number of Beers">
+              <b-form-input type="number" v-model="milestone.beers" required placeholder="Enter number of beers"></b-form-input>
+            </b-form-group>
+
+            <b-form-group label="Number of Steps">
+              <b-form-input type="number" v-model="milestone.steps" required placeholder="Enter number of steps"></b-form-input>
+            </b-form-group>
+
+            <b-button type="submit" variant="success">Save Milestone</b-button>
+          </b-form>
+        </b-col>
+      </b-row>
+
+      
+      <b-row v-if="milestones.length > 0" class="mt-3">
+        <b-col cols="12">
+          <h3>Your Milestones</h3>
+          <ul class="list-group">
+            <li v-for="(milestone, index) in milestones" :key="index" class="list-group-item">
+              <strong>{{ milestone.title }}</strong> - {{ milestone.description }} 
+              <br>
+              Beers: {{ milestone.beers }}, Steps: {{ milestone.steps }}
+            </li>
+          </ul>
+        </b-col>
+      </b-row>
+      
+
+
       <!-- Reset button at the bottom -->
     <div class="d-flex justify-content-center mb-3">
       <div class="reset-steps">
@@ -64,6 +113,8 @@
       </b-button>
     </div>
     </div>
+
+  
   
 
       <div class="toast-container position-fixed top-0 end-0 p-3">
@@ -82,7 +133,7 @@
     </b-container>
   </div>
 
-  <!-- Reset button at the bottom -->
+  
  
     
   
@@ -92,6 +143,15 @@
 export default {
   data() {
     return {
+      showMilestoneForm: false, // Toggle milestone form visibility
+      milestone: {
+        title: '',
+        description: '',
+        beers: 0,
+        steps: 0,
+      },
+      milestones: [],
+
       showStepInput: false, // Track whether the step input should be shown
       steps: '', // Track the number of steps entered
       showBeerCanvas: false, // Controls visibility of beer selection OffCanvas
@@ -132,6 +192,16 @@ export default {
     this.fetchUserData();
   },
   methods: {
+
+     // Create and save the milestone
+     createMilestone() {
+      this.milestones.push({ ...this.milestone }); // Save the milestone
+      this.milestone = { title: '', description: '', beers: 0, steps: 0 }; // Reset form fields
+      this.showMilestoneForm = false; // Hide the form
+    },
+    toggleMilestoneForm() {
+      this.showMilestoneForm = !this.showMilestoneForm;
+    },
 
     confirmResetSteps() {
       const userConfirmed = window.confirm("Are you sure you want to reset your steps?");
@@ -533,5 +603,42 @@ export default {
   margin-top: 5%;
 
 }
+
+.Milestones {
+  width: 5vh;
+  height: 100vh;
+  margin-top: 5%; 
+
+}
+
+.milestones-button {
+  margin-top: 10%;
+  width: 30vh;
+  height: 10vh;
+  color: #000000;
+  background-color: #ebb112;
+}
+
+
+.milestone-form {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.milestone-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.milestone-list-item {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+
 
 </style>
