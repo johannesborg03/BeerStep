@@ -86,10 +86,9 @@ export default {
                             // Success message and redirect to homepage
                             this.showToast = true;
                             this.toastMessage = 'Login successful!';
-                            setTimeout(() => {
+                           
                                 this.showToast = false;
                                 this.$router.push('/homepage');
-                            }, 3000); g
                         } else {
                             // Password mismatch
                             this.showToast = true;
@@ -102,12 +101,7 @@ export default {
                         this.toastMessage = 'Invalid username.';
                         setTimeout(() => this.showToast = false, 3000); 
                     }
-                } else {
-                    const errorData = await response.json();
-                    this.showToast = true;
-                    this.toastMessage = errorData.message || 'Login failed. Please try again.';
-                    setTimeout(() => this.showToast = false, 3000); 
-                }
+                } 
             } catch (error) {
                 console.error('Error logging in:', error);
                 this.showToast = true;
