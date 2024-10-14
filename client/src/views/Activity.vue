@@ -56,6 +56,15 @@
           </b-button>
         </b-col>
       </b-row>
+      <!-- Reset button at the bottom -->
+    <div class="d-flex justify-content-center mb-3">
+      <div class="reset-steps">
+      <b-button @click="resetSteps" variant="danger" class="reset-button">
+        Reset Steps
+      </b-button>
+    </div>
+    </div>
+  
 
       <div class="toast-container position-fixed top-0 end-0 p-3">
         <div id="liveToast" class="toast bg-dark" role="alert" style="color: white;" aria-live="assertive" aria-atomic="true" :class="{'show': showToast}">
@@ -72,6 +81,11 @@
 
     </b-container>
   </div>
+
+  <!-- Reset button at the bottom -->
+ 
+    
+  
 </template>
 
 <script>
@@ -457,6 +471,12 @@ export default {
 
 .justify-content-center{
   margin-top: 0%;
+}
+
+.reset-steps {
+  margin-bottom: 5%;
+  margin-top: 5%;
+
 }
 
 </style>
