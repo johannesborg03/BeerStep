@@ -26,7 +26,6 @@
             </BCol>
         </BRow>
 
-        <!-- Toast Notification -->
         <div class="toast-container position-fixed top-0 end-0 p-3">
             <div id="liveToast" class="toast bg-dark" role="alert" style="color: white;" aria-live="assertive" aria-atomic="true" :class="{'show': showToast}">
                 <div class="toast-header bg-dark" style="color: white;">
