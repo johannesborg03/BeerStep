@@ -144,7 +144,17 @@ router.get('/api/users/:username/squads', async function (req, res) {
       console.log(`Fetching squads for user: ${req.params.username}`);
   
       // Find the user by their username and populate their squads
-      const user = await User.findOne({ username: req.params.username }).populate('squads');
+      const user = await User.findOne({ username: req.params.username })
+  .populate({
+    path: 'squads',
+    select: 'squadName created_by leaderboard',  // Include 'leaderboard' in the select for squads
+    populate: {
+      path: 'created_by',  // Populate the 'created_by' field in the squads
+      model: 'User',       // Reference the correct model (User)
+      select: 'username'   // Select only the username field from 'created_by'
+    }
+  });
+
   
       // Log the retrieved user object
       console.log('User found:', user);
