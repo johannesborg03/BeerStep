@@ -23,7 +23,7 @@
                   >
                     Delete All
                   </button>
-                </div>
+                </div>  
               </div>
 
               <ul class="squad-list">
@@ -184,7 +184,6 @@ export default {
         )
         const users = await response.json()
 
-        // Update the selected squad with members from the response
         this.selectedSquad = {
           ...squad,
           users // Add users to the selected squad
@@ -194,8 +193,31 @@ export default {
       }
     },
 
-    deleteSquad(squad) {
-      alert(`Delete squad: ${squad.squadName}`)
+    async deleteSquad(squad) {
+      try {
+        const response = await fetch(
+            `http://localhost:3000/api/squads/${squad._id}`,
+            {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            }
+        )
+
+        
+    if (response.ok) {
+      alert('Squad successfully deleted');
+      this.fetchSquads();
+      this.selectedSquad = null;
+    } else {
+      const errorData = await response.json();
+      throw new Error(`Failed to kick member: ${errorData.message}`);
+    }
+  } catch (error) {
+    console.error('Error while deleting squad:', error);
+    alert('An error occurred while trying to delete the squad. Please try again.');
+      }
     },
 
     deleteAllAdminSquads() {
