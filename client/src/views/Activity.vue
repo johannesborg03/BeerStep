@@ -15,9 +15,10 @@
           </p>
         </BRow>
 
-        <BRow>
-          <p class="current-stats">
-         Total Steps: {{ total_steps }} <br>
+        <BRow class="total-steps-container">
+          <p class="total-steps">
+            <img src="/src/assets/running.png" alt="Beer" class="running-image" />
+          :     {{ total_steps }} <br>
          Steps Needed: {{ steps_needed }}
           </p>
         </BRow>
@@ -47,9 +48,9 @@
       </b-row>
 
       <!-- Step input container with responsive input and button -->
-      <b-row v-if="showStepInput" class="justify-content-center mt-3">
+      <b-row v-if="showStepInput" class="justify-content-center mt-1">
         <b-col cols="12" md="5" class="text-center">
-          <b-form-input v-model="steps" type="number" placeholder="Enter number of steps" class="mb-2" />
+          <b-form-input v-model="steps" type="number" placeholder="Enter number of steps" class="mb-1" />
           <b-button @click="logSteps" variant="success" block class="submit-button">
             Submit
           </b-button>
@@ -255,7 +256,7 @@ export default {
 .activity-view {
   text-align: center;
   background-color: #2b2b2b;
- overflow: hidden; 
+  overflow: auto; 
   width: 100%;
   height: 100vh;
   margin: 0 auto;
@@ -277,36 +278,37 @@ export default {
   font-family: 'sans-serif';
   width: 30vh;
   height: 30vh;
-  font-size: 100px;
-  color: rgb(6, 4, 1);
+  font-size: 10vh;
+  color: rgb(6, 15, 3);
   border: none;
-  border-radius: 10px;
+  border-radius: 1vh;
   /* rounded corners */
   cursor: pointer;
   /* Change cursor to pointer on hover */
   transition: transform 0.3s ease, background-color 0.3s ease;
   /* Smooth transitions */
+  margin-bottom: 5%;
 }
 
 .beer {
-  background-color: #28a745;
+  background-color: #ebb112;
 }
 
 .beer:hover {
   /* transform: translateY(-50px); */
-  background-color: #218838;
+  background-color: #f3b407;
   /* Darker shade on hover */
   transform: scale(1.2);
   /* Slightly enlarge on hover */
 }
 
 .log-step {
-  background-color: #007bff;
+  background-color: #1a7fea;
 }
 
 .log-step:hover {
   /* transform: translateY(-50px); */
-  background-color: #0056b3;
+  background-color: #007bff; 
   /* Darker shade on hover */
   transform: scale(1.2);
   /* Slightly enlarge on hover */
@@ -345,14 +347,18 @@ export default {
 }
 
 .submit-button {
-  font-size: 24px;
-  padding: 20px;
+  font-size: 3vh;
+  padding: 2vh;
   border: none;
-  background-color: #28a745;
+  background-color: #007bff;
   color: white;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 5%;
   transition: background-color 0.3s ease;
+  margin-top: 0%;
+  margin-bottom: 10%;
+  height: 10vh;
+  width: 20vh;
 }
 
 .submit-button:hover {
@@ -384,14 +390,17 @@ export default {
   pointer-events: none;
 }
 
-.current-stats{
+.total-steps{
   text-align: center;
   margin: 0;
   color: #ebb112;
-  font-size: 3.5vh;
+  font-size: 6vh;
   font-family: 'sans-serif';
   margin-bottom: 2.5%;
   margin-top: 0%;
+  margin-right: 5%;
+  border: 0%;
+  
 }
 
 .current-beer{
@@ -428,6 +437,26 @@ export default {
   margin-right: 0%; /* Space between image and text */
   vertical-align: middle; /* Align image with text */
 
+}
+
+.total-steps-container{
+  margin-top: 0%;
+  margin-bottom: 0%;
+  width: 100%;
+}
+
+.running-image{
+  width: 14vh; /* Adjust the width as needed */
+  height: auto; /* Keep aspect ratio */
+  margin-right: 0%; /* Space between image and text */
+  margin-top: 2%;
+  margin-bottom: 2%;
+  margin-left: 4%;
+  vertical-align: middle; /* Align image with text */
+}
+
+.justify-content-center{
+  margin-top: 0%;
 }
 
 </style>
