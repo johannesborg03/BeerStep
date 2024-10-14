@@ -6,8 +6,7 @@
         <p class="profile-title">Profile</p>
         <BRow class="d-flex align-items-center justify-content-center">
           <BCol class="text-start d-flex align-items-center">
-            <BAvatar class="avatar" :src="avatar" v-if="avatar" />
-            <BAvatar class="avatar" :text="firstIndex()" v-else />
+            <BAvatar class="avatar" :text="firstIndex()"/>
             <BCol class="userEmail view-info d-flex ms-3">
               <p class ="view-info" style = "font-weight: 550;">Username: </p>
               <p class="current-username view-info"> {{ username }} </p>
@@ -101,14 +100,6 @@ export default {
     firstIndex() {
       return this.username.charAt(0).toUpperCase(); 
     },
-    changeAvatar() {
-      // Toggle between the two avatars at index 0 and 1
-      this.avatar = this.avatar === this.avatarChoices[0].avatar ? this.avatarChoices[1].avatar : this.avatarChoices[0].avatar;
-    },
-    deleteAvatar() {
-      this.avatar = null; // Reset avatar to default (first letter of username)
-    },
-
     async fetchUserData() {
       try {
         const username = this.$route.params.username; // Get the username from route parameters

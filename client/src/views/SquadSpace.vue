@@ -5,7 +5,7 @@
                 <BCard class="text-center" style="margin-top: 5%;">
                     <BRow class="d-flex align-items-center">
                         <BCol class="Avatar text-start">
-                            <BAvatar class="avatar"></BAvatar>
+                            <BAvatar class="avatar" :text="firstIndex()"/>
                         </BCol>
                         <BCol class="inputfield text-center">
                             <BFormInput v-model="message" placeholder="Share or Ask Something" />
@@ -52,10 +52,14 @@ export default {
             toastMessage: ''  // Message to display in the toast
         };
     },
-    mounted() {
-        this.username = localStorage.getItem('username') || 'Guest';
-    },
+  mounted() {
+    const storedUsername = localStorage.getItem('username')?.trim();
+    this.username = storedUsername ? storedUsername : 'Guest';
+},
     methods: {
+    firstIndex() {
+      return this.username.charAt(0).toUpperCase(); 
+    },
         onSubmit() {
             if (this.message.trim() === '') {
                 return; // Prevent empty submissions
