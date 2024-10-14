@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
-const leaderboardSchema = new mongoose.Schema({
-    userId : {
+const milestoneSchema = new mongoose.Schema({
+    username : {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: true,
+        required: false,
     },
     title : {
         type: String,
@@ -32,5 +32,5 @@ const leaderboardSchema = new mongoose.Schema({
 });
    
 
-const Milestone = mongoose.model('Milestone', MilestoneSchema);
+const Milestone = mongoose.model('Milestone', milestoneSchema);
 module.exports = Milestone;
