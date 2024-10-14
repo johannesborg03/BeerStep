@@ -8,12 +8,12 @@
           <BCol class="text-start d-flex align-items-center">
             <BAvatar class="avatar" :src="avatar" v-if="avatar" />
             <BAvatar class="avatar" :text="firstIndex()" v-else />
-            <BCol class="userEmail d-flex ms-3">
-              <p style = "font-weight: 550;">Username: </p>
-              <p class="current-username"> {{ username }} </p>
-              <p>|</p>
-             <p style = "font-weight: 550;">Email: </p>
-              <p class="current-email"> {{ email }}</p>
+            <BCol class="userEmail view-info d-flex ms-3">
+              <p class ="view-info" style = "font-weight: 550;">Username: </p>
+              <p class="current-username view-info"> {{ username }} </p>
+              <p class ="divider">|</p>
+             <p class = "view-info"style = "font-weight: 550;">Email: </p>
+              <p class="current-email view-info"> {{ email }}</p>
             </BCol>
           </BCol>
         </BRow>
@@ -215,7 +215,7 @@ export default {
 
 .userEmail{
 margin-right: 10%;
-margin-bottom: 3%;
+margin-bottom: 8px;
 }
 
 .btn{
@@ -263,25 +263,90 @@ color: black;
 font-size: 18px;
 }
 
-@media (max-width: 768px) {
-
-.box{
-padding: 5%;
-}
-
-.avatar{
-height: 30px;
-width: 30px;
-}
-
-.bcard{
-width: 90%;
-}
-}
-
-
 .current-username, .current-email  {
   text-align: left;
   margin: 0;
 }
+
+@media (max-width: 1500px) {
+
+  .bcard{
+    width: 35%;
+}
+}
+
+@media (max-width: 1400px) {
+
+.bcard{
+  width: 40%;
+}
+}
+
+@media (max-width: 1150px) {
+
+.bcard{
+  width: 50%;
+}
+}
+
+@media (max-width: 870px) {
+
+.bcard{
+  width: 60%;
+}
+}
+
+@media (max-width: 768px) { 
+
+.avatar {
+  display: none;
+}
+
+.divider {
+  display: none;
+}
+
+.userEmail {
+  display: flex;
+  flex-direction: column;
+}
+
+
+}
+@media (max-width: 425px) {
+.box {
+  padding: 5%;
+}
+
+.avatar {
+  display: none;
+}
+
+.divider {
+  display: none;
+}
+
+.userEmail {
+  display: flex;
+  flex-direction: column;
+}
+
+.current-username {
+  margin-bottom: 5%;
+}
+
+.view-info {
+  display: none;
+}
+
+.title {
+  font-size: 19px;
+}
+
+.bcard {
+  width: 90% !important;
+}
+}
+
+
 </style>
