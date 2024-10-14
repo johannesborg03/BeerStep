@@ -59,7 +59,7 @@
       <!-- Reset button at the bottom -->
     <div class="d-flex justify-content-center mb-3">
       <div class="reset-steps">
-      <b-button @click="resetSteps" variant="danger" class="reset-button">
+      <b-button @click="confirmResetSteps" variant="danger" class="reset-button">
         Reset Steps
       </b-button>
     </div>
@@ -132,6 +132,61 @@ export default {
     this.fetchUserData();
   },
   methods: {
+
+    confirmResetSteps() {
+      const userConfirmed = window.confirm("Are you sure you want to reset your steps?");
+      if (userConfirmed) {
+        this.resetSteps();
+      }
+    },
+    resetSteps(){
+      const username = localStorage.getItem('username');
+
+      fetch(`http://localhost:3000/api/users/${username}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Error fetching user data: ${response.statusText}`);
+          }
+          return response.json();
+        })
+        .then((user) => {
+          let newTotalSteps = 0;
+          let newStepsNeeded = 0;
+          
+
+          return fetch(`http://localhost:3000/api/users/${username}`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              total_steps: newTotalSteps,
+              steps_needed: newStepsNeeded,
+            }),
+          });
+        })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Error updating steps count: ${response.statusText}`);
+          }
+          return response.json();
+        })
+        .then((updatedUser) => {
+          console.log('Steps Added:', updatedUser);
+          this.steps = ''; // Reset the step input field
+          this.showStepInput = false; // Hide the input field after submission
+          this.total_steps = updatedUser.total_steps;
+          this.steps_needed = updatedUser.steps_needed;
+          this.showToastNotification('Steps successfully logged!');
+        })
+        .catch((error) => {
+          console.error('Error logging steps:', error);
+          this.showToastNotification('Failed to log steps. Please try again.');
+        });
+      this.total_steps = 0; // Reset the total steps count to 0
+      // You might also want to reset any other related state here
+      console.log("Total steps reset to 0");
+    },
     fetchUserData(){
       const username = localStorage.getItem('username');
       
