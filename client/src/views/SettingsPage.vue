@@ -307,13 +307,8 @@ margin-right: 5px;
   display: none;
 }
 
-.divider {
-  display: none;
-}
-
-.userEmail {
-  display: flex;
-  flex-direction: column;
+.bcard{
+  width: 100%;
 }
 
 
