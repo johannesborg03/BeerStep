@@ -202,9 +202,44 @@ export default {
 
      // Create and save the milestone
      createMilestone() {
-      this.milestones.push({ ...this.milestone }); // Save the milestone
+      const username = localStorage.getItem('username'); // Retrieve the username from local storage
+      const milestoneData = {
+        title: this.milestone.title,
+        description: this.milestone.description,
+        beers: this.milestone.beers,
+        steps: this.milestone.steps
+        
+  };
+
+  // Send a POST request to the backend API
+  fetch(`http://localhost:3000/api/users/${username}/milestones`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(milestoneData),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Error saving milestone: ${response.statusText}`);
+      }
+      return response.json();
+    })
+    .then((savedMilestone) => {
+      // Push the saved milestone to the milestones array
+      this.milestones.push(savedMilestone); 
+      this.showToastNotification('Milestone successfully saved!'); // Show success toast
+      this.milestone = { title: '', description: '', beers: 0, steps: 0 }; // Reset the form fields
+      this.showMilestoneForm = false; // Hide the form
+    })
+    .catch((error) => {
+      console.error('Error saving milestone:', error);
+      this.showToastNotification('Failed to save milestone. Please try again.');
+   
+      
       this.milestone = { title: '', description: '', beers: 0, steps: 0 }; // Reset form fields
       this.showMilestoneForm = false; // Hide the form
+    });
     },
     toggleMilestoneForm() {
       this.showMilestoneForm = !this.showMilestoneForm;
