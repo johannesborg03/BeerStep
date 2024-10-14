@@ -3,26 +3,17 @@
     <BRow class="bcard">
       <BCard class="box">
         <h1 class="title">User Settings</h1>
-        <p style="text-align: start; margin-top: 5%; margin-bottom: 0%;">Profile</p>
-
-        <BRow>
-          <p class="current-username">
-          {{ username }}
-          </p>
-        </BRow>
-        <BRow>
-          <p class="current-email">
-          {{ email }}
-          </p>
-        </BRow>
-
+        <p class="profile-title">Profile</p>
         <BRow class="d-flex align-items-center justify-content-center">
           <BCol class="text-start d-flex align-items-center">
             <BAvatar class="avatar" :src="avatar" v-if="avatar" />
             <BAvatar class="avatar" :text="firstIndex()" v-else />
-            <BCol class="avatar-Buttons d-flex ms-3">
-              <BButton variant="warning" class="me-2" @click="changeAvatar">Change Avatar</BButton>
-              <BButton variant="danger" @click="deleteAvatar">Delete Avatar</BButton>
+            <BCol class="userEmail view-info d-flex ms-3">
+              <p class ="view-info" style = "font-weight: 550;">Username: </p>
+              <p class="current-username view-info"> {{ username }} </p>
+              <p class ="divider">|</p>
+             <p class = "view-info"style = "font-weight: 550;">Email: </p>
+              <p class="current-email view-info"> {{ email }}</p>
             </BCol>
           </BCol>
         </BRow>
@@ -222,9 +213,9 @@ export default {
   margin-bottom: 5%;
 }
 
-.avatar-Buttons{
+.userEmail{
 margin-right: 10%;
-margin-bottom: 5%;
+margin-bottom: 8px;
 }
 
 .btn{
@@ -260,41 +251,102 @@ font-size: 16px;
 text-align: start;
 margin-left: 2%;
 margin-top: 3%;
-font-size: 2.5vh;
-font-family: 'sans-serif';
+font-weight: 500;
+color: #000;
 }
 
-@media (max-width: 768px) {
-
-.box{
-padding: 5%;
+.profile-title{
+text-align: start; 
+margin-top: 5%; 
+margin-bottom: 2%; 
+color: black; 
+font-size: 18px;
 }
 
-.avatar{
-height: 30px;
-width: 30px;
+.current-username, .current-email  {
+  text-align: left;
+  margin: 0;
+  margin-left: 5px;
+}
+
+.divider{
+margin-left: 5px;
+margin-right: 5px;
+}
+@media (max-width: 1500px) {
+
+  .bcard{
+    width: 35%;
+}
+}
+
+@media (max-width: 1400px) {
+
+.bcard{
+  width: 40%;
+}
+}
+
+@media (max-width: 1150px) {
+
+.bcard{
+  width: 50%;
+}
+}
+
+@media (max-width: 900px) {
+
+.bcard{
+  width: 60%;
+}
+}
+
+@media (max-width: 768px) { 
+
+.avatar {
+  display: none;
 }
 
 .bcard{
-width: 90%;
-}
+  width: 100%;
 }
 
+
+}
+@media (max-width: 425px) {
+.box {
+  padding: 5%;
+}
+
+.avatar {
+  display: none;
+}
+
+.divider {
+  display: none;
+}
+
+.userEmail {
+  display: flex;
+  flex-direction: column;
+}
 
 .current-username {
-  text-align: center;
-  margin: 0;
-  color: black;
-  font-size: 3.5vh;
-  font-family: 'sans-serif';
+  margin-bottom: 5%;
 }
-.current-email {
-  text-align: left;
-  text-align: center;
-  margin: 0;
-  color: black;
-  font-size: 2.5vh;
-  font-family: 'sans-serif';
+
+.view-info {
+  display: none;
 }
+
+.title {
+  font-size: 19px;
+}
+
+.bcard {
+  width: 90% !important;
+}
+}
+
 
 </style>
