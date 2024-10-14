@@ -1,9 +1,7 @@
 <template>
   <div class ="main bg-dark" style="min-height: 100vh;">
   <BRow>
-      <div class="beerBack">
-        <b-img src="/src/assets/set&homeBackground.jpg" fluid class="bg-cover" />
-      </div>
+        <b-img src="/src/assets/set&homeBackground.jpg" fluid class="beerBack" />
     <BCol class ="overlay">
       <div class="stats">
         <h2>{{stepsNeeded}}</h2>
@@ -90,6 +88,8 @@ export default {
   height: 64vh; 
   overflow: hidden;
   box-shadow: #292929;
+  background-size: cover;
+  background-position: center;
 }
 
 .overlay {
