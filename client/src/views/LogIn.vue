@@ -51,9 +51,7 @@ export default {
                 // Construct query parameters (username and password)
                 const queryParams = new URLSearchParams({
                     username: this.input.username,
-                    password: this.input.password
                 }).toString();
-
 
                 // Send GET request with the login data
                 const response = await fetch(`http://localhost:3000/api/users?${queryParams}`, {
@@ -63,21 +61,27 @@ export default {
                     }
                 });
 
-
                 if (response.ok) {
                     const responseData = await response.json();
 
-
-                    // Check if any user was returned
+                    // Check if a user was found
                     if (responseData.users && responseData.users.length > 0) {
-                        // Save the username to local storage
-                        localStorage.setItem('username', this.input.username);
+                        const user = responseData.users[0];
 
-                        // User found, redirect to homepage
-                        this.$router.push('/homepage');
+                        // Check if the input password matches the one from the response
+                        if (user.password === this.input.password) {
+                            // Save the username to local storage
+                            localStorage.setItem('username', this.input.username);
+
+                            // Redirect to homepage
+                            this.$router.push('/homepage');
+                        } else {
+                            // Password mismatch
+                            this.message = 'Invalid password.';
+                        }
                     } else {
                         // No matching user found
-                        this.message = 'Invalid username or password.';
+                        this.message = 'Invalid username.';
                     }
                 } else {
                     const errorData = await response.json();
@@ -91,6 +95,7 @@ export default {
     }
 };
 </script>
+
 <style scoped>
 .username {
     padding-top: 40px;
