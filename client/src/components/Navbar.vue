@@ -1,5 +1,5 @@
 <template>
-  <BNavbar toggleable="lg" variant="dark" v-b-color-mode="'dark'" expand="lg" class="d-flex flex-nowrap">
+  <BNavbar toggleable="lg" variant="dark" v-b-color-mode="'dark'" expand="lg">
     <BNavbarBrand href="#" class="brand">BeerStep</BNavbarBrand>
     <BNavbarToggle target="nav-collapse" />
 
@@ -21,7 +21,7 @@
       <BNavbarNav class="ms-auto mb-2 mb-lg-0">
         <!-- Hide Username and Avatar on Small Screens -->
         <div class="d-none d-lg-flex align-items-center">
-          <BAvatar class="avatar" bg-variant="primary" :text="firstIndex()" size="sm" />
+          <BAvatar class="avatar":text="firstIndex()" size="sm" />
           <span class="username ml-3">{{ username }}</span>
         </div>
         <BDropdown class="custom-dropdown ml-3" variant="transparent" size="sm" right>

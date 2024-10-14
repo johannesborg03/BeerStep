@@ -1,18 +1,27 @@
 <template>
-  <main>
-    <div class="content">
+    <BRow class="textArea text-start">
       <h1 class="main-title">BeerStep</h1>
-    </div>
-    <div class="login-wrapper">
-      <router-link to="/LogIn" class="buttonNav">Log in</router-link>
-      <b-container class="d-flex justify-content-center align-items-center vh-100"></b-container>
-    </div>
-    <b-container class="subtitle mt-10">
-      <h1 class="headline">Healthy drinking, made easy with BeerStep</h1>
-      <p class="subtext">Join BeerStep and balance fun with wellness!</p>
-    </b-container>
-  </main>
+      
+      <BCol class="textSec">
+        <p class="balance">Keep the balance</p>
+        <h1 class="headline display-4 mb-2">Healthy drinking, made easy with BeerStep</h1>
+        <p class="subtext lead">Join BeerStep and balance fun with wellness!</p>
+        <router-link to="/Register">
+          <BButton variant="warning w-25">Register</BButton>
+        </router-link>
+      </BCol>
+
+      <BCol class="text-end ">
+        <img v-bind:src="landingImg" class ="backgroundImg" style="height:90vh;">
+
+        <router-link to="/LogIn">
+          <BButton variant="warning" class="login-button">Log In</BButton>
+        </router-link>
+      </BCol>
+      
+    </BRow>
 </template>
+
 
 
 <script>
@@ -23,7 +32,8 @@ export default {
   name: 'home',
   data() {
     return {
-      message: 'none'
+      message: 'none',
+      landingImg: '/src/assets/landingPage.png'
     }
   },
   methods: {
@@ -41,87 +51,96 @@ export default {
 </script>
 
 <style scoped>
-
-.headline {
-  font-size: 1.5em;
+/* Existing styles, unchanged */
+.main-title {
+  font-size: 45px;
+  font-family: 'sans-serif';
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  color: #3c3b3b;
+  position: absolute; 
+  top: 2%;
+  text-align: center;
 }
 
-/* Media query for smaller screens */
+.headline {
+  font-size: 38px;
+  color: rgb(0, 0, 0);
+}
+
+.subtext {
+  color: rgb(101, 101, 101);
+}
+
+.textSec {
+  margin-top: 15%;
+}
+
+.balance {
+  color: rgb(0, 0, 0);
+  font-size: 24px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.btn {
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.login-button {
+  color: #000000;
+  border-radius: 10px;
+  position: absolute; 
+  top: 2%;
+  right: 5%;
+  width: 7%;
+}
+
+/* Media queries for different screen sizes */
 @media (max-width: 768px) {
-  /* Hide the subtext (paragraph) on small screens */
   .subtext {
     display: none;
   }
 
-  /* Reduce the size of the headline on small screens */
+  .balance {
+    display: none;
+  }
+
   .headline {
-    font-size: 0.8em;
+    margin-top: 50%;
+    margin-left: 10%;
+    font-size: 1.7em;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   }
 
   .main-title {
-    font-size: 1.5em;
+    font-size: 2.0em;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   }
-}
-main {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+
+  .backgroundImg {
+    display: none;
+  }
+
+  
+  .btn {
+    width: 50% !important;
+    font-size: 0.9em; 
+    padding: 10px 15px; 
+    margin-left: 10%;
+  }
+
+ 
+  .login-button {
+    width: 20% !important; 
+    padding: 10px 15px; 
+    font-size: 0.9em;
+  }
 }
 
-.login-wrapper { 
-    background-image: url('@/assets/aboutImg.jpg');
-    background-size: cover;
-    background-position: center;
-    height: 100%;
-    width: 100%;
+@media (max-width: 1400px) {
+  .backgroundImg {
+    display: none;
+  }
 }
 
-/* Center the content over the image */
-.content {
-    position: absolute;
-    text-align: center;
-    color: white;
-    left: 50%;
-    margin-top: 50px;
-    transform: translate(-50%, -50%);
-    position: absolute;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-    margin-right: 15px;
 
-}
-
-.buttonNav {
-    padding: 10px;
-    position: absolute;
-    right: 30px; 
-    margin-top: 40px;
-    transform: translateY(-50%);
-}
-
-.buttonNav,
-router-link {
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-}
-
-.subtitle {
-    position: absolute;
-    text-align: left;
-    color: white;
-    font-family: 'Segoe UI';
-    margin-top: 200px;
-    max-width: 450px;
-    left: 20px;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-    padding-left: 50px;
-    font-size: 28px;
-    
-}
 </style>
