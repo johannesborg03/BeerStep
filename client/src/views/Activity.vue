@@ -197,9 +197,27 @@ export default {
 
   mounted() {
     this.fetchUserData();
+    this.fetchUserMilestones();
   },
   methods: {
 
+    fetchUserMilestones() {
+        const username = localStorage.getItem('username'); // Retrieve the username from local storage
+        fetch(`http://localhost:3000/api/users/${username}/milestones`)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`Error fetching milestones: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then((data) => {
+                this.milestones = data.milestones; // Assign the milestones to the component's data property
+            })
+            .catch((error) => {
+                console.error('Error fetching milestones:', error);
+                this.showToastNotification('Failed to load milestones. Please try again.');
+            });
+    },
      // Create and save the milestone
      createMilestone() {
       const username = localStorage.getItem('username'); // Retrieve the username from local storage
@@ -226,8 +244,11 @@ export default {
       return response.json();
     })
     .then((savedMilestone) => {
+
+      
       // Push the saved milestone to the milestones array
       this.milestones.push(savedMilestone); 
+      this.fetchUserMilestones(); 
       this.showToastNotification('Milestone successfully saved!'); // Show success toast
       this.milestone = { title: '', description: '', beers: 0, steps: 0 }; // Reset the form fields
       this.showMilestoneForm = false; // Hide the form
@@ -239,6 +260,7 @@ export default {
       
       this.milestone = { title: '', description: '', beers: 0, steps: 0 }; // Reset form fields
       this.showMilestoneForm = false; // Hide the form
+      
     });
     },
     toggleMilestoneForm() {
