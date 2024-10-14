@@ -2,10 +2,10 @@
     <BContainer fluid class="page-wrapper">
         <BRow class="brow">
             <BCol>
-                <BCard class="text-center" style ="margin-top: 5%;">
+                <BCard class="text-center" style="margin-top: 5%;">
                     <BRow class="d-flex align-items-center">
                         <BCol class="Avatar text-start">
-                            <BAvatar class ="avatar"></BAvatar>
+                            <BAvatar class="avatar"></BAvatar>
                         </BCol>
                         <BCol class="inputfield text-center">
                             <BFormInput v-model="message" placeholder="Share or Ask Something" />
@@ -20,12 +20,25 @@
                     <ul>
                         <li v-for="(formPost, index) in squadforum" :key="index">
                             <p><strong>{{ formPost.username }}: {{ formPost.message }}</strong></p>
-
                         </li>
                     </ul>
                 </BCard>
             </BCol>
         </BRow>
+
+        <!-- Toast Notification -->
+        <div class="toast-container position-fixed top-0 end-0 p-3">
+            <div id="liveToast" class="toast bg-dark" role="alert" style="color: white;" aria-live="assertive" aria-atomic="true" :class="{'show': showToast}">
+                <div class="toast-header bg-dark" style="color: white;">
+                    <strong class="me-auto">Post Tracker</strong>
+                    <small>Just now</small>
+                    <button type="button" class="btn-close" @click="showToast = false" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    {{ toastMessage }}
+                </div>
+            </div>
+        </div>
     </BContainer>
 </template>
 
@@ -35,30 +48,44 @@ export default {
         return {
             username: '',
             message: '',
-            squadforum: [] // Holds the list of forum posts which be changed 
+            squadforum: [], // Holds the list of forum posts
+            showToast: false, // Controls toast visibility
+            toastMessage: ''  // Message to display in the toast
         };
     },
     mounted() {
         this.username = localStorage.getItem('username') || 'Guest';
     },
     methods: {
-
         onSubmit() {
+            if (this.message.trim() === '') {
+                return; // Prevent empty submissions
+            }
+
             // Create a new post object
             const formPost = {
                 username: this.username, // Use the username from localStorage
                 message: this.message
             };
 
-            // Add the post to the forum (this could be replaced with an API call)
+            // Add the post to the forum
             this.squadforum.push(formPost);
 
-            // Reset the message field 
+            // Trigger the toast notification
+            this.toastMessage = 'Post submitted successfully!';
+            this.showToast = true;
+
+            // Automatically hide the toast after a few seconds
+            setTimeout(() => {
+                this.showToast = false;
+            }, 3000);
+
+            // Reset the message field
             this.message = '';
         }
     }
 };
-</script>
+</script> 
 
 <style scoped>
 

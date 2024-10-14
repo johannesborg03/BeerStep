@@ -1,146 +1,148 @@
 <template>
-    <BContainer fluid class="settings-view">
+  <BContainer fluid class="settings-view">
+    <BRow class="bcard">
+      <BCard class="box">
+        <h1 class="title">User Settings</h1>
+        <p style="text-align: start; margin-top: 5%;">Profile</p>
 
-      <BRow class="bcard">
-       
-          <BCard class="box" >
-            <h1 class="title ">User Settings</h1>
-            <p style=" text-align: start; margin-top: 5%;">Profil</p>  
-
-             <BRow class="d-flex align-items-center justify-content-center">
-            <BCol class="text-start d-flex align-items-center">
-              <BAvatar class="avatar":text="firstIndex()"/>
-              <BCol class="avatar-Buttons d-flex ms-3">
-                <BButton variant="warning" class="me-2">Change Avatar</BButton>
-                <BButton variant="danger">Delete Avatar</BButton>
-              </BCol>
+        <BRow class="d-flex align-items-center justify-content-center">
+          <BCol class="text-start d-flex align-items-center">
+            <BAvatar class="avatar" :src="avatar"  v-if="avatar" />
+<BAvatar class="avatar" :text="firstIndex()" v-else />
+            <BCol class="avatar-Buttons d-flex ms-3">
+              <BButton variant="warning" class="me-2" @click="changeAvatar">Change Avatar</BButton>
+              <BButton variant="danger" @click="deleteAvatar">Delete Avatar</BButton>
             </BCol>
-          </BRow>
-          
-            <BForm @submit.prevent="submit">
-              <!-- Change Email Section -->
-              <p class ="change-text">Change Email</p>
-              <b-form-group class ="inputfield">
-                <b-form-input
-                  id="email"
-                  v-model="input.email"
-                  type="email"
-                  placeholder="Enter a New Email"
-                ></b-form-input>
-              </b-form-group>
-  
-  
-              <!-- Change Password Section -->
-               <p class ="change-text">Change Password</p>
-              <b-form-group class ="inputfield">
-                <b-form-input
-                  id="password"
-                  v-model="input.password"
-                  type="password"
-                  placeholder="Enter a New Password" label-class=""
-                ></b-form-input>
-              </b-form-group>
-  
-              <!-- Submit Button -->
-              <BButton class= "btn" type="submit" variant="warning w-50" block>Submit</BButton>
-            </BForm>
-  
-            <!-- Error or Success Messages -->
-            <b-alert v-if="message" variant="danger" dismissible>{{ message }}</b-alert>
-            <b-alert v-if="showNotification" variant="success" dismissible>
-                User successfully updated!
-            </b-alert>
+          </BCol>
+        </BRow>
 
-          </BCard>
-     
-      </BRow>
-    </BContainer>
- 
-  </template>
-  
-  <script>
-  export default {
-    name: 'Submit',
-    data() {
-      return {
-        input: {
-          email: "",
-          password: ""
-        },
-        username: "", // Added username to data()
-        message: "",
-        showNotification: false,
-        isSubmitting: false // Track submission state
-      };
-    },
-    mounted() {
-      const storedUsername = localStorage.getItem('username');
-      this.username = storedUsername && storedUsername.trim() !== '' ? storedUsername : 'Guest'; // Ensure proper handling
-    },
-    methods: {
-      async submit() {
-        this.isSubmitting = true; // Start submission state
-        try {
-          const username = this.$route.params.username; // Get the username from route parameters
-          console.log(username);
-          const updatedUser = {};
-          if (this.input.email) {
-            updatedUser.email = this.input.email;
-          }
-          if (this.input.password) {
-            updatedUser.password = this.input.password;
-          }
-  
-          // If no fields are entered, show an error message:
-          if (Object.keys(updatedUser).length === 0) {
-            this.message = 'Please fill in at least one field to update.';
-            this.isSubmitting = false;
-            return;
-          }
-  
-          const response = await fetch(`http://localhost:3000/api/users/${username}`, {
-            method: 'PATCH',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(updatedUser)
-          });
-  
-          if (!response.ok) {
-            throw new Error(`Server responded with status ${response.status}`);
-          }
-  
-          const updatedData = await response.json();
-          console.log('User Updated Successfully');
-          this.message = '';
-  
-          // Show Notification and Clear Input fields
-          this.showNotification = true;
-          this.input.email = "";
-          this.input.password = "";
-          this.$refs.emailInput.blur(); // Blur input after submission
-  
-          // Show Notification for 3 seconds:
-          setTimeout(() => {
-            this.showNotification = false;
-          }, 3000);
-  
-          this.$nextTick(() => {
-            this.$refs.notification.focus(); // Focus on notification for accessibility
-          });
-        } catch (error) {
-          console.error('Error updating user:', error);
-          this.message = 'An error occurred while updating user. Please try again.';
-        } finally {
-          this.isSubmitting = false; // End submission state
-        }
+        <BForm @submit.prevent="submit">
+          <!-- Change Email Section -->
+          <p class="change-text">Change Email</p>
+          <b-form-group class="inputfield">
+            <b-form-input
+              id="email"
+              v-model="input.email"
+              type="email"
+              placeholder="Enter a New Email"
+            ></b-form-input>
+          </b-form-group>
+
+          <!-- Change Password Section -->
+          <p class="change-text">Change Password</p>
+          <b-form-group class="inputfield">
+            <b-form-input
+              id="password"
+              v-model="input.password"
+              type="password"
+              placeholder="Enter a New Password"
+            ></b-form-input>
+          </b-form-group>
+
+          <!-- Submit Button -->
+          <BButton class="btn" type="submit" variant="warning w-50" block>Submit</BButton>
+        </BForm>
+
+        <!-- Error or Success Messages -->
+        <b-alert v-if="message" variant="danger" dismissible>{{ message }}</b-alert>
+        <b-alert v-if="showNotification" variant="success" dismissible>
+          User successfully updated!
+        </b-alert>
+      </BCard>
+    </BRow>
+  </BContainer>
+</template>
+
+<script>
+export default {
+  name: 'Submit',
+  data() {
+    return {
+      input: {
+        email: "",
+        password: ""
       },
-      firstIndex() {
-        return this.username ? this.username.charAt(0).toUpperCase() : ''; // Handle empty username
+      username: "", // Added username to data()
+      message: "",
+      showNotification: false,
+      isSubmitting: false, // Track submission state
+      avatar: null, // Track selected avatar
+      avatarChoices: [
+        { avatar: 'src/assets/avatar1.jpg' },
+        { avatar: 'src/assets/avatar2.jpg' }
+      ]
+    };
+  },
+  mounted() {
+    const storedUsername = localStorage.getItem('username');
+    this.username = storedUsername && storedUsername.trim() !== '' ? storedUsername : 'Guest'; 
+  },
+  methods: {
+    firstIndex() {
+      return this.username.charAt(0).toUpperCase(); 
+    },
+    changeAvatar() {
+  // Toggle between the two avatars at index 0 and 1
+  this.avatar = this.avatar === this.avatarChoices[0].avatar ? this.avatarChoices[1].avatar : this.avatarChoices[0].avatar;
+},
+    deleteAvatar() {
+      this.avatar = null; // Reset avatar to default (first letter of username)
+    },
+    async submit() {
+      this.isSubmitting = true; // Start submission state
+      try {
+        const username = this.$route.params.username; // Get the username from route parameters
+        console.log(username);
+        const updatedUser = {};
+        if (this.input.email) {
+          updatedUser.email = this.input.email;
+        }
+        if (this.input.password) {
+          updatedUser.password = this.input.password;
+        }
+
+        // If no fields are entered, show an error message:
+        if (Object.keys(updatedUser).length === 0) {
+          this.message = 'Please fill in at least one field to update.';
+          this.isSubmitting = false;
+          return;
+        }
+
+        const response = await fetch(`http://localhost:3000/api/users/${username}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(updatedUser)
+        });
+
+        if (!response.ok) {
+          throw new Error(`Server responded with status ${response.status}`);
+        }
+
+        const updatedData = await response.json();
+        console.log('User Updated Successfully');
+        this.message = '';
+
+        // Show Notification and Clear Input fields
+        this.showNotification = true;
+        this.input.email = "";
+        this.input.password = "";
+
+        // Show Notification for 3 seconds:
+        setTimeout(() => {
+          this.showNotification = false;
+        }, 3000);
+      } catch (error) {
+        console.error('Error updating user:', error);
+        this.message = 'An error occurred while updating user. Please try again.';
+      } finally {
+        this.isSubmitting = false; // End submission state
       }
     }
   }
-  </script>
+}
+</script>
 
 
 <style scoped>
