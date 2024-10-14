@@ -172,4 +172,27 @@ router.delete('/api/squads/:id/users/:username', async function (req, res, next)
     }
 });
 
+router.get('/api/squads/:id/users/', async function (req, res, next) {
+    
+    try {
+        const squad_id = req.params.id;
+
+        const squad = await Squad.findById(squad_id).populate('users');
+
+        if(!squad) {
+        return res.status(404).json({ message: "Squad not found" });
+        }
+
+        res.status(200).json(squad.users);
+
+    } catch (error) {
+
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+        
+    }
+
+
+});
+
 module.exports = router;

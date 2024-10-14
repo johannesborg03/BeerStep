@@ -468,6 +468,112 @@
 			"response": []
 		},
 		{
+			"name": "GET/SQUADS/ID/USERS",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Create the first user\r",
+							"pm.sendRequest({\r",
+							"    url: 'http://localhost:3000/api/users',\r",
+							"    method: 'POST',\r",
+							"    header: {\r",
+							"        'Content-Type': 'application/json'\r",
+							"    },\r",
+							"    body: {\r",
+							"        mode: 'raw',\r",
+							"        raw: JSON.stringify({\r",
+							"            username: 'john_doe3',\r",
+							"            email: 'john3@example.com',\r",
+							"            password: 'password123'\r",
+							"        })\r",
+							"    }\r",
+							"}, function (err, res) {\r",
+							"    if (err) {\r",
+							"        console.error(err);\r",
+							"        return;\r",
+							"    }\r",
+							"    \r",
+							"    // Get the user ID from the response and save it as an environment variable\r",
+							"    const userId = res.json().user._id; \r",
+							"    console.log('Created User ID:', userId);\r",
+							"    const username = res.json().user.username;\r",
+							"    console.log('Created Username:', username);\r",
+							"    pm.environment.set('createdUsername2', username); // Save Username in environment variable\r",
+							"    pm.environment.set('createdUserId2', userId); // Save user ID in environment variable\r",
+							"\r",
+							"    // Create a squad\r",
+							"    pm.sendRequest({\r",
+							"        url: 'http://localhost:3000/api/squads',\r",
+							"        method: 'POST',\r",
+							"        header: {\r",
+							"            'Content-Type': 'application/json'\r",
+							"        },\r",
+							"        body: {\r",
+							"            mode: 'raw',\r",
+							"            raw: JSON.stringify({\r",
+							"                squadName: 'Team Awesome3',\r",
+							"                created_by: userId\r",
+							"            })\r",
+							"        }\r",
+							"    }, function (err, res) {\r",
+							"        if (err) {\r",
+							"            console.error(err);\r",
+							"            return;\r",
+							"        }\r",
+							"\r",
+							"        // Get the squad ID from the response and save it as an environment variable\r",
+							"        const squadId = res.json().squad._id; \r",
+							"        console.log('Created Squad ID:', squadId);\r",
+							"        pm.environment.set('createdSquadId', squadId); // Save squad ID in environment variable\r",
+							"    });\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code 200 is for successful\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/squads/:id/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"squads",
+						":id",
+						"users"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{createdSquadId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "DELETE/SQUADS/ID/USERS/USERNAME",
 			"event": [
 				{
