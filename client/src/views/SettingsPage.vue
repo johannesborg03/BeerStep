@@ -294,7 +294,7 @@ margin-right: 5px;
 }
 }
 
-@media (max-width: 870px) {
+@media (max-width: 900px) {
 
 .bcard{
   width: 60%;
