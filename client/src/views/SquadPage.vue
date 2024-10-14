@@ -292,7 +292,7 @@ export default {
     },
 
     goToManageSquads() {
-
+      this.$router.push('/ManageSquads');
     }
 
   }
@@ -344,12 +344,13 @@ body {
 
 .squad-list-header {
   display: flex;
+  justify-content: space-between; /* This spaces out the title and button */
   align-items: center;
-  justify-content: space-between;
+  margin-bottom: 20px; /* Adds space below the header */
 }
 
 .manage-button {
-  margin-left: 10px;
+  margin-left: 10px; /* Slight margin for spacing */
   padding: 5px 10px;
   background-color: #007bff;
   color: white;
@@ -439,7 +440,7 @@ body {
   justify-content: center;
   align-items: center;
   position: fixed;
-  z-index: 1000; /* Increased z-index for visibility */
+  z-index: 1000; 
   left: 0;
   top: 0;
   width: 100%;
@@ -450,12 +451,12 @@ body {
 
 .modal-content {
   background-color: white;
-  margin: auto; /* Centers the modal horizontally */
+  margin: auto; 
   padding: 20px;
   border: 1px solid #888;
-  width: 300px; /* Fixed width for better alignment */
+  width: 300px; 
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Added shadow for depth */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
 }
 
 .close {
