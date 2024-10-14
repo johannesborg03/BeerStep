@@ -216,13 +216,16 @@ export default {
         })
         .then((user) => {
           const newTotalBeers = user.total_beers + 1;
+          const newStepsNeeded = user.steps_needed + 2000;
 
           return fetch(`http://localhost:3000/api/users/${username}`, {
             method: 'PATCH',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ total_beers: newTotalBeers }),
+            body: JSON.stringify({ 
+              total_beers: newTotalBeers,
+              steps_needed: newStepsNeeded }),
           });
         })
         .then((response) => {
@@ -235,6 +238,7 @@ export default {
           console.log('Beer incremented:', updatedUser);
           this.showToastNotification('Beer successfully logged!');
           this.total_beers = updatedUser.total_beers;
+          this.steps_needed = updatedUser.steps_needed;
           this.showBeerCanvas = false; // Close the OffCanvas after selection
         })
         .catch((error) => {
