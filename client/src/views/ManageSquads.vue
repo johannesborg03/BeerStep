@@ -141,7 +141,6 @@ export default {
     );
     const data = await response.json();
     
-    
     this.squads = data.squads.map(squad => ({
       ...squad,
       isAdmin: squad.created_by.username === this.currentUsername
@@ -203,9 +202,41 @@ export default {
       alert('Delete all admin squads')
     },
 
-    kickMember(squad, member) {
-      alert(`Kick member: ${member.username} from ${squad.squadName}`)
-    },
+    async kickMember(squad, member) {
+  const username = localStorage.getItem('username'); // Current logged-in user's username
+
+  if (!username) {
+    alert('No username found, please log in again.');
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/squads/${squad._id}/users/${member.username}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log(`Successfully kicked user: ${member.username}`, data.message);
+      alert(`User ${member.username} has been kicked from squad "${squad.squadName}".`);
+
+      
+      await this.openSquadDetails(squad);
+    } else {
+      const errorData = await response.json();
+      throw new Error(`Failed to kick member: ${errorData.message}`);
+    }
+  } catch (error) {
+    console.error('Error while kicking the member:', error);
+    alert('An error occurred while trying to kick the member. Please try again.');
+  }
+},
 
     openInviteModal(squad) {
       this.selectedSquad = squad

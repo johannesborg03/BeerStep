@@ -253,27 +253,27 @@ export default {
         return
       }
 
-      if (this.selectedSquad && this.selectedSquad._id) { // Check for squad _id instead of squadName
-        const squad_id = this.selectedSquad._id // Use _id to match the backend requirement
+      if (this.selectedSquad && this.selectedSquad._id) { 
+        const squad_id = this.selectedSquad._id 
 
         try {
-          // DELETE request to leave the squad
+          
           const response = await fetch(`http://localhost:3000/api/squads/${squad_id}/users/${username}`, {
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/json'
             }
-            // No body needed for DELETE request
+            
           })
 
-          // Check the response
+          
           if (response.ok) {
             const data = await response.json()
             console.log('Successfully left the squad:', data.message)
             alert(`You have left the squad "${this.selectedSquad.squadName}".`)
             this.showLeaveModal = false
             this.selectedSquad = null
-            await this.fetchSquads() // Refresh the squads list
+            await this.fetchSquads() 
           } else {
             const errorData = await response.json()
             throw new Error(`Failed to leave squad: ${errorData.message}`)
