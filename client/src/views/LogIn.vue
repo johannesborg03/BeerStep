@@ -27,7 +27,6 @@
         </b-card>
     </b-container>
 
-    <!-- Toast notification container -->
     <div class="toast-container position-fixed top-0 end-0 p-3">
         <div id="liveToast" class="toast bg-dark" role="alert" style="color: white;" aria-live="assertive" aria-atomic="true" :class="{'show': showToast}">
             <div class="toast-header bg-dark" style="color: white;">
@@ -90,30 +89,30 @@ export default {
                             setTimeout(() => {
                                 this.showToast = false;
                                 this.$router.push('/homepage');
-                            }, 3000); // Show toast for 3 seconds before redirecting
+                            }, 3000); g
                         } else {
                             // Password mismatch
                             this.showToast = true;
                             this.toastMessage = 'Invalid password.';
-                            setTimeout(() => this.showToast = false, 3000); // Hide toast after 3 seconds
+                            setTimeout(() => this.showToast = false, 3000); 
                         }
                     } else {
                         // No matching user found
                         this.showToast = true;
                         this.toastMessage = 'Invalid username.';
-                        setTimeout(() => this.showToast = false, 3000); // Hide toast after 3 seconds
+                        setTimeout(() => this.showToast = false, 3000); 
                     }
                 } else {
                     const errorData = await response.json();
                     this.showToast = true;
                     this.toastMessage = errorData.message || 'Login failed. Please try again.';
-                    setTimeout(() => this.showToast = false, 3000); // Hide toast after 3 seconds
+                    setTimeout(() => this.showToast = false, 3000); 
                 }
             } catch (error) {
                 console.error('Error logging in:', error);
                 this.showToast = true;
                 this.toastMessage = 'An error occurred while logging in. Please try again.';
-                setTimeout(() => this.showToast = false, 3000); // Hide toast after 3 seconds
+                setTimeout(() => this.showToast = false, 3000); 
             }
         }
     }

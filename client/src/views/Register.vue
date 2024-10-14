@@ -31,60 +31,95 @@
           <b-alert v-if="message" variant="danger" dismissible>{{ message }}</b-alert>
         </b-card>
       </b-container>
+  
+      <!-- Toast Notification -->
+      <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="liveToast" class="toast bg-dark" role="alert" style="color: white;" aria-live="assertive"
+          aria-atomic="true" :class="{'show': showToast}">
+          <div class="toast-header bg-dark" style="color: white;">
+            <strong class="me-auto">BeerStep</strong>
+            <small>Just now</small>
+            <button type="button" class="btn-close" @click="showToast = false" aria-label="Close"></button>
+          </div>
+          <div class="toast-body">
+            {{ toastMessage }}
+          </div>
+        </div>
+      </div>
     </div>
   </template>
-
-<script>
-export default {
+  
+  <script>
+  export default {
     name: 'Register',
     data() {
-        return {
-            input: {
-                email: "",
-                username: "",
-                password: ""
-            },
-            message: ""  // To store any error message
-        };
+      return {
+        input: {
+          email: "",
+          username: "",
+          password: ""
+        },
+        message: "",  // To store any error message
+        showToast: false,  // Toast visibility flag
+        toastMessage: ""   // Toast message
+      };
     },
     methods: {
-        async register() {
-            try {
-                const newUser = {
-                    email: this.input.email,
-                    username: this.input.username,
-                    password: this.input.password
-                };
-
-                // Call the backend to create a new user
-                const backendResponse = await fetch('http://localhost:3000/api/users', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(newUser)  // Send user data to backend
-                });
-
-                if (backendResponse.ok) {
-                    // User created successfully
-                    const userData = await backendResponse.json();
-                    console.log('User registered successfully:', userData);
-
-                    // Redirect to login page after successful registration
-                    this.$router.push('/LogIn');
-                } else {
-                    const errorData = await backendResponse.json();
-                    this.message = errorData.message || 'An error occurred during registration.';
-                    console.error('Error registering user:', this.message);
-                }
-            } catch (error) {
-                console.error('Error registering user:', error);
-                this.message = 'An error occurred while registering. Please try again.';
-            }
+      async register() {
+        try {
+          const newUser = {
+            email: this.input.email,
+            username: this.input.username,
+            password: this.input.password
+          };
+  
+          // Call the backend to create a new user
+          const backendResponse = await fetch('http://localhost:3000/api/users', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newUser)  // Send user data to backend
+          });
+  
+          if (backendResponse.ok) {
+            // User created successfully
+            const userData = await backendResponse.json();
+            console.log('User registered successfully:', userData);
+  
+            // Show success toast
+            this.toastMessage = "Registration successful! Redirecting to login...";
+            this.showToast = true;
+  
+            // Redirect to login page after a short delay
+            setTimeout(() => {
+              this.$router.push('/LogIn');
+            }, 2000);  // 2-second delay to show the toast
+          } else {
+            const errorData = await backendResponse.json();
+            this.message = errorData.message || 'An error occurred during registration.';
+            console.error('Error registering user:', this.message);
+            
+  
+            // Show error toast
+            this.toastMessage = "Registration failed: " + this.message;
+            this.showToast = true;
+            setTimeout(() => this.showToast = false, 3000);
+          }
+        } catch (error) {
+          console.error('Error registering user:', error);
+          this.message = 'An error occurred while registering. Please try again.';
+  
+          // Show error toast
+          this.toastMessage = "Error: " + this.message;
+          this.showToast = true;
+          setTimeout(() => this.showToast = false, 3000);
         }
+      }
     }
-};
-</script>
+  };
+  </script>
+  
 
 <style scoped>
 .email {
