@@ -53,7 +53,7 @@ export default {
 <style scoped>
 .landing-view {
   font-family: Tahoma;
-  background-image: url('/src/assets/aboutImg.jpg');
+  background-image: url('/src/assets/landingBackground.jpg');
   background-size: cover;
   background-position: center;
   margin: 0;
@@ -107,17 +107,15 @@ export default {
 }
 
 /* Media queries for different screen sizes */
-@media (max-width: 768px) {
+@media (max-width: 425px) {
   .subtext {
     display: none;
   }
 
-  .balance {
-    display: none;
+  .balance{
+    margin-top: 20%;
   }
-
-  .headline {
-    margin-top: 50%;
+  .headline, .balance {
     margin-left: 10%;
     font-size: 1.7em;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
@@ -148,9 +146,24 @@ export default {
   }
 }
 
-@media (max-width: 1400px) {
-  .backgroundImg {
-    display: none;
-  }
+@media (max-width: 768px) {
+.login-button{
+  font-size: 13px;
+}
+}
+
+@media (max-width: 376px) {
+.login-button{
+  width: 10%;
+  font-size: 10px;
+
+}
+}
+
+
+@media (max-width: 1025px) {
+.login-button{
+  width: 10%;
+}
 }
 </style>
