@@ -27,8 +27,6 @@
             If you already have an account, <router-link to="/LogIn">Sign in here</router-link>
           </p>
   
-          <!-- Display error message if registration fails -->
-          <b-alert v-if="message" variant="danger" dismissible>{{ message }}</b-alert>
         </b-card>
       </b-container>
   
