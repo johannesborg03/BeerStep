@@ -3,10 +3,25 @@
     <b-container>
       <b-row>
         <b-col>
-          <h1 class="text-center" style="color: white; margin-top: 5%;">Activity Header</h1>
-          <p class="text-center" style="color: white;">Log your activity (or Beer ;)</p>
+         
+          <p class="text-center">Log your steps (or Beer ;)</p>
         </b-col>
       </b-row>
+
+      <BRow class="current-beer-container">
+        <p class="current-beer">
+          <img src="/src/assets/beerPic.webp" alt="Beer" class="beer-image" />
+        : {{ total_beers }} 
+          </p>
+        </BRow>
+
+        <BRow class="total-steps-container">
+          <p class="total-steps">
+            <img src="/src/assets/running.png" alt="Beer" class="running-image" />
+          :     {{ total_steps }} <br>
+         Steps Needed: {{ steps_needed }}
+          </p>
+        </BRow>
 
       <!-- Button container with responsive buttons -->
       <b-row class="justify-content-center">
@@ -33,14 +48,23 @@
       </b-row>
 
       <!-- Step input container with responsive input and button -->
-      <b-row v-if="showStepInput" class="justify-content-center mt-3">
+      <b-row v-if="showStepInput" class="justify-content-center mt-1">
         <b-col cols="12" md="5" class="text-center">
-          <b-form-input v-model="steps" type="number" placeholder="Enter number of steps" class="mb-2" />
+          <b-form-input v-model="steps" type="number" placeholder="Enter number of steps" class="mb-1" />
           <b-button @click="logSteps" variant="success" block class="submit-button">
             Submit
           </b-button>
         </b-col>
       </b-row>
+      <!-- Reset button at the bottom -->
+    <div class="d-flex justify-content-center mb-3">
+      <div class="reset-steps">
+      <b-button @click="confirmResetSteps" variant="danger" class="reset-button">
+        Reset Steps
+      </b-button>
+    </div>
+    </div>
+  
 
       <div class="toast-container position-fixed top-0 end-0 p-3">
         <div id="liveToast" class="toast bg-dark" role="alert" style="color: white;" aria-live="assertive" aria-atomic="true" :class="{'show': showToast}">
@@ -57,6 +81,11 @@
 
     </b-container>
   </div>
+
+  <!-- Reset button at the bottom -->
+ 
+    
+  
 </template>
 
 <script>
@@ -90,9 +119,94 @@ export default {
       ],
       showToast: false, // Controls the visibility of the toast
       toastMessage: '', // Holds the message for the toast
+
+      total_beers: 0,
+      total_steps: 0,
+      steps_needed: 0,
+
+
     };
   },
+
+  mounted() {
+    this.fetchUserData();
+  },
   methods: {
+
+    confirmResetSteps() {
+      const userConfirmed = window.confirm("Are you sure you want to reset your steps?");
+      if (userConfirmed) {
+        this.resetSteps();
+      }
+    },
+    resetSteps(){
+      const username = localStorage.getItem('username');
+
+      fetch(`http://localhost:3000/api/users/${username}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Error fetching user data: ${response.statusText}`);
+          }
+          return response.json();
+        })
+        .then((user) => {
+          let newTotalSteps = 0;
+          let newStepsNeeded = 0;
+          
+
+          return fetch(`http://localhost:3000/api/users/${username}`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              total_steps: newTotalSteps,
+              steps_needed: newStepsNeeded,
+            }),
+          });
+        })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Error updating steps count: ${response.statusText}`);
+          }
+          return response.json();
+        })
+        .then((updatedUser) => {
+          console.log('Steps Added:', updatedUser);
+          this.steps = ''; // Reset the step input field
+          this.showStepInput = false; // Hide the input field after submission
+          this.total_steps = updatedUser.total_steps;
+          this.steps_needed = updatedUser.steps_needed;
+          this.showToastNotification('Steps successfully logged!');
+        })
+        .catch((error) => {
+          console.error('Error logging steps:', error);
+          this.showToastNotification('Failed to log steps. Please try again.');
+        });
+      this.total_steps = 0; // Reset the total steps count to 0
+      // You might also want to reset any other related state here
+      console.log("Total steps reset to 0");
+    },
+    fetchUserData(){
+      const username = localStorage.getItem('username');
+      
+      fetch(`http://localhost:3000/api/users/${username}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Error fetching user data: ${response.statusText}`);
+          }
+          return response.json();
+        })
+        .then((user) => {
+          // Update the total beers, total steps, and steps needed
+          this.total_beers = user.total_beers;
+          this.total_steps = user.total_steps;
+          this.steps_needed = user.steps_needed;
+        })
+        .catch((error) => {
+          console.error('Error fetching user data:', error);
+        });
+    },
     // Toggle the beer selection OffCanvas
     toggleCanvas() {
       this.showBeerCanvas = !this.showBeerCanvas;
@@ -148,6 +262,8 @@ export default {
           console.log('Steps Added:', updatedUser);
           this.steps = ''; // Reset the step input field
           this.showStepInput = false; // Hide the input field after submission
+          this.total_steps = updatedUser.total_steps;
+          this.steps_needed = updatedUser.steps_needed;
           this.showToastNotification('Steps successfully logged!');
         })
         .catch((error) => {
@@ -170,13 +286,16 @@ export default {
         })
         .then((user) => {
           const newTotalBeers = user.total_beers + 1;
+          const newStepsNeeded = user.steps_needed + 2000;
 
           return fetch(`http://localhost:3000/api/users/${username}`, {
             method: 'PATCH',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ total_beers: newTotalBeers }),
+            body: JSON.stringify({ 
+              total_beers: newTotalBeers,
+              steps_needed: newStepsNeeded }),
           });
         })
         .then((response) => {
@@ -188,6 +307,8 @@ export default {
         .then((updatedUser) => {
           console.log('Beer incremented:', updatedUser);
           this.showToastNotification('Beer successfully logged!');
+          this.total_beers = updatedUser.total_beers;
+          this.steps_needed = updatedUser.steps_needed;
           this.showBeerCanvas = false; // Close the OffCanvas after selection
         })
         .catch((error) => {
@@ -204,7 +325,7 @@ export default {
 .activity-view {
   text-align: center;
   background-color: #2b2b2b;
- overflow: hidden; 
+  overflow: auto; 
   width: 100%;
   height: 100vh;
   margin: 0 auto;
@@ -224,38 +345,39 @@ export default {
 
 .massive-button {
   font-family: 'sans-serif';
-  width: 600px;
-  height: 500px;
-  font-size: 100px;
-  color: rgb(6, 4, 1);
+  width: 30vh;
+  height: 30vh;
+  font-size: 10vh;
+  color: rgb(6, 15, 3);
   border: none;
-  border-radius: 10px;
+  border-radius: 1vh;
   /* rounded corners */
   cursor: pointer;
   /* Change cursor to pointer on hover */
   transition: transform 0.3s ease, background-color 0.3s ease;
   /* Smooth transitions */
+  margin-bottom: 5%;
 }
 
 .beer {
-  background-color: #28a745;
+  background-color: #ebb112;
 }
 
 .beer:hover {
   /* transform: translateY(-50px); */
-  background-color: #218838;
+  background-color: #f3b407;
   /* Darker shade on hover */
   transform: scale(1.2);
   /* Slightly enlarge on hover */
 }
 
 .log-step {
-  background-color: #007bff;
+  background-color: #1a7fea;
 }
 
 .log-step:hover {
   /* transform: translateY(-50px); */
-  background-color: #0056b3;
+  background-color: #007bff; 
   /* Darker shade on hover */
   transform: scale(1.2);
   /* Slightly enlarge on hover */
@@ -294,14 +416,18 @@ export default {
 }
 
 .submit-button {
-  font-size: 24px;
-  padding: 20px;
+  font-size: 3vh;
+  padding: 2vh;
   border: none;
-  background-color: #28a745;
+  background-color: #007bff;
   color: white;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 5%;
   transition: background-color 0.3s ease;
+  margin-top: 0%;
+  margin-bottom: 10%;
+  height: 10vh;
+  width: 20vh;
 }
 
 .submit-button:hover {
@@ -332,4 +458,80 @@ export default {
   opacity: 0.6;
   pointer-events: none;
 }
+
+.total-steps{
+  text-align: center;
+  margin: 0;
+  color: #ebb112;
+  font-size: 6vh;
+  font-family: 'sans-serif';
+  margin-bottom: 2.5%;
+  margin-top: 0%;
+  margin-right: 5%;
+  border: 0%;
+  
+}
+
+.current-beer{
+  text-align: center;
+  margin: 0;
+  color: #ebb112;
+  font-size: 10vh;
+  font-family: 'sans-serif';
+  margin-bottom: 0%;
+  margin-top: 0%;
+  border: 0%;
+}
+
+.text-center {
+  text-align: center;
+  margin: 0;
+  color: #ebb112;
+  font-size: 6vh;
+  font-family: 'sans-serif';
+  margin-bottom: 0%;
+  margin-top: 2.5vh;
+  border: 0%;
+}
+
+.current-beer-container{
+  margin-top: 0%;
+  margin-bottom: 0%;
+  width: 100%;
+}
+
+.beer-image {
+  width: 14vh; /* Adjust the width as needed */
+  height: auto; /* Keep aspect ratio */
+  margin-right: 0%; /* Space between image and text */
+  vertical-align: middle; /* Align image with text */
+
+}
+
+.total-steps-container{
+  margin-top: 0%;
+  margin-bottom: 0%;
+  width: 100%;
+}
+
+.running-image{
+  width: 14vh; /* Adjust the width as needed */
+  height: auto; /* Keep aspect ratio */
+  margin-right: 0%; /* Space between image and text */
+  margin-top: 2%;
+  margin-bottom: 2%;
+  margin-left: 4%;
+  vertical-align: middle; /* Align image with text */
+}
+
+.justify-content-center{
+  margin-top: 0%;
+}
+
+.reset-steps {
+  margin-bottom: 5%;
+  margin-top: 5%;
+
+}
+
 </style>
