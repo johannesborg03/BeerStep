@@ -3,7 +3,18 @@
     <BRow class="bcard">
       <BCard class="box">
         <h1 class="title">User Settings</h1>
-        <p style="text-align: start; margin-top: 5%;">Profile</p>
+        <p style="text-align: start; margin-top: 5%; margin-bottom: 0%;">Profile</p>
+
+        <BRow>
+          <p class="current-username">
+          {{ username }}
+          </p>
+        </BRow>
+        <BRow>
+          <p class="current-email">
+          {{ email }}
+          </p>
+        </BRow>
 
         <BRow class="d-flex align-items-center justify-content-center">
           <BCol class="text-start d-flex align-items-center">
@@ -77,6 +88,7 @@ export default {
         password: ""
       },
       username: "", // Added username to data()
+      email: "",
       message: "",
       showNotification: false,
       isSubmitting: false, // Track submission state
@@ -92,6 +104,7 @@ export default {
   mounted() {
     const storedUsername = localStorage.getItem('username');
     this.username = storedUsername && storedUsername.trim() !== '' ? storedUsername : 'Guest'; 
+    this.fetchUserData();
   },
   methods: {
     firstIndex() {
@@ -103,6 +116,22 @@ export default {
     },
     deleteAvatar() {
       this.avatar = null; // Reset avatar to default (first letter of username)
+    },
+
+    async fetchUserData() {
+      try {
+        const username = this.$route.params.username; // Get the username from route parameters
+
+        const response = await fetch(`http://localhost:3000/api/users/${username}`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch user data: ${response.status}`);
+        }
+
+        const userData = await response.json();
+        this.email = userData.email; // Set the email from the fetched user data
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
     },
     async submit() {
       this.isSubmitting = true; // Start submission state
@@ -139,6 +168,12 @@ export default {
         const updatedData = await response.json();
         console.log('User Updated Successfully');
         this.message = '';
+
+
+          // Update the email in the component's data to reflect the new value
+          if (this.input.email) {
+            this.email = this.input.email; // Update displayed email
+            }
 
         // Show Notification and Clear Input fields
         this.showNotification = true;
@@ -225,6 +260,8 @@ font-size: 16px;
 text-align: start;
 margin-left: 2%;
 margin-top: 3%;
+font-size: 2.5vh;
+font-family: 'sans-serif';
 }
 
 @media (max-width: 768px) {
@@ -241,6 +278,23 @@ width: 30px;
 .bcard{
 width: 90%;
 }
+}
+
+
+.current-username {
+  text-align: center;
+  margin: 0;
+  color: black;
+  font-size: 3.5vh;
+  font-family: 'sans-serif';
+}
+.current-email {
+  text-align: left;
+  text-align: center;
+  margin: 0;
+  color: black;
+  font-size: 2.5vh;
+  font-family: 'sans-serif';
 }
 
 </style>

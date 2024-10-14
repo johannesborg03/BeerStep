@@ -44,7 +44,7 @@ var userSchema = new mongoose.Schema({
         min: 0
     },
     milestones : [{ 
-        type: mongoose.Schema.Types.ObjectId, ref: 'Milestone'      // Reference to squads
+        type: mongoose.Schema.Types.ObjectId, ref: 'Milestone'      // Reference to Milestones
     }],
 
 }); 
