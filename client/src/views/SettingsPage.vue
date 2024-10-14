@@ -3,26 +3,17 @@
     <BRow class="bcard">
       <BCard class="box">
         <h1 class="title">User Settings</h1>
-        <p style="text-align: start; margin-top: 5%; margin-bottom: 0%;">Profile</p>
-
-        <BRow>
-          <p class="current-username">
-          {{ username }}
-          </p>
-        </BRow>
-        <BRow>
-          <p class="current-email">
-          {{ email }}
-          </p>
-        </BRow>
-
+        <p class="profile-title">Profile</p>
         <BRow class="d-flex align-items-center justify-content-center">
           <BCol class="text-start d-flex align-items-center">
             <BAvatar class="avatar" :src="avatar" v-if="avatar" />
             <BAvatar class="avatar" :text="firstIndex()" v-else />
-            <BCol class="avatar-Buttons d-flex ms-3">
-              <BButton variant="warning" class="me-2" @click="changeAvatar">Change Avatar</BButton>
-              <BButton variant="danger" @click="deleteAvatar">Delete Avatar</BButton>
+            <BCol class="userEmail d-flex ms-3">
+              <p style = "font-weight: 550;">Username: </p>
+              <p class="current-username"> {{ username }} </p>
+              <p>|</p>
+             <p style = "font-weight: 550;">Email: </p>
+              <p class="current-email"> {{ email }}</p>
             </BCol>
           </BCol>
         </BRow>
@@ -222,9 +213,9 @@ export default {
   margin-bottom: 5%;
 }
 
-.avatar-Buttons{
+.userEmail{
 margin-right: 10%;
-margin-bottom: 5%;
+margin-bottom: 3%;
 }
 
 .btn{
@@ -260,8 +251,16 @@ font-size: 16px;
 text-align: start;
 margin-left: 2%;
 margin-top: 3%;
-font-size: 2.5vh;
-font-family: 'sans-serif';
+font-weight: 500;
+color: #000;
+}
+
+.profile-title{
+text-align: start; 
+margin-top: 5%; 
+margin-bottom: 2%; 
+color: black; 
+font-size: 18px;
 }
 
 @media (max-width: 768px) {
@@ -281,20 +280,8 @@ width: 90%;
 }
 
 
-.current-username {
-  text-align: center;
-  margin: 0;
-  color: black;
-  font-size: 3.5vh;
-  font-family: 'sans-serif';
-}
-.current-email {
+.current-username, .current-email  {
   text-align: left;
-  text-align: center;
   margin: 0;
-  color: black;
-  font-size: 2.5vh;
-  font-family: 'sans-serif';
 }
-
 </style>
