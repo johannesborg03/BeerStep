@@ -56,6 +56,69 @@
           </b-button>
         </b-col>
       </b-row>
+
+      <div class="d-flex justify-content-center mb-3">
+        <div class="milestones">
+          <b-button @click="toggleMilestoneForm" class="milestones-button">
+            Milestones
+          </b-button>
+        </div>
+      </div>
+
+
+      
+      <b-row v-if="showMilestoneForm" class="justify-content-center mb-3">
+        <BRow class="bcard">
+          <BCard class="box">
+        <b-col cols="12" md="8" class="milestone-form">
+          <b-form @submit.prevent="createMilestone">
+            <b-form-group label="Milestone Title">
+              <b-form-input v-model="milestone.title" required placeholder="Enter milestone title"></b-form-input>
+            </b-form-group>
+
+            <b-form-group label="Milestone Description">
+              <b-form-textarea v-model="milestone.description" required placeholder="Enter milestone description"></b-form-textarea>
+            </b-form-group>
+
+            <b-form-group label="Number of Beers">
+              <b-form-input type="number" v-model="milestone.beers" required placeholder="Enter number of beers"></b-form-input>
+            </b-form-group>
+
+            <b-form-group label="Number of Steps">
+              <b-form-input type="number" v-model="milestone.steps" required placeholder="Enter number of steps"></b-form-input>
+            </b-form-group>
+
+            <b-button type="submit" variant="success">Save Milestone</b-button>
+          </b-form>
+        </b-col>
+      </BCard>
+    </BRow>
+      </b-row>
+    
+
+      
+      <b-row v-if="milestones.length > 0" class="mt-3">
+        <b-col cols="12">
+          <h3>Your Milestones</h3>
+          <ul class="list-group">
+            <li v-for="(milestone, index) in milestones" :key="index" class="list-group-item">
+              <strong>{{ milestone.title }}</strong> - {{ milestone.description }} 
+              <br>
+              Beers: {{ milestone.beers }}, Steps: {{ milestone.steps }}
+            </li>
+          </ul>
+        </b-col>
+      </b-row>
+      
+
+      <div class="d-flex justify-content-center mb-3">
+      <div class="delete-milestones">
+      <b-button @click="confirmDeleteMilestones" variant="danger" class="delete-milestones-button">
+        Delete Milestones
+      </b-button>
+    </div>
+    </div>
+
       <!-- Reset button at the bottom -->
     <div class="d-flex justify-content-center mb-3">
       <div class="reset-steps">
@@ -64,6 +127,8 @@
       </b-button>
     </div>
     </div>
+
+  
   
 
       <div class="toast-container position-fixed top-0 end-0 p-3">
@@ -82,7 +147,7 @@
     </b-container>
   </div>
 
-  <!-- Reset button at the bottom -->
+  
  
     
   
@@ -92,6 +157,15 @@
 export default {
   data() {
     return {
+      showMilestoneForm: false, // Toggle milestone form visibility
+      milestone: {
+        title: '',
+        description: '',
+        beers: 0,
+        steps: 0,
+      },
+      milestones: [],
+
       showStepInput: false, // Track whether the step input should be shown
       steps: '', // Track the number of steps entered
       showBeerCanvas: false, // Controls visibility of beer selection OffCanvas
@@ -130,8 +204,82 @@ export default {
 
   mounted() {
     this.fetchUserData();
+    this.fetchUserMilestones();
   },
   methods: {
+
+    fetchUserMilestones() {
+        const username = localStorage.getItem('username'); // Retrieve the username from local storage
+        fetch(`http://localhost:3000/api/users/${username}/milestones`)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`Error fetching milestones: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then((data) => {
+                this.milestones = data.milestones; // Assign the milestones to the component's data property
+            })
+            .catch((error) => {
+                console.error('Error fetching milestones:', error);
+             /*   this.showToastNotification('Failed to load milestones. Please try again.'); THIS SHOWS UP IF NO MILESTONES ARE THERE */ 
+            });
+    },
+     // Create and save the milestone
+     createMilestone() {
+      const username = localStorage.getItem('username'); // Retrieve the username from local storage
+      const milestoneData = {
+        title: this.milestone.title,
+        description: this.milestone.description,
+        beers: this.milestone.beers,
+        steps: this.milestone.steps
+        
+  };
+
+  // Send a POST request to the backend API
+  fetch(`http://localhost:3000/api/users/${username}/milestones`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(milestoneData),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Error saving milestone: ${response.statusText}`);
+      }
+      return response.json();
+    })
+    .then((savedMilestone) => {
+
+      
+      // Push the saved milestone to the milestones array
+      this.milestones.push(savedMilestone); 
+      this.fetchUserMilestones(); 
+      this.showToastNotification('Milestone successfully saved!'); // Show success toast
+      this.milestone = { title: '', description: '', beers: 0, steps: 0 }; // Reset the form fields
+      this.showMilestoneForm = false; // Hide the form
+    })
+    .catch((error) => {
+      console.error('Error saving milestone:', error);
+      this.showToastNotification('Failed to save milestone. Please try again.');
+   
+      
+      this.milestone = { title: '', description: '', beers: 0, steps: 0 }; // Reset form fields
+      this.showMilestoneForm = false; // Hide the form
+      
+    });
+    },
+    toggleMilestoneForm() {
+      this.showMilestoneForm = !this.showMilestoneForm;
+    },
+
+    confirmDeleteMilestones() {
+      const userConfirmed = window.confirm("Are you sure you want to delete your milestones?");
+      if (userConfirmed) {
+        this.deleteMilestones();
+      }
+    },
 
     confirmResetSteps() {
       const userConfirmed = window.confirm("Are you sure you want to reset your steps?");
@@ -139,6 +287,36 @@ export default {
         this.resetSteps();
       }
     },
+
+    async deleteMilestones(){
+      const username = localStorage.getItem('username');
+
+      try {
+      const response = await fetch(`http://localhost:3000/api/users/${username}/milestones`, {
+        method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+      },
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      this.milestones = [];
+      alert(data.message);
+      this.showToastNotification('Milestones successfully Deleted!');
+    } else {
+      alert(`Error: ${data.message}`);
+        
+    }
+  } catch (error) {
+    console.error('Error deleting milestones:', error);
+    alert('An error occurred while deleting milestones.');
+        this.showToastNotification('Failed to delete milestones. Please try again.');
+  }
+    },
+
+
+
     resetSteps(){
       const username = localStorage.getItem('username');
 
@@ -533,5 +711,55 @@ export default {
   margin-top: 5%;
 
 }
+
+.delete-milestones{
+  margin-top: 2.5%;
+
+}
+
+.Milestones {
+  width: 5vh;
+  height: 100vh;
+  margin-top: 5%; 
+
+}
+
+.milestones-button {
+  margin-top: 10%;
+  width: 30vh;
+  height: 10vh;
+  color: #000000;
+  background-color: #ebb112;
+}
+
+
+.milestone-form {
+  
+  margin: auto; /* Centers the form horizontally */
+
+}
+
+.box {
+    background-color: rgb(238, 238, 238);
+    border-radius: 3%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15%;
+    width: 50%; /* Adjust the width */
+    padding: 0; /* Add padding */
+}
+
+.bcard {
+  justify-content: center;
+  display: flex; /* Aligns content inside */
+  width: 100%;
+}
+
+.milestone-list {
+  list-style-type: none;
+  width: 100%;
+}
+
+
+
 
 </style>

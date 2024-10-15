@@ -145,6 +145,39 @@ router.delete('/api/milestones', async function (req, res) {
     }
 });
 
+// Delete all milestones for a specific user (DELETE /api/users/:username/milestones)
+router.delete('/api/users/:username/milestones', async function (req, res) {
+    try {
+        const username = req.params.username;
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Delete all milestones for the user
+        const deleteResult = await Milestone.deleteMany({ username: user._id });
+
+        // Also clear the milestones array in the User document
+        user.milestones = [];
+        await user.save();
+
+        res.status(200).json({
+            message: "All milestones for the user successfully deleted",
+            deletedCount: deleteResult.deletedCount,
+        });
+    } catch (err) {
+        res.status(500).json({
+            message: "Server error while deleting milestones",
+            error: err.message,
+        });
+    }
+});
+
+
+
+
+
+
 // Update a milestone by ID (PATCH /api/milestones/:id)
 router.patch('/api/milestones/:id', async function (req, res) {
     try {
