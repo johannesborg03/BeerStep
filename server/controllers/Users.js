@@ -3,6 +3,7 @@ var router = express.Router();
 
 var User = require('../models/User.js');
 var Squad = require('../models/Squad.js');
+var Leaderboard = require('../models/Leaderboard.js')
 
 var methodOverride = require('method-override');
 
@@ -229,6 +230,62 @@ router.patch('/api/users/:username', async function (req, res) {
         res.status(500).json({
             message: "Server error while updating the user",
             error: err.message,
+        });
+    }
+});
+
+router.delete('/api/users/:username/squads', async function (req, res) {
+    try {
+        const username = req.params.username;
+        
+        // Find the user by username
+        const user = await User.findOne({ username: username });
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found"
+            });
+        }
+
+        // Find the squads where the user is the creator and a member
+        const squadsToDelete = await Squad.find({
+            _id: { $in: user.squads },              
+            created_by: user._id                    
+        });
+
+        if (squadsToDelete.length === 0) {
+            return res.status(404).json({
+                message: "No squads found to delete"
+            });
+        }
+
+        // Loop through each squad to handle members and leaderboards
+        for (const squad of squadsToDelete) {
+            await User.updateMany(
+                { squads: squad._id },                
+                { $pull: { squads: squad._id } }       
+            );
+
+            
+            if (squad.leaderboard) {
+                await Leaderboard.findByIdAndDelete(squad.leaderboard);
+            }
+        }
+
+        
+        await Squad.deleteMany({
+            _id: { $in: squadsToDelete.map(squad => squad._id) }
+        });
+
+        res.status(200).json({
+            message: "Squads and associated leaderboards deleted successfully",
+            deletedSquads: squadsToDelete.map(squad => squad.squadName)
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            message: "Server error while deleting squads the user created",
+            error: error.message,
         });
     }
 });

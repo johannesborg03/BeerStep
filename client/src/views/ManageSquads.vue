@@ -220,11 +220,46 @@ export default {
       }
     },
 
-    deleteAllAdminSquads() {
-      alert('Delete all admin squads')
+    async deleteAllAdminSquads() {
+      // Confirm deletion with the user
+      const confirmDeletion = confirm('Are you sure you want to delete all squads you admin? This action cannot be undone.');
+
+      if (!confirmDeletion) {
+        return;  // User canceled, exit the function
+      }
+
+      const username = this.currentUsername;  // Get the current username from localStorage
+
+      try {
+        // Call the DELETE API to delete all squads the user admin
+        const response = await fetch(
+          `http://localhost:3000/api/users/${username}/squads`, 
+          {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+
+        if (response.ok) {
+          const result = await response.json();
+          alert(`Successfully deleted squads: ${result.deletedSquads.join(', ')}`);
+
+          // Refresh squads list after deletion
+          await this.fetchSquads();
+          this.selectedSquad = null;  // Clear selected squad if any
+        } else {
+          const errorData = await response.json();
+          throw new Error(`Failed to delete squads: ${errorData.message}`);
+        }
+      } catch (error) {
+        console.error('Error while deleting all admin squads:', error);
+        alert('An error occurred while trying to delete all admin squads. Please try again.');
+      }
     },
 
-    async kickMember(squad, member) {
+  async kickMember(squad, member) {
   const username = localStorage.getItem('username'); // Current logged-in user's username
 
   if (!username) {
