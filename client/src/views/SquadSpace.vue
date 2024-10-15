@@ -8,7 +8,7 @@
                             <BAvatar class="avatar" :text="firstIndex()"/>
                         </BCol>
                         <BCol class="inputfield text-center">
-                            <BFormInput v-model="message" placeholder="Share or Ask Something" />
+                            <BFormInput class = "form" v-model="message" placeholder="Share or Ask Something" />
                         </BCol>
                         <BCol class="submit-Col text-end">
                             <BButton class="submit-button" @click="onSubmit">Submit</BButton>
@@ -147,16 +147,19 @@ li {
 }
 
 @media (max-width: 768px) {
-
-.avatar{
-display: none;
-}
-
 .brow{
 width: 95%;
 }
-.title{
-display: none;
 }
+
+@media (max-width: 480px) {
+.brow{
+width: 100%;
+}
+
+.form::placeholder {
+  visibility: hidden; 
+}
+
 }
 </style>
