@@ -5,21 +5,21 @@
                 <BCard class="text-center" style="margin-top: 5%;">
                     <BRow class="d-flex align-items-center">
                         <BCol class="Avatar text-start">
-                            <BAvatar class="avatar"></BAvatar>
+                            <BAvatar class="avatar" :text="firstIndex()" />
                         </BCol>
                         <BCol class="inputfield text-center">
-                            <BFormInput v-model="message" placeholder="Share or Ask Something" />
+                            <BFormInput class="form" v-model="message" placeholder="Share or Ask Something" />
                         </BCol>
                         <BCol class="submit-Col text-end">
                             <BButton class="submit-button" @click="onSubmit">Submit</BButton>
                         </BCol>
                     </BRow>
                 </BCard>
-                <BCard class="form-card">
-                    <h3 class="title">SquadSpace</h3>
-                    <ul>
+                <BCard class="form-card text-start">
+                    <h3 class="title text-start">SquadSpace</h3> 
+                    <ul> 
                         <li v-for="(formPost, index) in squadforum" :key="index">
-                            <p><strong>{{ formPost.username }}: {{ formPost.message }}</strong></p>
+                            <p> <span style="color: darkorange;"><strong>{{ formPost.username }}</strong></span>: {{ formPost.message }}</p>
                         </li>
                     </ul>
                 </BCard>
@@ -27,7 +27,8 @@
         </BRow>
 
         <div class="toast-container position-fixed top-0 end-0 p-3">
-            <div id="liveToast" class="toast bg-dark" role="alert" style="color: white;" aria-live="assertive" aria-atomic="true" :class="{'show': showToast}">
+            <div id="liveToast" class="toast bg-dark" role="alert" style="color: white;" aria-live="assertive"
+                aria-atomic="true" :class="{ 'show': showToast }">
                 <div class="toast-header bg-dark" style="color: white;">
                     <strong class="me-auto">Post Tracker</strong>
                     <small>Just now</small>
@@ -53,9 +54,13 @@ export default {
         };
     },
     mounted() {
-        this.username = localStorage.getItem('username') || 'Guest';
+        const storedUsername = localStorage.getItem('username')?.trim();
+        this.username = storedUsername ? storedUsername : 'Guest';
     },
     methods: {
+        firstIndex() {
+            return this.username.charAt(0).toUpperCase();
+        },
         onSubmit() {
             if (this.message.trim() === '') {
                 return; // Prevent empty submissions
@@ -84,14 +89,14 @@ export default {
         }
     }
 };
-</script> 
+</script>
 
 <style scoped>
-
-.brow{
-    min-height: 100vh; 
+.brow {
+    min-height: 100vh;
     width: 60%;
 }
+
 .page-wrapper {
     background-image: url('@/assets/squad.jpg');
     background-size: cover;
@@ -104,28 +109,36 @@ export default {
 
 .form-card {
     background-color: #292929;
-    padding: 30%;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
     overflow-y: auto;
     max-height: 600px; 
+    min-height: 600px; 
+    
 }
 
-.submit-button {
-    background-color: #f0ad4e;
-    border: none;
+.title {
+    color: white;
+   
 }
 
 ul {
     list-style: none;
     padding: 0;
+
 }
 
 li {
     padding: 15px;
     border-radius: 8px;
     color: white;
+}
+
+
+.submit-button {
+    background-color: #f0ad4e;
+    border: none;
 }
 
 .text-center {
@@ -137,22 +150,20 @@ li {
     color: white;
 }
 
-.title {
-
-    color: white;
-}
-
 @media (max-width: 768px) {
-
-.avatar{
-display: none;
+    .brow {
+        width: 95%;
+    }
 }
 
-.brow{
-width: 95%;
-}
-.title{
-display: none;
-}
+@media (max-width: 480px) {
+    .brow {
+        width: 100%;
+    }
+
+    .form::placeholder {
+        visibility: hidden;
+    }
+
 }
 </style>

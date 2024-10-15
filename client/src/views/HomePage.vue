@@ -1,86 +1,75 @@
 <template>
-  <div class ="main bg-dark" style="min-height: 100vh;">
-  <BRow>
-      <div class="beerBack">
-        <b-img src="/src/assets/set&homeBackground.jpg" fluid class="bg-cover" />
-      </div>
-    <BCol class ="overlay">
-      <div class="stats">
-        <h2>{{stepsNeeded}}</h2>
-        <p>Steps Needed</p>
-      </div>
-      <router-link to="/Activity" class="btn btn-danger w-25">Log activity</router-link>
-    </BCol>
-   
-   
-  <BCol class="quotes text-start">
-    <p style="color: #ebb112;">Quote of the week</p>
-    <BCard class="card-quotes">
-      <p>Walk off the beer and enjoy the next one guilt-free!</p>
-    </BCard>
-    </BCol>
-    <BCol class= "middleColumn"></BCol>
-    <BCol class="goal text-end">
- <p style="color: #ebb112; font-size:20px; ">Personal Goal</p>
-  <BCard class= "card-goal">
-      <pre v-if="submittedGoal" class="goal-display">My Goal: {{ submittedGoal }}</pre>
-      <BFormInput id="inputfield" v-model="goal" placeholder="Enter your goal..." />
-      <BButton variant="warning" @click="submitGoal" class="button">Submit Goal</BButton>
-  </BCard>
-</BCol>
+  <div class="main bg-dark" style="min-height: 100vh;">
+    <BRow>
+      <b-img src="/src/assets/set&homeBackground.jpg" fluid class="beerBack" />
+      <BCol class="overlay">
+        <div class="stats">
+          <h2>{{ stepsNeeded }}</h2>
+          <p>Steps Needed</p>
+        </div>
+        <router-link to="/Activity" class="btn btn-danger w-25">Log activity</router-link>
+      </BCol>
 
-  </BRow>
-</div>
+      <BCol class="quotes text-start">
+        <p style="color: #ebb112;">Quote of the week</p>
+        <BCard class="card-quotes">
+          <p>Walk off the beer and enjoy the next one guilt-free!</p>
+        </BCard>
+      </BCol>
+      <BCol class="middleColumn"></BCol>
+      <BCol class="goal text-end">
+        <p style="color: #ebb112; font-size: 20px;">Personal Goal</p>
+        <BCard class="card-goal">
+          <pre v-if="submittedGoal" class="goal-display">My Goal: {{ submittedGoal }}</pre>
+          <BFormInput id="inputfield" v-model="goal" placeholder="Enter your goal..." />
+          <BButton variant="warning" @click="submitGoal" class="button">Submit Goal</BButton>
+        </BCard>
+      </BCol>
+    </BRow>
+  </div>
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
-
 export default {
-  setup() {
-    const goal = ref('')
-    const submittedGoal = ref('')
-    const stepsNeeded = ref(0)
-    const username = ref('')
-
-    const displaySteps = async () => {
-      try {
-        const response = await fetch(`http://localhost:3000/api/users/${username.value}`)
-        if (!response.ok) {
-          throw new Error(`Error fetching user data: ${response.statusText}`)
-        }
-        const data = await response.json()
-        stepsNeeded.value = data.stepsNeeded || 0  // Fallback in case the field doesn't exist
-      } catch (error) {
-        console.error('Error fetching steps:', error)
-      }
-    }
-
-    // Submit goal function
-    const submitGoal = () => {
-      if (goal.value.trim()) {
-        submittedGoal.value = goal.value
-        goal.value = ''
-      }
-    }
-
-    // Fetch username and steps on component mount
-    onMounted(() => {
-      username.value = localStorage.getItem('username') || 'Guest'  // Get username from localStorage
-      console.log('Username:', username.value)
-      displaySteps()  // Fetch steps after retrieving the username
-    })
-
+  data() {
     return {
-      goal,
-      submittedGoal,
-      stepsNeeded,
-      submitGoal,
-    }
-  }
-}
-</script>
+      goal: "",            
+      submittedGoal: "",   
+      stepsNeeded: 0,      
+      username: "",     
+    };
+  },
 
+  mounted() {
+    this.username = localStorage.getItem("username") || "Guest";
+    this.displaySteps(); 
+  },
+
+  methods: {
+  
+    async displaySteps() {
+      try {
+        const response = await fetch(`http://localhost:3000/api/users/${this.username}`);
+        if (!response.ok) {
+          throw new Error(`Error fetching user data: ${response.statusText}`);
+        }
+        const data = await response.json();
+        this.stepsNeeded = data.steps_needed || 0;
+      } catch (error) {
+        console.error("Error fetching steps:", error);
+      }
+    },
+
+    // Submit goal and clear input field
+    submitGoal() {
+      if (this.goal.trim()) {
+        this.submittedGoal = this.goal;
+        this.goal = ""; 
+      }
+    },
+  },
+};
+</script>
 
 <style scoped>
 
@@ -90,6 +79,8 @@ export default {
   height: 64vh; 
   overflow: hidden;
   box-shadow: #292929;
+  background-size: cover;
+  background-position: center;
 }
 
 .overlay {
@@ -168,6 +159,11 @@ display: none;
 .overlay{
 margin-top: 200px;
 }
+
+.btn{
+font-size: 12px;
+}
+
 
 }
 </style>
