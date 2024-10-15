@@ -157,6 +157,10 @@ export default {
 .Leaderboard {
   padding: 20px;
   text-align: center;
+  background-image: url('/src/assets/squad.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
 }
 
 h1 {
