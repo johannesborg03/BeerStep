@@ -207,6 +207,111 @@
 			"response": []
 		},
 		{
+			"name": "DELETE/USERS/USERNAME/SQUADS",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 for success\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Create user\r",
+							"pm.sendRequest({\r",
+							"    url: 'http://localhost:3000/api/users',\r",
+							"    method: 'POST',\r",
+							"    header: {\r",
+							"        'Content-Type': 'application/json'\r",
+							"    },\r",
+							"    body: {\r",
+							"        mode: 'raw',\r",
+							"        raw: JSON.stringify({\r",
+							"            username: 'john_doe12',\r",
+							"            email: 'john6@example.com',\r",
+							"            password: 'password123'\r",
+							"        })\r",
+							"    }\r",
+							"}, function (err, res) {\r",
+							"    if (err) {\r",
+							"        console.error(err);\r",
+							"        return;\r",
+							"    }\r",
+							"\r",
+							"    const userId = res.json().user._id; \r",
+							"\r",
+							"    \r",
+							"    pm.environment.set('username', 'john_doe12');\r",
+							"\r",
+							"    \r",
+							"    if (userId) {\r",
+							"        \r",
+							"        pm.sendRequest({\r",
+							"            url: 'http://localhost:3000/api/squads',\r",
+							"            method: 'POST',\r",
+							"            header: {\r",
+							"                'Content-Type': 'application/json'\r",
+							"            },\r",
+							"            body: {\r",
+							"                mode: 'raw',\r",
+							"                raw: JSON.stringify({\r",
+							"                    squadName: 'Team Awesome5',\r",
+							"                    created_by: userId \r",
+							"                })\r",
+							"            }\r",
+							"        }, function (err, res) {\r",
+							"            if (err) {\r",
+							"                console.error(err);\r",
+							"                return;\r",
+							"            }\r",
+							"\r",
+							"            console.log(\"Squad created successfully.\");\r",
+							"        });\r",
+							"    } else {\r",
+							"        console.error(\"User ID not found, unable to create squad.\");\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/users/:username/squads",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users",
+						":username",
+						"squads"
+					],
+					"variable": [
+						{
+							"key": "username",
+							"value": "{{username}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "DELETE/USERID",
 			"event": [
 				{
