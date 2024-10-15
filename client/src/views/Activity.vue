@@ -274,12 +274,49 @@ export default {
       this.showMilestoneForm = !this.showMilestoneForm;
     },
 
+    confirmDeleteMilestones() {
+      const userConfirmed = window.confirm("Are you sure you want to delete your milestones?");
+      if (userConfirmed) {
+        this.deleteMilestones();
+      }
+    },
+
     confirmResetSteps() {
       const userConfirmed = window.confirm("Are you sure you want to reset your steps?");
       if (userConfirmed) {
         this.resetSteps();
       }
     },
+
+    async deleteMilestones(){
+      const username = localStorage.getItem('username');
+
+      try {
+      const response = await fetch(`http://localhost:3000/api/users/${username}/milestones`, {
+        method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+      },
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      this.milestones = [];
+      alert(data.message);
+      this.showToastNotification('Milestones successfully Deleted!');
+    } else {
+      alert(`Error: ${data.message}`);
+        
+    }
+  } catch (error) {
+    console.error('Error deleting milestones:', error);
+    alert('An error occurred while deleting milestones.');
+        this.showToastNotification('Failed to delete milestones. Please try again.');
+  }
+    },
+
+
+
     resetSteps(){
       const username = localStorage.getItem('username');
 
@@ -672,6 +709,11 @@ export default {
 .reset-steps {
   margin-bottom: 5%;
   margin-top: 5%;
+
+}
+
+.delete-milestones{
+  margin-top: 2.5%;
 
 }
 
