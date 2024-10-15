@@ -160,5 +160,10 @@ display: none;
 margin-top: 200px;
 }
 
+.btn{
+font-size: 12px;
+}
+
+
 }
 </style>

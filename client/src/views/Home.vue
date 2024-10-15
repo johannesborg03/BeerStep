@@ -67,7 +67,7 @@ export default {
   font-size: 45px;
   font-family: 'sans-serif';
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-  color:  whitesmoke;
+  color: #ebb112;
   text-align: center;
   margin-top: 10px
 }

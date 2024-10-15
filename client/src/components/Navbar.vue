@@ -4,8 +4,7 @@
     <BNavbarToggle target="nav-collapse" />
 
     <BCollapse id="nav-collapse" is-nav>
-      <!-- Left Aligned Navbar Links -->
-      <BNavbarNav class="d-flex gap-4">
+      <BNavbarNav class="d-flex gap-2">
         <BNavItem class="buttonsNav">
           <router-link to="/HomePage">Home</router-link>
         </BNavItem>
@@ -16,15 +15,18 @@
           <router-link to="/Leaderboard">Leaderboard</router-link>
         </BNavItem>
       </BNavbarNav>
-      
-      <!-- Right Aligned Navbar Items -->
+
       <BNavbarNav class="ms-auto mb-2 mb-lg-0">
-        <!-- Hide Username and Avatar on Small Screens -->
         <div class="d-none d-lg-flex align-items-center">
           <BAvatar class="avatar" :text="firstIndex()" size="sm" />
           <span class="username ml-3">{{ username }}</span>
         </div>
-        <BDropdown class="custom-dropdown ml-3" variant="transparent" size="sm" right>
+
+        <!-- Dropdown for Settings and Logout with Label for Small Screens -->
+        <BDropdown class="custom-dropdown ml-3 text-center" variant="transparent" size="sm" right>
+          <template #button-content>
+            <span class="d-lg-none" style="margin-left: 26%; font-size: 16px; font-family: sans-serif;">Account</span>  
+          </template>
           <BDropdownItem @click="goToSettings">Settings</BDropdownItem>
           <BDropdownItem @click="logout">Logout</BDropdownItem>
         </BDropdown>
@@ -39,11 +41,10 @@ export default {
   data() {
     return {
       menuVisible: false,
-      username: ''  // Add a property to hold the username
+      username: '' 
     };
   },
   mounted() {
-    // Retrieve the username from local storage on component mount
     this.username = localStorage.getItem('username') || 'Guest';
   },
   methods: {
@@ -52,7 +53,6 @@ export default {
     },
     goToSettings() {
       const username = localStorage.getItem('username');
-      // Navigate to the settings page with the username as a route param
       if (username) {
         this.$router.push({ name: 'SettingsPage', params: { username: this.username } });
       } else {
@@ -60,7 +60,7 @@ export default {
       } 
     },
     firstIndex() {
-      return this.username.charAt(0); // Get the first character of the username
+      return this.username.charAt(0); 
     },
     logout() {
       // Clear the localStorage on logout
@@ -69,7 +69,7 @@ export default {
     }
   }
 }
-</script>
+</script> 
 
 <style scoped>
 .brand {
@@ -80,7 +80,7 @@ export default {
 }
 .buttonsNav{
   font-family: sans-serif;
-  gap: 40px;
+  gap: 30px;
 }
 .username {
   font-size: 13px;
