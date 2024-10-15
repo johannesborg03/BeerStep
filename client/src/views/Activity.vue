@@ -111,6 +111,13 @@
       </b-row>
       
 
+      <div class="d-flex justify-content-center mb-3">
+      <div class="delete-milestones">
+      <b-button @click="confirmDeleteMilestones" variant="danger" class="delete-milestones-button">
+        Delete Milestones
+      </b-button>
+    </div>
+    </div>
 
       <!-- Reset button at the bottom -->
     <div class="d-flex justify-content-center mb-3">
