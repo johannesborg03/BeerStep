@@ -222,7 +222,7 @@ export default {
             })
             .catch((error) => {
                 console.error('Error fetching milestones:', error);
-                this.showToastNotification('Failed to load milestones. Please try again.');
+             /*   this.showToastNotification('Failed to load milestones. Please try again.'); THIS SHOWS UP IF NO MILESTONES ARE THERE */ 
             });
     },
      // Create and save the milestone
