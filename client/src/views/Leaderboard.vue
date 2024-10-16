@@ -3,7 +3,9 @@
     <h1>Leaderboard</h1>
     <div>
       <!-- Squad Dropdown to select squad -->
-      <label for="squadSelect" style="color: whitesmoke;"> <strong>Select Squad:</strong></label>
+      <label for="squadSelect" style="color: whitesmoke;">
+        <strong>Select Squad:</strong>
+      </label>
       <select v-model="selectedSquad" @change="fetchLeaderboardData" class="squad-select">
         <option v-for="squad in squads" :key="squad._id" :value="squad">
           {{ squad.squadName }}
@@ -20,9 +22,19 @@
     <table class="leaderboard-table">
       <thead>
         <tr>
-          <th>Rank</th>
-          <th>User</th>
-          <th>Points</th>
+          <th @click="sortBy('rank')">Rank</th>
+          <th @click="sortBy('user')">
+            User
+            <span v-if="sortKey === 'user'">
+              {{ sortOrder === 1 ? '▲' : '▼' }}
+            </span>
+          </th>
+          <th @click="sortBy('score')">
+            Points
+            <span v-if="sortKey === 'score'">
+              {{ sortOrder === 1 ? '▲' : '▼' }}
+            </span>
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -44,18 +56,20 @@ export default {
       leaderboardData: [], // To store leaderboard rankings
       squads: [], // To store the fetched squads
       selectedSquad: null, // Stores the selected squad object
+      sortKey: 'rank', // Initial sorting by rank
+      sortOrder: 1, // 1 for ascending, -1 for descending
     };
   },
   methods: {
+    // Fetch squads
     async fetchSquads() {
-      const username = localStorage.getItem('username'); // Get the username from localStorage
+      const username = localStorage.getItem('username');
       if (!username) {
         alert('No username found. Please log in again.');
         return;
       }
 
       try {
-        // Fetch the squads for the user
         const response = await fetch(`http://localhost:3000/api/users/${username}/squads`, {
           method: 'GET',
           headers: {
@@ -65,32 +79,26 @@ export default {
 
         if (response.ok) {
           const data = await response.json();
-          this.squads = data.squads; // Populate the squads array with the API response
+          this.squads = data.squads;
           if (this.squads.length > 0) {
             this.selectedSquad = this.squads[0]; // Select the first squad by default
             this.fetchLeaderboardData(); // Fetch leaderboard for the first squad
           }
         } else {
           const errorData = await response.json();
-          console.error('Error fetching squads:', errorData.message);
           alert('Error fetching squads. Please try again.');
         }
       } catch (error) {
-        console.error('Error fetching squads:', error);
         alert('Error fetching squads. Please try again.');
       }
     },
 
-    async fetchLeaderboardData() {
-      if (!this.selectedSquad) {
-        return; // Do nothing if no squad is selected
-      }
-    
-      const leaderboardId = this.selectedSquad.leaderboard; // Get leaderboard_id from the selected squad
-      console.log(leaderboardId);
 
+    async fetchLeaderboardData() {
+      if (!this.selectedSquad) return;
+
+      const leaderboardId = this.selectedSquad.leaderboard;
       try {
-        // Fetch the leaderboard data using the leaderboard_id
         const response = await fetch(`http://localhost:3000/api/leaderboards/${leaderboardId}`, {
           method: 'GET',
           headers: {
@@ -100,54 +108,64 @@ export default {
 
         if (response.ok) {
           const leaderboard = await response.json();
-          // Populate the leaderboardData with user data and scores
           this.leaderboardData = leaderboard.rankings.map((ranking) => ({
-            user: ranking.userId.username, // Assuming the `userId` is populated with the user object containing `username`
+            user: ranking.userId.username,
             score: ranking.score,
           }));
+          this.sortLeaderboard(); // Sort the leaderboard after fetching
         } else {
-          const errorData = await response.json();
-          console.error('Error fetching leaderboard:', errorData.message);
           alert('Error fetching leaderboard. Please try again.');
         }
       } catch (error) {
-        console.error('Error fetching leaderboard:', error);
         alert('Error fetching leaderboard. Please try again.');
       }
     },
 
-    // New Method to fetch the Global Leaderboard
     async fetchGlobalLeaderboardData() {
       try {
-        console.log("Entered method");
-        // Fetch the global leaderboard data
         const response = await fetch('http://localhost:3000/api/leaderboards/type/global', {
           method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
         });
-        console.log("call good");
+
         if (response.ok) {
           const leaderboard = await response.json();
-          // Populate the leaderboardData with global user data and scores
           this.leaderboardData = leaderboard.map((entry) => ({
-            user: entry.username, // Use the username directly from the global leaderboard data
+            user: entry.username,
             score: entry.score,
           }));
+          this.sortLeaderboard(); // Sort after fetching global data
         } else {
-          const errorData = await response.json();
-          console.error('Error fetching global leaderboard:', errorData.message);
           alert('Error fetching global leaderboard. Please try again.');
         }
       } catch (error) {
-        console.error('Error fetching global leaderboard:', error);
         alert('Error fetching global leaderboard. Please try again.');
       }
     },
+
+    // Sort the leaderboard by the selected key (user or score)
+    sortBy(key) {
+      if (this.sortKey === key) {
+        this.sortOrder *= -1; // Toggle sorting order
+      } else {
+        this.sortKey = key;
+        this.sortOrder = 1; // Reset to ascending when a new column is selected
+      }
+      this.sortLeaderboard();
+    },
+
+    // Sort the leaderboard data based on the sortKey and sortOrder
+    sortLeaderboard() {
+      this.leaderboardData.sort((a, b) => {
+        let result = 0;
+        if (a[this.sortKey] < b[this.sortKey]) result = -1;
+        if (a[this.sortKey] > b[this.sortKey]) result = 1;
+        return result * this.sortOrder;
+      });
+    },
   },
   mounted() {
-    this.fetchSquads(); // Fetch the squads when the component is mounted
+    this.fetchSquads();
   },
 };
 </script>
@@ -167,7 +185,7 @@ h1 {
   font-size: 3rem;
   color: whitesmoke;
   margin-bottom: 20px;
-  font-family:  Tahoma;
+  font-family: Tahoma;
 }
 
 .squad-select {
@@ -178,7 +196,6 @@ h1 {
   border: 2px solid #ccc;
   margin-bottom: 20px;
   margin-left: 10px;
-
 }
 
 .leaderboard-table {
@@ -188,7 +205,6 @@ h1 {
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 15px;
   margin: 20px auto;
-
 }
 
 thead {
@@ -199,12 +215,18 @@ thead {
 th, td {
   padding: 15px;
   text-align: left;
-  font-size: 1.5rem; 
+  font-size: 1.5rem;
 }
 
 th {
+  cursor: pointer;
   text-transform: uppercase;
   border-bottom: 2px solid #ddd;
+}
+
+th span {
+  font-size: 0.8rem;
+  margin-left: 5px;
 }
 
 tbody tr:nth-child(odd) {
@@ -219,6 +241,12 @@ td {
   font-size: 1.2rem;
 }
 
+.global-leaderboard-button {
+  font-family: Tahoma;
+  border-radius: 15px;
+  background-color: whitesmoke;
+}
+
 @media (max-width: 768px) {
   h1 {
     font-size: 2rem;
@@ -228,47 +256,5 @@ td {
     font-size: 1rem;
     padding: 10px;
   }
-}
-.massive-button {
-  font-family: 'sans-serif';
-  width: 600px;
-  height: 500px;
-  font-size: 100px;
-  color: rgb(6, 4, 1);
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: transform 0.3s ease, background-color 0.3s ease;
-}
-
-.beer {
-  background-color: #28a745;
-}
-
-.beer:hover {
-  background-color: #218838;
-  transform: scale(1.2);
-}
-
-.log-step {
-  background-color: #007bff;
-}
-
-.log-step:hover {
-  background-color: #0056b3;
-  transform: scale(1.2);
-}
-
-.button-container {
-  display: flex;
-  justify-content: center;
-  gap: 500px;
-  margin-top: 20px;
-}
-
-.global-leaderboard-button{
-  font-family:  Tahoma;
-  border-radius: 15px;
-  background-color: whitesmoke;
 }
 </style>
