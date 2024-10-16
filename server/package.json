@@ -15,7 +15,7 @@
     "ci-test": "npm run newman-server",
     "newman-server": "cross-env-shell PORT=3000 \"npm run dropdb && run-p --race start newman-wait\"",
     "newman-wait": "wait-on http://localhost:3000/api && npm run newman",
-    "newman": "newman run ./tests/BeerStepAPItestsWithNewScripts.postman_collection.json --env-var host=http://localhost:3000",
+    "newman": "newman run ./tests/BeerStepAPItests.postman_collection.json --env-var host=http://localhost:3000",
     "dropdb": "node ./tests/dropdb.js"
   },
   "repository": {
