@@ -30,6 +30,14 @@
             Beer
           </b-button>
 
+          <div class="d-flex justify-content-center mb-3">
+      <div class="reset">
+      <b-button @click="confirmResetBeer" variant="danger" class="reset-button">
+        Reset Beers
+      </b-button>
+    </div>
+    </div>
+
           <!-- OffCanvas for beer selection -->
           <b-offcanvas v-model="showBeerCanvas" title="Choose Your Beer" :placement="'bottom'" class="bg-dark" style="color: white; height: 40%;">
             <b-list-group>
@@ -44,6 +52,15 @@
           <b-button @click="showStepInput = true" variant="primary" block class="massive-button log-step">
             Step
           </b-button>
+
+          <div class="d-flex justify-content-center mb-3">
+      <div class="reset">
+      <b-button @click="confirmResetSteps" variant="danger" class="reset-button">
+        Reset Steps
+      </b-button>
+    </div>
+    </div>
+
         </b-col>
       </b-row>
 
@@ -57,6 +74,7 @@
         </b-col>
       </b-row>
 
+       <!-- 
       <div class="d-flex justify-content-center mb-3">
         <div class="milestones">
           <b-button @click="toggleMilestoneForm" class="milestones-button">
@@ -64,9 +82,31 @@
           </b-button>
         </div>
       </div>
+    -->
 
+ <div class="d-flex justify-content-center mb-3">
+        <div class="milestones">
+          <b-button @click="toggleMilestones" class="milestones-button">
+            Milestones
+          </b-button>
+        </div>
+      </div>
 
       
+     
+    
+
+      <b-row v-if="showMilestones" class = "justify-content-center mb-3">
+
+
+        <div class="d-flex justify-content-center mb-3">
+        <div class="milestones">
+          <b-button @click="toggleMilestoneForm" class="milestones-button">
+            Create Milestone
+          </b-button>
+        </div>
+      </div>
+
       <b-row v-if="showMilestoneForm" class="justify-content-center mb-3">
         <BRow class="bcard">
           <BCard class="box">
@@ -92,34 +132,105 @@
           </b-form>
         </b-col>
       </BCard>
+      
     </BRow>
       </b-row>
-    
-
       
+
       <b-row v-if="milestones.length > 0" class="mt-3">
         <b-col cols="12">
           <h3>Your Milestones</h3>
           <ul class="list-group">
             <li v-for="(milestone, index) in milestones" :key="index" class="list-group-item">
-              <strong>{{ milestone.title }}</strong> - {{ milestone.description }} 
+              <strong>Title: {{ milestone.title }} <br>
+              </strong>
+              <strong>Description: {{ milestone.description }}
               <br>
-              Beers: {{ milestone.beers }}, Steps: {{ milestone.steps }}
-            </li>
-          </ul>
-        </b-col>
-      </b-row>
-      
+            </strong>
+              Beers: {{ milestone.beers }}<br>
+              Steps: {{ milestone.steps }}
+              <div>
+              <b-button @click="prepareEditMilestone(milestone)" variant="primary" class="edit-milestones-button">
+                Edit Milestone
+              </b-button>
+            </div>
+          </li>
+        </ul>
+      </b-col>
+    </b-row>
 
-      <div class="d-flex justify-content-center mb-3">
-      <div class="delete-milestones">
+    <div class="delete-milestones">
       <b-button @click="confirmDeleteMilestones" variant="danger" class="delete-milestones-button">
         Delete Milestones
       </b-button>
     </div>
-    </div>
+    
 
-      <!-- Reset button at the bottom -->
+  </b-row>
+
+     <!-- Milestone form for editing -->
+  <b-row v-if="showEditMilestoneForm" class="justify-content-center mb-3">
+    <BRow class="bcard">
+      <BCard class="box">
+        <b-col cols="12" md="8" class="milestone-form">
+          <b-form @submit.prevent="saveMilestone(milestone)">
+            <b-form-group label="Milestone Title">
+              <b-form-input
+                v-model="milestone.title"
+                required
+                placeholder="Enter milestone title"
+              ></b-form-input>
+            </b-form-group>
+
+            <b-form-group label="Milestone Description">
+              <b-form-textarea
+                v-model="milestone.description"
+                required
+                placeholder="Enter milestone description"
+              ></b-form-textarea>
+            </b-form-group>
+
+            <b-form-group label="Number of Beers">
+              <b-form-input
+                type="number"
+                v-model="milestone.beers"
+                required
+                placeholder="Enter number of beers"
+              ></b-form-input>
+            </b-form-group>
+
+            <b-form-group label="Number of Steps">
+              <b-form-input
+                type="number"
+                v-model="milestone.steps"
+                required
+                placeholder="Enter number of steps"
+              ></b-form-input>
+            </b-form-group>
+
+            <b-button type="save-milestone" variant="success">
+              Save Milestone
+            </b-button>
+          </b-form>
+        </b-col>
+      </BCard>
+    </BRow>
+  </b-row>
+      
+<!--
+      <div class="d-flex justify-content-center mb-3">
+        
+        <div class="edit-milestones">
+      <b-button @click="confirmEditMilestones" variant="primary" class="edit-milestones-button">
+        Edit Milestone
+      </b-button>
+    </div>
+    -->
+
+
+      
+
+      <!-- Reset button at the bottom 
     <div class="d-flex justify-content-center mb-3">
       <div class="reset-steps">
       <b-button @click="confirmResetSteps" variant="danger" class="reset-button">
@@ -127,7 +238,7 @@
       </b-button>
     </div>
     </div>
-
+  -->
   
   
 
@@ -157,8 +268,11 @@
 export default {
   data() {
     return {
+      showMilestones: false,
+      showEditMilestoneForm: false,
       showMilestoneForm: false, // Toggle milestone form visibility
       milestone: {
+        _id: '',
         title: '',
         description: '',
         beers: 0,
@@ -207,6 +321,74 @@ export default {
     this.fetchUserMilestones();
   },
   methods: {
+   
+   async prepareEditMilestone(milestone) {
+
+     await this.fetchMilestone(milestone._id);
+      this.milestone = { ...milestone }; // Clone the milestone data to the form
+      this.showEditMilestoneForm = true; // Show the form
+    },
+
+    saveMilestone(milestone) {
+      console.log('Milestone ID:', this.milestone._id); // Log the milestone ID
+      const username = localStorage.getItem('username');
+      const milestoneData = {
+        title: this.milestone.title,
+        description: this.milestone.description,
+        beers: this.milestone.beers,
+        steps: this.milestone.steps,
+      };
+
+      fetch(`http://localhost:3000/api/milestones/${this.milestone._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(milestoneData),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Error updating milestone: ${response.statusText}`);
+          }
+          return response.json();
+        })
+        .then((updatedMilestone) => {
+          // Update the milestones array
+          const index = this.milestones.findIndex((m) => m._id === updatedMilestone._id);
+          if (index !== -1) {
+            this.milestones.splice(index, 1, updatedMilestone); // Replace the old milestone
+          }
+          this.showEditMilestoneForm = false; // Hide the form
+          this.milestone = { _id: '', title: '', description: '', beers: 0, steps: 0 }; // Reset the form fields
+          this.showToastNotification('Milestone successfully updated!');
+          
+        })
+        .catch((error) => {
+          console.error('Error updating milestone:', error);
+          this.showToastNotification('Failed to update milestone. Please try again.');
+        });
+
+    },
+
+    async fetchMilestone(milestoneId) {
+      console.log('Fetching Milestone with id:', milestoneId );
+    try {
+      const response = await fetch(`http://localhost:3000/api/milestones/${milestoneId}`, {
+        method: 'GET',
+      });
+      if (!response.ok) {
+        throw new Error('Error fetching milestone');
+      }
+      const milestoneData = await response.json();
+      this.currentMilestone = milestoneData;
+      
+    //  this.milestone = { ...milestoneId }; // Clone the milestone data to the form
+      // Open the milestone edit form
+     // this.showEditMilestoneForm = true;
+    } catch (error) {
+      console.error('Error fetching milestone:', error);
+    }
+  },
 
     fetchUserMilestones() {
         const username = localStorage.getItem('username'); // Retrieve the username from local storage
@@ -225,6 +407,7 @@ export default {
              /*   this.showToastNotification('Failed to load milestones. Please try again.'); THIS SHOWS UP IF NO MILESTONES ARE THERE */ 
             });
     },
+
      // Create and save the milestone
      createMilestone() {
       const username = localStorage.getItem('username'); // Retrieve the username from local storage
@@ -273,11 +456,22 @@ export default {
     toggleMilestoneForm() {
       this.showMilestoneForm = !this.showMilestoneForm;
     },
+    
+    toggleMilestones() {
+      this.showMilestones = !this.showMilestones;
+    },
 
     confirmDeleteMilestones() {
       const userConfirmed = window.confirm("Are you sure you want to delete your milestones?");
       if (userConfirmed) {
         this.deleteMilestones();
+      }
+    },
+
+    confirmEditMilestone() {
+      const userConfirmed = window.confirm("Are you sure you want to change your Milestone?");
+      if (userCOnfirmed) {
+        this.editMilestone();
       }
     },
 
@@ -287,6 +481,24 @@ export default {
         this.resetSteps();
       }
     },
+
+    confirmResetBeer(){
+      const userConfirmed = window.confirm("Are you sure you want to reset your beers?");
+      if(userConfirmed) {
+        this.resetBeers();
+      }
+    },
+
+    /*
+    async editMilestone() {
+      const username = localStorage.getItem('username');
+
+      try {
+        const response = await fetch()
+      }
+    },
+  */
+
 
     async deleteMilestones(){
       const username = localStorage.getItem('username');
@@ -315,6 +527,71 @@ export default {
   }
     },
 
+    resetBeers(){
+      const username = localStorage.getItem('username');
+
+      fetch(`http://localhost:3000/api/users/${username}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Error fetching user data: ${response.statusText}`);
+          }
+          return response.json();
+        })
+        .then((user) => {
+          let newTotalBeers = 0;
+          
+          return fetch(`http://localhost:3000/api/users/${username}`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              total_beers: newTotalBeers,
+            }),
+          });
+        })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Error updating beers count: ${response.statusText}`);
+          }
+          return response.json();
+        })
+        .then((updatedUser) => {
+          console.log('Beers Added:', updatedUser);
+          
+          this.total_beers = updatedUser.total_beers;
+          
+          this.showToastNotification('Beers successfully logged!');
+        })
+        .catch((error) => {
+          console.error('Error logging steps:', error);
+          this.showToastNotification('Failed to log beers. Please try again.');
+        });
+      this.total_beers = 0; // Reset the total steps count to 0
+      // You might also want to reset any other related state here
+      console.log("Total beers reset to 0");
+    },
+
+    fetchUserData(){
+      const username = localStorage.getItem('username');
+      
+      fetch(`http://localhost:3000/api/users/${username}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Error fetching user data: ${response.statusText}`);
+          }
+          return response.json();
+        })
+        .then((user) => {
+          // Update the total beers, total steps, and steps needed
+          this.total_beers = user.total_beers;
+          this.total_steps = user.total_steps;
+          this.steps_needed = user.steps_needed;
+        })
+        .catch((error) => {
+          console.error('Error fetching user data:', error);
+        });
+    },
 
 
     resetSteps(){
@@ -539,6 +816,7 @@ export default {
 
 .beer {
   background-color: #ebb112;
+  margin-bottom: 0%;
 }
 
 .beer:hover {
@@ -551,7 +829,9 @@ export default {
 
 .log-step {
   background-color: #1a7fea;
+  margin-bottom: 0%;
 }
+
 
 .log-step:hover {
   /* transform: translateY(-50px); */
@@ -706,9 +986,9 @@ export default {
   margin-top: 0%;
 }
 
-.reset-steps {
-  margin-bottom: 5%;
-  margin-top: 5%;
+.reset {
+  margin-bottom: 0%;
+  margin-top: 0%;
 
 }
 
@@ -716,6 +996,11 @@ export default {
   margin-top: 2.5%;
 
 }
+
+.edit-milestones-button {
+  margin-top: 2.5%;
+}
+
 
 .Milestones {
   width: 5vh;
