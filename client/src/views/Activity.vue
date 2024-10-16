@@ -112,6 +112,11 @@
       
 
       <div class="d-flex justify-content-center mb-3">
+        <div class="edit-milestones">
+      <b-button @click="confirmEditMilestones" variant="primary" class="edit-milestones-button">
+        Edit Milestone
+      </b-button>
+    </div>
       <div class="delete-milestones">
       <b-button @click="confirmDeleteMilestones" variant="danger" class="delete-milestones-button">
         Delete Milestones
@@ -716,6 +721,11 @@ export default {
   margin-top: 2.5%;
 
 }
+
+.edit-milestones {
+  margin-top: 2.5%;
+}
+
 
 .Milestones {
   width: 5vh;
