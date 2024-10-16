@@ -9,6 +9,7 @@ import Leaderboard from './views/Leaderboard.vue'
 import SettingsPage from './views/SettingsPage.vue'
 import SquadPage from './views/SquadPage.vue'
 import ManageSquads from './views/ManageSquads.vue'
+import SquadSpace from './views/SquadSpace.vue'
 
 const routes = [
   { path: '/LogIn', name: 'LogIn', component: LogIn , meta: { hideNavbar: true } },
@@ -19,7 +20,8 @@ const routes = [
   { path: '/Leaderboard', name: 'Leaderboard', component: Leaderboard },
   { path: '/SettingsPage/:username', name: 'SettingsPage', component: SettingsPage },
   { path: '/SquadPage', name: 'SquadPage', component: SquadPage },
-  { path: '/ManageSquads', name: 'ManageSquads', component: ManageSquads }
+  { path: '/ManageSquads', name: 'ManageSquads', component: ManageSquads },
+  { path: '/SquadSpace', name: 'SquadSpace', component: SquadSpace }
 ]
 
 const router = createRouter({

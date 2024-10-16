@@ -23,6 +23,8 @@
           </ul>
         </div>
 
+          <router-link to="/SquadSpace">Squad page</router-link>
+
           <!-- Right side: Create Squad Form -->
           <div class="create-squad-container">
             <h1 class="title">Create Your Squad</h1>

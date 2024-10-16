@@ -10,6 +10,7 @@ var leaderboardsController = require('./controllers/Leaderboards');
 
 var usersController = require('./controllers/Users');
 var squadsController = require('./controllers/Squads');
+var milestonesController = require('./controllers/Milestones');
 
 // Variables
 var mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/beerStepDB';
@@ -50,6 +51,8 @@ app.use(usersController);
 app.use(squadsController);
 
 app.use(leaderboardsController);
+
+app.use(milestonesController);
 
 
 // Catch all non-error handler for api (i.e., 404 Not Found)

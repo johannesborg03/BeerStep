@@ -1,236 +1,343 @@
 <template>
-    <b-container fluid class="settings-view">
-  
-      <b-row class="justify-content-center mt-5">
-        <b-col cols="12" md="6">
-          <b-card class="box">
-            <h1 class="title text-center">User Settings</h1>
-            <p class="subtitle text-center">Change Your Settings:</p>
-  
-            <b-form @submit.prevent="submit">
-              <!-- Change Email Section -->
-              <b-form-group label="Change Your Email:" label-for="email">
-                <b-form-input
-                  id="email"
-                  v-model="input.email"
-                  type="email"
-                  placeholder="Enter a New Email"
-                ></b-form-input>
-              </b-form-group>
-  
-              <!-- OR Section -->
-              <p class="or text-center">OR</p>
-  
-              <!-- Change Password Section -->
-              <b-form-group label="Change Your Password:" label-for="password">
-                <b-form-input
-                  id="password"
-                  v-model="input.password"
-                  type="password"
-                  placeholder="Enter a New Password"
-                ></b-form-input>
-              </b-form-group>
-  
-              <!-- Submit Button -->
-              <b-button type="submit" variant="warning" block>Submit</b-button>
-            </b-form>
-  
-            <!-- Error or Success Messages -->
-            <b-alert v-if="message" variant="danger" dismissible>{{ message }}</b-alert>
-            <b-alert v-if="showNotification" variant="success" dismissible>
-                User successfully updated!
-            </b-alert>
+  <BContainer fluid class="settings-view">
+    <BRow class="bcard">
+      <BCard class="box">
+        <h1 class="title">User Settings</h1>
+        <p class="profile-title">Profile</p>
+        <BRow class="d-flex align-items-center justify-content-center">
+          <BCol class="text-start d-flex align-items-center">
+            <BAvatar class="avatar" :text="firstIndex()"/>
+            <BCol class="userEmail view-info d-flex ms-3">
+              <p class ="view-info" style = "font-weight: 550;">Username: </p>
+              <p class="current-username view-info"> {{ username }} </p>
+              <p class ="divider">|</p>
+             <p class = "view-info"style = "font-weight: 550;">Email: </p>
+              <p class="current-email view-info"> {{ email }}</p>
+            </BCol>
+          </BCol>
+        </BRow>
 
-          </b-card>
-        </b-col>
-      </b-row>
-    </b-container>
-  </template>
-  
+        <BForm @submit.prevent="submit">
+          <!-- Change Email Section -->
+          <p class="change-text">Change Email</p>
+          <b-form-group class="inputfield">
+            <b-form-input
+              id="email"
+              v-model="input.email"
+              type="email"
+              placeholder="Enter a New Email"
+            ></b-form-input>
+          </b-form-group>
+
+          <!-- Change Password Section -->
+          <p class="change-text">Change Password</p>
+          <b-form-group class="inputfield">
+            <b-form-input
+              id="password"
+              v-model="input.password"
+              type="password"
+              placeholder="Enter a New Password"
+            ></b-form-input>
+          </b-form-group>
+
+          <!-- Submit Button -->
+          <BButton class="btn" type="submit" variant="warning w-50" block>Submit</BButton>
+        </BForm>
+
+        <!-- Error or Success Messages -->
+        <b-alert v-if="message" variant="danger" dismissible>{{ message }}</b-alert>
+        <b-alert v-if="showNotification" variant="success" dismissible>
+          User successfully updated!
+        </b-alert>
+
+        <!-- Toast Notification -->
+        <div class="toast-container position-fixed top-0 end-0 p-3">
+          <div id="liveToast" class="toast bg-dark" role="alert" style="color: white;" aria-live="assertive" aria-atomic="true" :class="{'show': showToast}">
+            <div class="toast-header bg-dark" style="color: white;">
+              <strong class="me-auto">User Settings</strong>
+              <small>Just now</small>
+              <button type="button" class="btn-close" @click="showToast = false" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+              {{ toastMessage }}
+            </div>
+          </div>
+        </div>
+      </BCard>
+    </BRow>
+  </BContainer>
+</template>
 
 <script>
 export default {
-   name: 'Submit',
-   data() {
-       return {
-           input: {
-               email: "",
-               password: ""
-           },
-           message: "",
-           showNotification: false
-       };
-   },
-   methods: {
-    async submit () {
-        try {
-            const username = this.$route.params.username; // Get the username from route parameters
-            console.log(username);
-            const updatedUser = {};
-            if (this.input.email) {
-                updatedUser.email = this.input.email;
-            }
-            if (this.input.password) {
-                updatedUser.password = this.input.password;
-            }
+  name: 'Submit',
+  data() {
+    return {
+      input: {
+        email: "",
+        password: ""
+      },
+      username: "", // Added username to data()
+      email: "",
+      message: "",
+      showNotification: false,
+      isSubmitting: false, // Track submission state
+      avatar: null, // Track selected avatar
+      avatarChoices: [
+        { avatar: 'src/assets/avatar1.jpg' },
+        { avatar: 'src/assets/avatar2.jpg' }
+      ],
+      showToast: false,      // For controlling the toast display
+      toastMessage: '',      // Message for the toast
+    };
+  },
+  mounted() {
+    const storedUsername = localStorage.getItem('username');
+    this.username = storedUsername && storedUsername.trim() !== '' ? storedUsername : 'Guest'; 
+    this.fetchUserData();
+  },
+  methods: {
+    firstIndex() {
+      return this.username.charAt(0).toUpperCase(); 
+    },
+    async fetchUserData() {
+      try {
+        const username = this.$route.params.username; // Get the username from route parameters
 
-            //If no fields are entered show error message:
-            if(Object.keys(updatedUser).length === 0) {
-                this.message = 'Please fill in atleast one field to update.';
-                return;
-            }
-
-            const response = await fetch(`http://localhost:3000/api/users/${username}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(updatedUser)
-            });
-            
-            if(response.ok) {
-                const updatedData = await response.json();
-                console.log('User Updated Successfully');
-              //  this.successMessage = 'User Updated Successfully!';
-                this.message = '';
-
-                //Show Notification and Clear Input fields
-                this.showNotification = true;
-                this.input.email = "";
-                this.input.password = "";
-                //Show Notification for 3 seconds:
-                setTimeout(() => {
-                    this.showNotification = false
-                }, 3000);
-            } else {
-                const errorData = await response.json();
-                this.message = errorData.message || 'Error updating user. Please try again.';
-               // this.successMessage = '';
-            }
-         } catch (error) {
-                console.error('Error updating user:', error);
-                this.message = 'An error occured while updating user. Please try again.';
-               // this.successMessage = '';
-            }
+        const response = await fetch(`http://localhost:3000/api/users/${username}`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch user data: ${response.status}`);
         }
- 
-}
-}
 
+        const userData = await response.json();
+        this.email = userData.email; // Set the email from the fetched user data
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    },
+    async submit() {
+      this.isSubmitting = true; // Start submission state
+      try {
+        const username = this.$route.params.username; // Get the username from route parameters
+        console.log(username);
+        const updatedUser = {};
+        if (this.input.email) {
+          updatedUser.email = this.input.email;
+        }
+        if (this.input.password) {
+          updatedUser.password = this.input.password;
+        }
+
+        // If no fields are entered, show an error message:
+        if (Object.keys(updatedUser).length === 0) {
+          this.message = 'Please fill in at least one field to update.';
+          this.isSubmitting = false;
+          return;
+        }
+
+        const response = await fetch(`http://localhost:3000/api/users/${username}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(updatedUser)
+        });
+
+        if (!response.ok) {
+          throw new Error(`Server responded with status ${response.status}`);
+        }
+
+        const updatedData = await response.json();
+        console.log('User Updated Successfully');
+        this.message = '';
+
+
+          // Update the email in the component's data to reflect the new value
+          if (this.input.email) {
+            this.email = this.input.email; // Update displayed email
+            }
+
+        // Show Notification and Clear Input fields
+        this.showNotification = true;
+        this.input.email = "";
+        this.input.password = "";
+
+        // Show success toast message
+        this.showToastMessage("User information updated successfully!");
+
+      } catch (error) {
+        console.error('Error updating user:', error);
+        this.message = 'An error occurred while updating user. Please try again.';
+      } finally {
+        this.isSubmitting = false; // End submission state
+      }
+    },
+    showToastMessage(message) {
+      this.toastMessage = message;
+      this.showToast = true;
+      // Automatically hide the toast after 3 seconds
+      setTimeout(() => {
+        this.showToast = false;
+      }, 3000);
+    }
+  }
+}
 </script>
-
 
 <style scoped>
 .settings-view {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-image: url('/src/assets/logInBack.jpg');
+    font-family:  Tahoma;
+    background-image: url('/src/assets/set&homeBackground.jpg');
     background-size: cover;
     background-position: center;
     margin: 0;
     height: 100vh;
     display: flex;
     flex-direction: column;
-
-}
-
-.or {
-    margin-top: 0%;
-    font-size:large;
-    padding-top: 2%;
-    padding-bottom: 2%;
-    font-weight: 400;
-    color: black;
-    margin-bottom: 5%;
-    font-weight: 1000;
-}
-
-header {
-    text-align: center;
-    color: White;
-    font-size: 16px;
-    padding: 20px;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-}
-
-.settings-container {
-    display: flex;
-    justify-content: center;
+    justify-content: center; 
     align-items: center;
-    
+}
+
+.avatar{
+  width: 40px;
+  height: 40px;
+  margin-bottom: 5%;
+}
+
+.userEmail{
+margin-right: 10%;
+margin-bottom: 8px;
+}
+
+.btn{
+border-radius: 15px;
+margin-top: 5%;
+margin-bottom: 5%;
 }
 
 .box {
-    width: 50%;
     background-color: rgb(238, 238, 238);
     border-radius: 3%;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    height: 75vh;
-    color: black;    
-    margin-left: 25%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    margin-bottom: 15%;
+}
+
+.bcard{
+  width: 30%;
 }
 
 .title {
     color: black;
     margin: 0;
-    font-weight: 400;
+    font-size: 30px;
+    text-align: start;
 }
 
-.subtitle {
-    font-size:large;
-    padding-top: 2%;
-    padding-bottom: 2%;
-    font-weight: 400;
-    color: black;
-    margin-bottom: 0%;
-    font-weight: 1000;
+.inputfield{
+text-align: start;
+font-size: 16px;
 }
 
-.input-field {
-    width: 380px;
-    height: 30px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 18px;
-    font-size: 14px;
+.change-text{
+text-align: start;
+margin-left: 2%;
+margin-top: 3%;
+font-weight: 500;
+color: #000;
 }
 
-.submit-button {
-    width: 400px;
-    height: 50px;
-    color: white;
-    border: none;
-    border-radius: 18px;
-    font-size: 16px;
-    background-color: #ebb112;
-    margin-bottom: 2%; 
+.profile-title{
+text-align: start; 
+margin-top: 5%; 
+margin-bottom: 2%; 
+color: black; 
+font-size: 18px;
 }
-.notification {
-  margin-top: 2%;
-  margin-bottom: 0%;
-  font-size: 25%;
-  color: #c60c0c;
-  background-color: #2c18c6;
-  padding: 2%;
-  border-radius: 25%;
-  opacity: 0.9;
-  animation: fadeout 3s ease-out forwards; /* Animate fading out after a while */
-  pointer-events: none; /* Disable pointer events when animating */
+
+.current-username, .current-email  {
+  text-align: left;
+  margin: 0;
+  margin-left: 5px;
 }
-@keyframes fadeout {
-  0% {                    /* 0%: This represents the starting point of the animation (the beginning).
-                           At 0%, the opacity is set to 0.9, which means the element is almost fully visible but slightly transparent. */
-    opacity: 1;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {                  /* 100%: This represents the end point of the animation (the end).
-    At 100%, the opacity is set to 0, meaning the element becomes fully transparent (completely invisible). */
-    opacity: 0;
-  }
+
+.divider{
+margin-left: 5px;
+margin-right: 5px;
 }
+@media (max-width: 1500px) {
+
+  .bcard{
+    width: 35%;
+}
+}
+
+@media (max-width: 1400px) {
+
+.bcard{
+  width: 40%;
+}
+}
+
+@media (max-width: 1150px) {
+
+.bcard{
+  width: 50%;
+}
+}
+
+@media (max-width: 900px) {
+
+.bcard{
+  width: 60%;
+}
+}
+
+@media (max-width: 768px) { 
+
+.avatar {
+  display: none;
+}
+
+.bcard{
+  width: 100%;
+}
+
+
+}
+@media (max-width: 425px) {
+.box {
+  padding: 5%;
+}
+
+.avatar {
+  display: none;
+}
+
+.divider {
+  display: none;
+}
+
+.userEmail {
+  display: flex;
+  flex-direction: column;
+}
+
+.current-username {
+  margin-bottom: 5%;
+}
+
+.view-info {
+  display: none;
+}
+
+.title {
+  font-size: 19px;
+}
+
+.bcard {
+  width: 90% !important;
+}
+}
+
 
 </style>

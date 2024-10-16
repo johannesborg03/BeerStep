@@ -42,7 +42,10 @@ var userSchema = new mongoose.Schema({
         type: Number,
         default: 0,
         min: 0
-    }
+    },
+    milestones : [{ 
+        type: mongoose.Schema.Types.ObjectId, ref: 'Milestone'      // Reference to Milestones
+    }],
 
 }); 
 
