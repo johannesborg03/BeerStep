@@ -1,7 +1,8 @@
 <template>
   <div class="Leaderboard">
     <h1>Leaderboard</h1>
-    <div>
+    <BCard class ="b-card">
+    <div class="controls">
       <!-- Squad Dropdown to select squad -->
       <label for="squadSelect" style="color: whitesmoke;">
         <strong>Select Squad:</strong>
@@ -11,18 +12,30 @@
           {{ squad.squadName }}
         </option>
       </select>
-      <br>
-      <!-- Global Leaderboard Button -->
       <button @click="fetchGlobalLeaderboardData" class="global-leaderboard-button">
         View Global Leaderboard
       </button>
+
+      <!-- Filtering Input for Username -->
+      <label class="input-username">
+        <strong>Filter by Username:</strong>
+      </label>
+      <input style="border-radius: 8px;" v-model="usernameFilter" type="text" placeholder="Search by username" />
+
+      <div class="toggle-rank">
+        <label>
+          <input type="checkbox" v-model="showRank" />
+          Show Rank
+        </label>
+      </div>
     </div>
+  </BCard>
 
     <!-- Leaderboard Table -->
     <table class="leaderboard-table">
       <thead>
         <tr>
-          <th>Rank</th>
+          <th v-if="showRank">Rank</th>
           <th>User</th>
           <th @click="sortBy('score')" style="cursor: pointer;">
             Points
@@ -33,8 +46,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(entry, index) in leaderboardData" :key="index">
-          <td>{{ index + 1 }}</td>
+        <tr v-for="(entry, index) in filteredLeaderboard" :key="index">
+          <td v-if="showRank">{{ index + 1 }}</td>
           <td>{{ entry.user }}</td>
           <td>{{ entry.score }}</td>
         </tr>
@@ -53,7 +66,21 @@ export default {
       selectedSquad: null, // Stores the selected squad object
       sortKey: 'score', // Sort by score by default
       sortOrder: 1, // 1 for ascending, -1 for descending
+      usernameFilter: '', // Filter for username
+      showRank: true, // Control rank visibility
     };
+  },
+  computed: {
+    filteredLeaderboard() {
+      return this.leaderboardData
+        .filter(entry => entry.user.toLowerCase().includes(this.usernameFilter.toLowerCase())) 
+        .sort((a, b) => {
+          if (this.sortKey === 'score') {
+            return (a[this.sortKey] - b[this.sortKey]) * this.sortOrder; 
+          }
+          return 0; // Default case (no sorting if not by score)
+        });
+    },
   },
   methods: {
     // Fetch squads
@@ -80,7 +107,6 @@ export default {
             this.fetchLeaderboardData(); // Fetch leaderboard for the first squad
           }
         } else {
-          const errorData = await response.json();
           alert('Error fetching squads. Please try again.');
         }
       } catch (error) {
@@ -106,7 +132,7 @@ export default {
             user: ranking.userId.username,
             score: ranking.score,
           }));
-          this.sortLeaderboard(); // Sort the leaderboard after fetching
+          // Sorting is handled in the computed property
         } else {
           alert('Error fetching leaderboard. Please try again.');
         }
@@ -128,7 +154,7 @@ export default {
             user: entry.username,
             score: entry.score,
           }));
-          this.sortLeaderboard(); // Sort after fetching global data
+          // Sorting is handled in the computed property
         } else {
           alert('Error fetching global leaderboard. Please try again.');
         }
@@ -145,17 +171,7 @@ export default {
         this.sortKey = key;
         this.sortOrder = 1; // Reset to ascending when a new column is selected
       }
-      this.sortLeaderboard();
-    },
-
-    // Sort the leaderboard data based on the sortKey and sortOrder
-    sortLeaderboard() {
-      this.leaderboardData.sort((a, b) => {
-        let result = 0;
-        if (a[this.sortKey] < b[this.sortKey]) result = -1;
-        if (a[this.sortKey] > b[this.sortKey]) result = 1;
-        return result * this.sortOrder;
-      });
+      // No need to call sortLeaderboard() because it's handled in the computed property
     },
   },
   mounted() {
@@ -173,6 +189,10 @@ export default {
   background-size: cover;
   background-position: center;
   height: 100vh;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  align-items: center; /* Center items horizontally */
 }
 
 h1 {
@@ -182,14 +202,41 @@ h1 {
   font-family: Tahoma;
 }
 
+.b-card{
+  background-color: #333;
+  width: 70%;
+  border-radius: 15px;
+
+  align-items: center; 
+}
+.controls {
+  display: flex;
+  align-items: center; 
+  justify-content:center; 
+  gap: 20px; 
+}
+
 .squad-select {
   font-size: 24px;
-  padding: 10px 20px;
-  margin-bottom: 20px;
+  padding: 5px 20px;
   border-radius: 10px;
-  border: 2px solid #ccc;
-  margin-bottom: 20px;
-  margin-left: 10px;
+  border: 2px solid 333;
+}
+
+.global-leaderboard-button {
+  font-family: Tahoma;
+  border-radius: 15px;
+  background-color: whitesmoke;
+  padding: 10px 15px; /* Add padding for better appearance */
+}
+
+.input-username {
+  color: whitesmoke;
+  font-family: Tahoma;
+}
+
+.toggle-rank {
+  color: whitesmoke;
 }
 
 .leaderboard-table {
@@ -197,7 +244,6 @@ h1 {
   border-collapse: collapse;
   background-color: #f8f8f8;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 15px;
   margin: 20px auto;
 }
 
@@ -206,7 +252,8 @@ thead {
   color: #f1f1f1;
 }
 
-th, td {
+th,
+td {
   padding: 15px;
   text-align: left;
   font-size: 1.5rem;
@@ -234,18 +281,13 @@ td {
   font-size: 1.2rem;
 }
 
-.global-leaderboard-button {
-  font-family: Tahoma;
-  border-radius: 15px;
-  background-color: whitesmoke;
-}
-
 @media (max-width: 768px) {
   h1 {
     font-size: 2rem;
   }
 
-  th, td {
+  th,
+  td {
     font-size: 1rem;
     padding: 10px;
   }
