@@ -93,6 +93,20 @@
       </div>
 
       
+     
+    
+
+      <b-row v-if="showMilestones" class = "justify-content-center mb-3">
+
+
+        <div class="d-flex justify-content-center mb-3">
+        <div class="milestones">
+          <b-button @click="toggleMilestoneForm" class="milestones-button">
+            Create Milestone
+          </b-button>
+        </div>
+      </div>
+
       <b-row v-if="showMilestoneForm" class="justify-content-center mb-3">
         <BRow class="bcard">
           <BCard class="box">
@@ -118,20 +132,23 @@
           </b-form>
         </b-col>
       </BCard>
+      
     </BRow>
       </b-row>
-    
-
-      <b-row v-if="showMilestones" class = "justify-content-center mb-3">
+      
 
       <b-row v-if="milestones.length > 0" class="mt-3">
         <b-col cols="12">
           <h3>Your Milestones</h3>
           <ul class="list-group">
             <li v-for="(milestone, index) in milestones" :key="index" class="list-group-item">
-              <strong>{{ milestone.title }}</strong> - {{ milestone.description }} 
+              <strong>Title: {{ milestone.title }} <br>
+              </strong>
+              <strong>Description: {{ milestone.description }}
               <br>
-              Beers: {{ milestone.beers }}, Steps: {{ milestone.steps }}
+            </strong>
+              Beers: {{ milestone.beers }}<br>
+              Steps: {{ milestone.steps }}
               <div>
               <b-button @click="prepareEditMilestone(milestone)" variant="primary" class="edit-milestones-button">
                 Edit Milestone
