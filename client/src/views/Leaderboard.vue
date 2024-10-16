@@ -1,35 +1,35 @@
 <template>
   <div class="Leaderboard">
     <h1>Leaderboard</h1>
-    <BCard class ="b-card">
-    <div class="controls">
-      <!-- Squad Dropdown to select squad -->
-      <label for="squadSelect" style="color: whitesmoke;">
-        <strong>Select Squad:</strong>
-      </label>
-      <select v-model="selectedSquad" @change="fetchLeaderboardData" class="squad-select">
-        <option v-for="squad in squads" :key="squad._id" :value="squad">
-          {{ squad.squadName }}
-        </option>
-      </select>
-      <button @click="fetchGlobalLeaderboardData" class="global-leaderboard-button">
-        View Global Leaderboard
-      </button>
-
-      <!-- Filtering Input for Username -->
-      <label class="input-username">
-        <strong>Filter by Username:</strong>
-      </label>
-      <input style="border-radius: 8px;" v-model="usernameFilter" type="text" placeholder="Search by username" />
-
-      <div class="toggle-rank">
-        <label>
-          <input type="checkbox" v-model="showRank" />
-          Show Rank
+    <BCard class="b-card">
+      <div class="controls">
+        <!-- Squad Dropdown to select squad -->
+        <label for="squadSelect" style="color: whitesmoke;">
+          <strong>Select Squad:</strong>
         </label>
+        <select v-model="selectedSquad" @change="fetchLeaderboardData" class="squad-select">
+          <option v-for="squad in squads" :key="squad._id" :value="squad">
+            {{ squad.squadName }}
+          </option>
+        </select>
+        <button @click="fetchGlobalLeaderboardData" class="global-leaderboard-button">
+          View Global Leaderboard
+        </button>
+
+        <!-- Filtering Input for Username -->
+        <label class="input-username">
+          <strong>Filter by Username:</strong>
+        </label>
+        <input style="border-radius: 8px;" v-model="usernameFilter" type="text" placeholder="Search by username" />
+
+        <div class="toggle-rank">
+          <label>
+            <input type="checkbox" v-model="showRank" />
+            Show Rank
+          </label>
+        </div>
       </div>
-    </div>
-  </BCard>
+    </BCard>
 
     <!-- Leaderboard Table -->
     <table class="leaderboard-table">
@@ -189,7 +189,6 @@ export default {
   background-size: cover;
   background-position: center;
   height: 100vh;
-  border-radius: 5px;
   display: flex;
   flex-direction: column; /* Stack children vertically */
   align-items: center; /* Center items horizontally */
@@ -202,17 +201,20 @@ h1 {
   font-family: Tahoma;
 }
 
-.b-card{
+.b-card {
   background-color: #333;
-  width: 70%;
+  max-width: 90%; /* Use a percentage for better responsiveness */
+  width: 980px; /* Set a max-width */
+  margin: 0 auto; /* Center it horizontally */
   border-radius: 15px;
-
-  align-items: center; 
+  align-items: center;
+  padding: 20px; /* Add padding for better appearance */
 }
+
 .controls {
   display: flex;
   align-items: center; 
-  justify-content:center; 
+  justify-content: center; 
   gap: 20px; 
 }
 
@@ -220,14 +222,14 @@ h1 {
   font-size: 24px;
   padding: 5px 20px;
   border-radius: 10px;
-  border: 2px solid 333;
+  border: 2px solid #333; 
 }
 
 .global-leaderboard-button {
   font-family: Tahoma;
   border-radius: 15px;
   background-color: whitesmoke;
-  padding: 10px 15px; /* Add padding for better appearance */
+  padding: 10px 5px; 
 }
 
 .input-username {
@@ -286,10 +288,25 @@ td {
     font-size: 2rem;
   }
 
+  .b-card {
+    width: 100%; 
+    padding: 10px; 
+  }
+
   th,
   td {
     font-size: 1rem;
     padding: 10px;
+  }
+
+  .controls {
+    flex-direction: column; /* Stack controls vertically on smaller screens */
+    align-items: stretch; 
+    gap: 10px; 
+  }
+
+  .squad-select {
+    font-size: 20px; /* Adjust font size for smaller screens */
   }
 }
 </style>
