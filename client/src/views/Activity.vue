@@ -33,7 +33,7 @@
           <div class="d-flex justify-content-center mb-3">
       <div class="reset">
       <b-button @click="confirmResetBeer" variant="danger" class="reset-button">
-        Reset Beer
+        Reset Beers
       </b-button>
     </div>
     </div>
