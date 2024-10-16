@@ -57,6 +57,7 @@
         </b-col>
       </b-row>
 
+       <!-- 
       <div class="d-flex justify-content-center mb-3">
         <div class="milestones">
           <b-button @click="toggleMilestoneForm" class="milestones-button">
@@ -64,7 +65,15 @@
           </b-button>
         </div>
       </div>
+    -->
 
+ <div class="d-flex justify-content-center mb-3">
+        <div class="milestones">
+          <b-button @click="toggleMilestones" class="milestones-button">
+            Milestones
+          </b-button>
+        </div>
+      </div>
 
       
       <b-row v-if="showMilestoneForm" class="justify-content-center mb-3">
@@ -96,7 +105,8 @@
       </b-row>
     
 
-      
+      <b-row v-if="showMilestones" class = "justify-content-center mb-3">
+
       <b-row v-if="milestones.length > 0" class="mt-3">
         <b-col cols="12">
           <h3>Your Milestones</h3>
@@ -115,12 +125,21 @@
       </b-col>
     </b-row>
 
+    <div class="delete-milestones">
+      <b-button @click="confirmDeleteMilestones" variant="danger" class="delete-milestones-button">
+        Delete Milestones
+      </b-button>
+    </div>
+    
+
+  </b-row>
+
      <!-- Milestone form for editing -->
   <b-row v-if="showEditMilestoneForm" class="justify-content-center mb-3">
     <BRow class="bcard">
       <BCard class="box">
         <b-col cols="12" md="8" class="milestone-form">
-          <b-form @submit.prevent="saveMilestone">
+          <b-form @submit.prevent="saveMilestone(milestone)">
             <b-form-group label="Milestone Title">
               <b-form-input
                 v-model="milestone.title"
@@ -155,7 +174,7 @@
               ></b-form-input>
             </b-form-group>
 
-            <b-button type="submit" variant="success">
+            <b-button type="save-milestone" variant="success">
               Save Milestone
             </b-button>
           </b-form>
@@ -164,9 +183,9 @@
     </BRow>
   </b-row>
       
-
+<!--
       <div class="d-flex justify-content-center mb-3">
-        <!--
+        
         <div class="edit-milestones">
       <b-button @click="confirmEditMilestones" variant="primary" class="edit-milestones-button">
         Edit Milestone
@@ -175,12 +194,7 @@
     -->
 
 
-      <div class="delete-milestones">
-      <b-button @click="confirmDeleteMilestones" variant="danger" class="delete-milestones-button">
-        Delete Milestones
-      </b-button>
-    </div>
-    </div>
+      
 
       <!-- Reset button at the bottom -->
     <div class="d-flex justify-content-center mb-3">
@@ -220,6 +234,7 @@
 export default {
   data() {
     return {
+      showMilestones: false,
       showEditMilestoneForm: false,
       showMilestoneForm: false, // Toggle milestone form visibility
       milestone: {
@@ -272,11 +287,74 @@ export default {
     this.fetchUserMilestones();
   },
   methods: {
-    // Prepare to edit a milestone by populating the form with existing values
-    prepareEditMilestone(milestone) {
+   
+   async prepareEditMilestone(milestone) {
+
+     await this.fetchMilestone(milestone._id);
       this.milestone = { ...milestone }; // Clone the milestone data to the form
-      this.showMilestoneForm = true; // Show the form
+      this.showEditMilestoneForm = true; // Show the form
     },
+
+    saveMilestone(milestone) {
+      console.log('Milestone ID:', this.milestone._id); // Log the milestone ID
+      const username = localStorage.getItem('username');
+      const milestoneData = {
+        title: this.milestone.title,
+        description: this.milestone.description,
+        beers: this.milestone.beers,
+        steps: this.milestone.steps,
+      };
+
+      fetch(`http://localhost:3000/api/milestones/${this.milestone._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(milestoneData),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Error updating milestone: ${response.statusText}`);
+          }
+          return response.json();
+        })
+        .then((updatedMilestone) => {
+          // Update the milestones array
+          const index = this.milestones.findIndex((m) => m._id === updatedMilestone._id);
+          if (index !== -1) {
+            this.milestones.splice(index, 1, updatedMilestone); // Replace the old milestone
+          }
+          this.showEditMilestoneForm = false; // Hide the form
+          this.milestone = { _id: '', title: '', description: '', beers: 0, steps: 0 }; // Reset the form fields
+          this.showToastNotification('Milestone successfully updated!');
+          
+        })
+        .catch((error) => {
+          console.error('Error updating milestone:', error);
+          this.showToastNotification('Failed to update milestone. Please try again.');
+        });
+
+    },
+
+    async fetchMilestone(milestoneId) {
+      console.log('Fetching Milestone with id:', milestoneId );
+    try {
+      const response = await fetch(`http://localhost:3000/api/milestones/${milestoneId}`, {
+        method: 'GET',
+      });
+      if (!response.ok) {
+        throw new Error('Error fetching milestone');
+      }
+      const milestoneData = await response.json();
+      this.currentMilestone = milestoneData;
+      
+    //  this.milestone = { ...milestoneId }; // Clone the milestone data to the form
+      // Open the milestone edit form
+     // this.showEditMilestoneForm = true;
+    } catch (error) {
+      console.error('Error fetching milestone:', error);
+    }
+  },
 
     fetchUserMilestones() {
         const username = localStorage.getItem('username'); // Retrieve the username from local storage
@@ -343,6 +421,10 @@ export default {
     },
     toggleMilestoneForm() {
       this.showMilestoneForm = !this.showMilestoneForm;
+    },
+    
+    toggleMilestones() {
+      this.showMilestones = !this.showMilestones;
     },
 
     confirmDeleteMilestones() {

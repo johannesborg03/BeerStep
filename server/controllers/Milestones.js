@@ -101,6 +101,8 @@ router.get('/api/milestones/:id', async function (req, res) {
 
 // Update a milestone by ID (PUT /api/milestones/:id)
 router.put('/api/milestones/:id', async function (req, res) {
+    console.log(`Updating milestone with ID: ${req.params.id}`); // Log the ID being updated
+    console.log('Request body:', req.body); // Log the request body
     try {
         const updatedMilestone = await Milestone.findByIdAndUpdate(
             req.params.id,
