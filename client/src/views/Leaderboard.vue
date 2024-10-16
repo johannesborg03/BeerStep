@@ -1,33 +1,53 @@
 <template>
   <div class="Leaderboard">
     <h1>Leaderboard</h1>
-    <div>
-      <!-- Squad Dropdown to select squad -->
-      <label for="squadSelect">Select Squad:</label>
-      <select v-model="selectedSquad" @change="fetchLeaderboardData" class="squad-select">
-        <option v-for="squad in squads" :key="squad._id" :value="squad">
-          {{ squad.squadName }}
-        </option>
-      </select>
+    <BCard class="b-card">
+      <div class="controls">
+        <!-- Squad Dropdown to select squad -->
+        <label for="squadSelect" style="color: whitesmoke;">
+          <strong>Select Squad:</strong>
+        </label>
+        <select v-model="selectedSquad" @change="fetchLeaderboardData" class="squad-select">
+          <option v-for="squad in squads" :key="squad._id" :value="squad">
+            {{ squad.squadName }}
+          </option>
+        </select>
+        <button @click="fetchGlobalLeaderboardData" class="global-leaderboard-button">
+          View Global Leaderboard
+        </button>
 
-      <!-- Global Leaderboard Button -->
-      <button @click="fetchGlobalLeaderboardData" class="global-leaderboard-button">
-        View Global Leaderboard
-      </button>
-    </div>
+        <!-- Filtering Input for Username -->
+        <label class="input-username">
+          <strong>Filter by Username:</strong>
+        </label>
+        <input style="border-radius: 8px;" v-model="usernameFilter" type="text" placeholder="Search by username" />
+
+        <div class="toggle-rank">
+          <label>
+            <input type="checkbox" v-model="showRank" />
+            Show Rank
+          </label>
+        </div>
+      </div>
+    </BCard>
 
     <!-- Leaderboard Table -->
     <table class="leaderboard-table">
       <thead>
         <tr>
-          <th>Rank</th>
+          <th v-if="showRank">Rank</th>
           <th>User</th>
-          <th>Points</th>
+          <th @click="sortBy('score')" style="cursor: pointer;">
+            Points
+            <span v-if="sortKey === 'score'">
+              {{ sortOrder === 1 ? '▲' : '▼' }}
+            </span>
+          </th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(entry, index) in leaderboardData" :key="index">
-          <td>{{ index + 1 }}</td>
+        <tr v-for="(entry, index) in filteredLeaderboard" :key="index">
+          <td v-if="showRank">{{ index + 1 }}</td>
           <td>{{ entry.user }}</td>
           <td>{{ entry.score }}</td>
         </tr>
@@ -44,18 +64,34 @@ export default {
       leaderboardData: [], // To store leaderboard rankings
       squads: [], // To store the fetched squads
       selectedSquad: null, // Stores the selected squad object
+      sortKey: 'score', // Sort by score by default
+      sortOrder: 1, // 1 for ascending, -1 for descending
+      usernameFilter: '', // Filter for username
+      showRank: true, // Control rank visibility
     };
   },
+  computed: {
+    filteredLeaderboard() {
+      return this.leaderboardData
+        .filter(entry => entry.user.toLowerCase().includes(this.usernameFilter.toLowerCase())) 
+        .sort((a, b) => {
+          if (this.sortKey === 'score') {
+            return (a[this.sortKey] - b[this.sortKey]) * this.sortOrder; 
+          }
+          return 0; // Default case (no sorting if not by score)
+        });
+    },
+  },
   methods: {
+    // Fetch squads
     async fetchSquads() {
-      const username = localStorage.getItem('username'); // Get the username from localStorage
+      const username = localStorage.getItem('username');
       if (!username) {
         alert('No username found. Please log in again.');
         return;
       }
 
       try {
-        // Fetch the squads for the user
         const response = await fetch(`http://localhost:3000/api/users/${username}/squads`, {
           method: 'GET',
           headers: {
@@ -65,32 +101,24 @@ export default {
 
         if (response.ok) {
           const data = await response.json();
-          this.squads = data.squads; // Populate the squads array with the API response
+          this.squads = data.squads;
           if (this.squads.length > 0) {
             this.selectedSquad = this.squads[0]; // Select the first squad by default
             this.fetchLeaderboardData(); // Fetch leaderboard for the first squad
           }
         } else {
-          const errorData = await response.json();
-          console.error('Error fetching squads:', errorData.message);
           alert('Error fetching squads. Please try again.');
         }
       } catch (error) {
-        console.error('Error fetching squads:', error);
         alert('Error fetching squads. Please try again.');
       }
     },
 
     async fetchLeaderboardData() {
-      if (!this.selectedSquad) {
-        return; // Do nothing if no squad is selected
-      }
-    
-      const leaderboardId = this.selectedSquad.leaderboard; // Get leaderboard_id from the selected squad
-      console.log(leaderboardId);
+      if (!this.selectedSquad) return;
 
+      const leaderboardId = this.selectedSquad.leaderboard;
       try {
-        // Fetch the leaderboard data using the leaderboard_id
         const response = await fetch(`http://localhost:3000/api/leaderboards/${leaderboardId}`, {
           method: 'GET',
           headers: {
@@ -100,54 +128,54 @@ export default {
 
         if (response.ok) {
           const leaderboard = await response.json();
-          // Populate the leaderboardData with user data and scores
           this.leaderboardData = leaderboard.rankings.map((ranking) => ({
-            user: ranking.userId.username, // Assuming the `userId` is populated with the user object containing `username`
+            user: ranking.userId.username,
             score: ranking.score,
           }));
+          // Sorting is handled in the computed property
         } else {
-          const errorData = await response.json();
-          console.error('Error fetching leaderboard:', errorData.message);
           alert('Error fetching leaderboard. Please try again.');
         }
       } catch (error) {
-        console.error('Error fetching leaderboard:', error);
         alert('Error fetching leaderboard. Please try again.');
       }
     },
 
-    // New Method to fetch the Global Leaderboard
     async fetchGlobalLeaderboardData() {
       try {
-        console.log("Entered method");
-        // Fetch the global leaderboard data
         const response = await fetch('http://localhost:3000/api/leaderboards/type/global', {
           method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
         });
-        console.log("call good");
+
         if (response.ok) {
           const leaderboard = await response.json();
-          // Populate the leaderboardData with global user data and scores
           this.leaderboardData = leaderboard.map((entry) => ({
-            user: entry.username, // Use the username directly from the global leaderboard data
+            user: entry.username,
             score: entry.score,
           }));
+          // Sorting is handled in the computed property
         } else {
-          const errorData = await response.json();
-          console.error('Error fetching global leaderboard:', errorData.message);
           alert('Error fetching global leaderboard. Please try again.');
         }
       } catch (error) {
-        console.error('Error fetching global leaderboard:', error);
         alert('Error fetching global leaderboard. Please try again.');
       }
     },
+
+    // Sort the leaderboard by the selected key (only score in this case)
+    sortBy(key) {
+      if (this.sortKey === key) {
+        this.sortOrder *= -1; // Toggle sorting order
+      } else {
+        this.sortKey = key;
+        this.sortOrder = 1; // Reset to ascending when a new column is selected
+      }
+      // No need to call sortLeaderboard() because it's handled in the computed property
+    },
   },
   mounted() {
-    this.fetchSquads(); // Fetch the squads when the component is mounted
+    this.fetchSquads();
   },
 };
 </script>
@@ -157,28 +185,68 @@ export default {
 .Leaderboard {
   padding: 20px;
   text-align: center;
+  background-image: url('/src/assets/squad.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  align-items: center; /* Center items horizontally */
 }
 
 h1 {
   font-size: 3rem;
-  color: #000000;
+  color: whitesmoke;
   margin-bottom: 20px;
+  font-family: Tahoma;
+}
+
+.b-card {
+  background-color: #333;
+  max-width: 90%; /* Use a percentage for better responsiveness */
+  width: 980px; /* Set a max-width */
+  margin: 0 auto; /* Center it horizontally */
+  border-radius: 15px;
+  align-items: center;
+  padding: 20px; /* Add padding for better appearance */
+}
+
+.controls {
+  display: flex;
+  align-items: center; 
+  justify-content: center; 
+  gap: 20px; 
 }
 
 .squad-select {
   font-size: 24px;
-  padding: 10px 20px;
-  border-radius: 5px;
-  border: 2px solid #ccc;
-  margin-bottom: 20px;
+  padding: 5px 20px;
+  border-radius: 10px;
+  border: 2px solid #333; 
+}
+
+.global-leaderboard-button {
+  font-family: Tahoma;
+  border-radius: 15px;
+  background-color: whitesmoke;
+  padding: 10px 5px; 
+}
+
+.input-username {
+  color: whitesmoke;
+  font-family: Tahoma;
+}
+
+.toggle-rank {
+  color: whitesmoke;
 }
 
 .leaderboard-table {
-  width: 100%;
+  width: 90%;
   border-collapse: collapse;
   background-color: #f8f8f8;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
+  margin: 20px auto;
 }
 
 thead {
@@ -186,15 +254,21 @@ thead {
   color: #f1f1f1;
 }
 
-th, td {
+th,
+td {
   padding: 15px;
   text-align: left;
-  font-size: 1.5rem; 
+  font-size: 1.5rem;
 }
 
 th {
   text-transform: uppercase;
   border-bottom: 2px solid #ddd;
+}
+
+th span {
+  font-size: 0.8rem;
+  margin-left: 5px;
 }
 
 tbody tr:nth-child(odd) {
@@ -214,45 +288,25 @@ td {
     font-size: 2rem;
   }
 
-  th, td {
+  .b-card {
+    width: 100%; 
+    padding: 10px; 
+  }
+
+  th,
+  td {
     font-size: 1rem;
     padding: 10px;
   }
-}
-.massive-button {
-  font-family: 'sans-serif';
-  width: 600px;
-  height: 500px;
-  font-size: 100px;
-  color: rgb(6, 4, 1);
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: transform 0.3s ease, background-color 0.3s ease;
-}
 
-.beer {
-  background-color: #28a745;
-}
+  .controls {
+    flex-direction: column; /* Stack controls vertically on smaller screens */
+    align-items: stretch; 
+    gap: 10px; 
+  }
 
-.beer:hover {
-  background-color: #218838;
-  transform: scale(1.2);
-}
-
-.log-step {
-  background-color: #007bff;
-}
-
-.log-step:hover {
-  background-color: #0056b3;
-  transform: scale(1.2);
-}
-
-.button-container {
-  display: flex;
-  justify-content: center;
-  gap: 500px;
-  margin-top: 20px;
+  .squad-select {
+    font-size: 20px; /* Adjust font size for smaller screens */
+  }
 }
 </style>

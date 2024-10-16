@@ -218,7 +218,7 @@ margin-bottom: 5%;
 .box {
     background-color: rgb(238, 238, 238);
     border-radius: 3%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional for visual effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
     margin-bottom: 15%;
 }
 
