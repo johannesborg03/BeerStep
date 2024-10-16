@@ -3,13 +3,13 @@
     <h1>Leaderboard</h1>
     <div>
       <!-- Squad Dropdown to select squad -->
-      <label for="squadSelect">Select Squad:</label>
+      <label for="squadSelect" style="color: whitesmoke;"> <strong>Select Squad:</strong></label>
       <select v-model="selectedSquad" @change="fetchLeaderboardData" class="squad-select">
         <option v-for="squad in squads" :key="squad._id" :value="squad">
           {{ squad.squadName }}
         </option>
       </select>
-
+      <br>
       <!-- Global Leaderboard Button -->
       <button @click="fetchGlobalLeaderboardData" class="global-leaderboard-button">
         View Global Leaderboard
@@ -165,24 +165,30 @@ export default {
 
 h1 {
   font-size: 3rem;
-  color: #000000;
+  color: whitesmoke;
   margin-bottom: 20px;
+  font-family:  Tahoma;
 }
 
 .squad-select {
   font-size: 24px;
   padding: 10px 20px;
-  border-radius: 5px;
+  margin-bottom: 20px;
+  border-radius: 10px;
   border: 2px solid #ccc;
   margin-bottom: 20px;
+  margin-left: 10px;
+
 }
 
 .leaderboard-table {
-  width: 100%;
+  width: 90%;
   border-collapse: collapse;
   background-color: #f8f8f8;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
+  border-radius: 15px;
+  margin: 20px auto;
+
 }
 
 thead {
@@ -258,5 +264,11 @@ td {
   justify-content: center;
   gap: 500px;
   margin-top: 20px;
+}
+
+.global-leaderboard-button{
+  font-family:  Tahoma;
+  border-radius: 15px;
+  background-color: whitesmoke;
 }
 </style>
