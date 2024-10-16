@@ -105,18 +105,76 @@
               <strong>{{ milestone.title }}</strong> - {{ milestone.description }} 
               <br>
               Beers: {{ milestone.beers }}, Steps: {{ milestone.steps }}
-            </li>
-          </ul>
+              <div>
+              <b-button @click="prepareEditMilestone(milestone)" variant="primary" class="edit-milestones-button">
+                Edit Milestone
+              </b-button>
+            </div>
+          </li>
+        </ul>
+      </b-col>
+    </b-row>
+
+     <!-- Milestone form for editing -->
+  <b-row v-if="showEditMilestoneForm" class="justify-content-center mb-3">
+    <BRow class="bcard">
+      <BCard class="box">
+        <b-col cols="12" md="8" class="milestone-form">
+          <b-form @submit.prevent="saveMilestone">
+            <b-form-group label="Milestone Title">
+              <b-form-input
+                v-model="milestone.title"
+                required
+                placeholder="Enter milestone title"
+              ></b-form-input>
+            </b-form-group>
+
+            <b-form-group label="Milestone Description">
+              <b-form-textarea
+                v-model="milestone.description"
+                required
+                placeholder="Enter milestone description"
+              ></b-form-textarea>
+            </b-form-group>
+
+            <b-form-group label="Number of Beers">
+              <b-form-input
+                type="number"
+                v-model="milestone.beers"
+                required
+                placeholder="Enter number of beers"
+              ></b-form-input>
+            </b-form-group>
+
+            <b-form-group label="Number of Steps">
+              <b-form-input
+                type="number"
+                v-model="milestone.steps"
+                required
+                placeholder="Enter number of steps"
+              ></b-form-input>
+            </b-form-group>
+
+            <b-button type="submit" variant="success">
+              Save Milestone
+            </b-button>
+          </b-form>
         </b-col>
-      </b-row>
+      </BCard>
+    </BRow>
+  </b-row>
       
 
       <div class="d-flex justify-content-center mb-3">
+        <!--
         <div class="edit-milestones">
       <b-button @click="confirmEditMilestones" variant="primary" class="edit-milestones-button">
         Edit Milestone
       </b-button>
     </div>
+    -->
+
+
       <div class="delete-milestones">
       <b-button @click="confirmDeleteMilestones" variant="danger" class="delete-milestones-button">
         Delete Milestones
@@ -162,8 +220,10 @@
 export default {
   data() {
     return {
+      showEditMilestoneForm: false,
       showMilestoneForm: false, // Toggle milestone form visibility
       milestone: {
+        _id: '',
         title: '',
         description: '',
         beers: 0,
@@ -212,6 +272,11 @@ export default {
     this.fetchUserMilestones();
   },
   methods: {
+    // Prepare to edit a milestone by populating the form with existing values
+    prepareEditMilestone(milestone) {
+      this.milestone = { ...milestone }; // Clone the milestone data to the form
+      this.showMilestoneForm = true; // Show the form
+    },
 
     fetchUserMilestones() {
         const username = localStorage.getItem('username'); // Retrieve the username from local storage
@@ -230,6 +295,7 @@ export default {
              /*   this.showToastNotification('Failed to load milestones. Please try again.'); THIS SHOWS UP IF NO MILESTONES ARE THERE */ 
             });
     },
+
      // Create and save the milestone
      createMilestone() {
       const username = localStorage.getItem('username'); // Retrieve the username from local storage
@@ -286,12 +352,30 @@ export default {
       }
     },
 
+    confirmEditMilestone() {
+      const userConfirmed = window.confirm("Are you sure you want to change your Milestone?");
+      if (userCOnfirmed) {
+        this.editMilestone();
+      }
+    },
+
     confirmResetSteps() {
       const userConfirmed = window.confirm("Are you sure you want to reset your steps?");
       if (userConfirmed) {
         this.resetSteps();
       }
     },
+
+    /*
+    async editMilestone() {
+      const username = localStorage.getItem('username');
+
+      try {
+        const response = await fetch()
+      }
+    },
+  */
+
 
     async deleteMilestones(){
       const username = localStorage.getItem('username');
@@ -722,7 +806,7 @@ export default {
 
 }
 
-.edit-milestones {
+.edit-milestones-button {
   margin-top: 2.5%;
 }
 
