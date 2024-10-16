@@ -30,6 +30,14 @@
             Beer
           </b-button>
 
+          <div class="d-flex justify-content-center mb-3">
+      <div class="reset">
+      <b-button @click="confirmResetBeer" variant="danger" class="reset-button">
+        Reset Beer
+      </b-button>
+    </div>
+    </div>
+
           <!-- OffCanvas for beer selection -->
           <b-offcanvas v-model="showBeerCanvas" title="Choose Your Beer" :placement="'bottom'" class="bg-dark" style="color: white; height: 40%;">
             <b-list-group>
@@ -44,6 +52,15 @@
           <b-button @click="showStepInput = true" variant="primary" block class="massive-button log-step">
             Step
           </b-button>
+
+          <div class="d-flex justify-content-center mb-3">
+      <div class="reset">
+      <b-button @click="confirmResetSteps" variant="danger" class="reset-button">
+        Reset Steps
+      </b-button>
+    </div>
+    </div>
+
         </b-col>
       </b-row>
 
@@ -196,7 +213,7 @@
 
       
 
-      <!-- Reset button at the bottom -->
+      <!-- Reset button at the bottom 
     <div class="d-flex justify-content-center mb-3">
       <div class="reset-steps">
       <b-button @click="confirmResetSteps" variant="danger" class="reset-button">
@@ -204,7 +221,7 @@
       </b-button>
     </div>
     </div>
-
+  -->
   
   
 
@@ -448,6 +465,13 @@ export default {
       }
     },
 
+    confirmResetBeer(){
+      const userConfirmed = window.confirm("Are you sure you want to reset your beers?");
+      if(userConfirmed) {
+        this.resetBeers();
+      }
+    },
+
     /*
     async editMilestone() {
       const username = localStorage.getItem('username');
@@ -486,6 +510,71 @@ export default {
   }
     },
 
+    resetBeers(){
+      const username = localStorage.getItem('username');
+
+      fetch(`http://localhost:3000/api/users/${username}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Error fetching user data: ${response.statusText}`);
+          }
+          return response.json();
+        })
+        .then((user) => {
+          let newTotalBeers = 0;
+          
+          return fetch(`http://localhost:3000/api/users/${username}`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              total_beers: newTotalBeers,
+            }),
+          });
+        })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Error updating beers count: ${response.statusText}`);
+          }
+          return response.json();
+        })
+        .then((updatedUser) => {
+          console.log('Beers Added:', updatedUser);
+          
+          this.total_beers = updatedUser.total_beers;
+          
+          this.showToastNotification('Beers successfully logged!');
+        })
+        .catch((error) => {
+          console.error('Error logging steps:', error);
+          this.showToastNotification('Failed to log beers. Please try again.');
+        });
+      this.total_beers = 0; // Reset the total steps count to 0
+      // You might also want to reset any other related state here
+      console.log("Total beers reset to 0");
+    },
+
+    fetchUserData(){
+      const username = localStorage.getItem('username');
+      
+      fetch(`http://localhost:3000/api/users/${username}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Error fetching user data: ${response.statusText}`);
+          }
+          return response.json();
+        })
+        .then((user) => {
+          // Update the total beers, total steps, and steps needed
+          this.total_beers = user.total_beers;
+          this.total_steps = user.total_steps;
+          this.steps_needed = user.steps_needed;
+        })
+        .catch((error) => {
+          console.error('Error fetching user data:', error);
+        });
+    },
 
 
     resetSteps(){
@@ -710,6 +799,7 @@ export default {
 
 .beer {
   background-color: #ebb112;
+  margin-bottom: 0%;
 }
 
 .beer:hover {
@@ -722,7 +812,9 @@ export default {
 
 .log-step {
   background-color: #1a7fea;
+  margin-bottom: 0%;
 }
+
 
 .log-step:hover {
   /* transform: translateY(-50px); */
@@ -877,9 +969,9 @@ export default {
   margin-top: 0%;
 }
 
-.reset-steps {
-  margin-bottom: 5%;
-  margin-top: 5%;
+.reset {
+  margin-bottom: 0%;
+  margin-top: 0%;
 
 }
 
