@@ -455,7 +455,10 @@
 							"    // Get the user ID from the response and save it as an environment variable\r",
 							"    const userId = res.json().user._id; \r",
 							"    console.log('Created User ID:', userId);\r",
-							"    pm.environment.set('createdUserId', userId); // Save user ID in environment variable"
+							"    const username = res.json().user.username;\r",
+							"    console.log('Created Username:', username);\r",
+							"    pm.environment.set('createdUsername2', username); // Save Username in environment variable\r",
+							"    pm.environment.set('createdUserId', userId);});"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -465,8 +468,8 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code 200 is for successful\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
+							"pm.test(\"Status code 201 is for successful\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
 							"});"
 						],
 						"type": "text/javascript",
@@ -479,7 +482,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"squadName\" : \"jabodabo\",\r\n    \"created_by\": {{createdUserId}}\r\n}",
+					"raw": "{\r\n    \"squadName\" : \"jabodabo\",\r\n    \"created_by\": \"{{createdUserId}}\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
