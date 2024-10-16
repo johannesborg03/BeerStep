@@ -22,14 +22,9 @@
     <table class="leaderboard-table">
       <thead>
         <tr>
-          <th @click="sortBy('rank')">Rank</th>
-          <th @click="sortBy('user')">
-            User
-            <span v-if="sortKey === 'user'">
-              {{ sortOrder === 1 ? '▲' : '▼' }}
-            </span>
-          </th>
-          <th @click="sortBy('score')">
+          <th>Rank</th>
+          <th>User</th>
+          <th @click="sortBy('score')" style="cursor: pointer;">
             Points
             <span v-if="sortKey === 'score'">
               {{ sortOrder === 1 ? '▲' : '▼' }}
@@ -56,7 +51,7 @@ export default {
       leaderboardData: [], // To store leaderboard rankings
       squads: [], // To store the fetched squads
       selectedSquad: null, // Stores the selected squad object
-      sortKey: 'rank', // Initial sorting by rank
+      sortKey: 'score', // Sort by score by default
       sortOrder: 1, // 1 for ascending, -1 for descending
     };
   },
@@ -92,7 +87,6 @@ export default {
         alert('Error fetching squads. Please try again.');
       }
     },
-
 
     async fetchLeaderboardData() {
       if (!this.selectedSquad) return;
@@ -143,7 +137,7 @@ export default {
       }
     },
 
-    // Sort the leaderboard by the selected key (user or score)
+    // Sort the leaderboard by the selected key (only score in this case)
     sortBy(key) {
       if (this.sortKey === key) {
         this.sortOrder *= -1; // Toggle sorting order
@@ -219,7 +213,6 @@ th, td {
 }
 
 th {
-  cursor: pointer;
   text-transform: uppercase;
   border-bottom: 2px solid #ddd;
 }
