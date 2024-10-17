@@ -23,12 +23,42 @@
           </p>
         </BRow>
 
+
+
+
+             <!-- Fixed button container -->
+      <div class="fixed-bottom bg-light p-3 w-100 text-center">
+        <b-container>
+          <b-row class="justify-content-center buttons-container">
+            <b-col cols="6" md="auto">
+              <b-button @click="toggleCanvas" variant="primary" class="massive-button beer">
+                Beer
+              </b-button>
+            </b-col>
+            <b-col cols="6" md="auto">
+              <b-button @click="showStepInput = true" variant="primary" class="massive-button log-step">
+                Step
+              </b-button>
+            </b-col>
+          </b-row>
+        </b-container>
+      </div>
+    
+
       <!-- Button container with responsive buttons -->
+
+
+       <!--
       <b-row class="justify-content-center">
         <b-col cols="12" md="5" class="text-center mb-3">
           <b-button @click="toggleCanvas" variant="success" block class="massive-button beer">
             Beer
           </b-button>
+        </b-col>
+      </b-row>
+
+    -->
+
 
           <div class="d-flex justify-content-center mb-3">
       <div class="reset">
@@ -47,11 +77,17 @@
               </b-list-group-item>
             </b-list-group>
           </b-offcanvas>
-        </b-col>
+
+
+          <!--
+       
         <b-col cols="12" md="5" class="text-center">
           <b-button @click="showStepInput = true" variant="primary" block class="massive-button log-step">
             Step
           </b-button>
+        </b-col>
+         -->
+     
 
           <div class="d-flex justify-content-center mb-3">
       <div class="reset">
@@ -61,8 +97,7 @@
     </div>
     </div>
 
-        </b-col>
-      </b-row>
+        
 
       <!-- Step input container with responsive input and button -->
       <b-row v-if="showStepInput" class="justify-content-center mt-1">
@@ -260,6 +295,19 @@
 
   
  
+
+
+
+
+
+
+
+
+
+
+
+
+  
     
   
 </template>
@@ -790,57 +838,6 @@ export default {
   background-position: center;
 }
 
-.button-container {
-  display: flex;
-  justify-content: center;
-  gap: 500px;
-  /* Gap between buttons */
-  margin-top: 20px;
-}
-
-.massive-button {
-  font-family: 'sans-serif';
-  width: 30vh;
-  height: 30vh;
-  font-size: 10vh;
-  color: rgb(6, 15, 3);
-  border: none;
-  border-radius: 1vh;
-  /* rounded corners */
-  cursor: pointer;
-  /* Change cursor to pointer on hover */
-  transition: transform 0.3s ease, background-color 0.3s ease;
-  /* Smooth transitions */
-  margin-bottom: 5%;
-}
-
-.beer {
-  background-color: #ebb112;
-  margin-bottom: 0%;
-}
-
-.beer:hover {
-  /* transform: translateY(-50px); */
-  background-color: #f3b407;
-  /* Darker shade on hover */
-  transform: scale(1.2);
-  /* Slightly enlarge on hover */
-}
-
-.log-step {
-  background-color: #1a7fea;
-  margin-bottom: 0%;
-}
-
-
-.log-step:hover {
-  /* transform: translateY(-50px); */
-  background-color: #007bff; 
-  /* Darker shade on hover */
-  transform: scale(1.2);
-  /* Slightly enlarge on hover */
-}
-
 .step-input-container {
   display: flex;
   /* Ensures the input and button are aligned */
@@ -1045,6 +1042,123 @@ export default {
 }
 
 
+.fixed-bottom {
+  z-index: 1030; /* Ensure it stays above other content */
+  height: auto; /* This controls the height of the bottom section */
+  display: flex;
+  justify-content: center; /* Centers horizontally */
+  align-items: center; /* Centers vertically */
+
+}
+
+.container {
+
+}
+
+.massive-button {
+  font-family: 'sans-serif';
+  color: rgb(6, 15, 3);
+  /* rounded corners */
+  cursor: pointer;
+  /* Change cursor to pointer on hover */
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  /* Smooth transitions */
+  
+  
+   /* Controls the space inside the button */
+  font-size: 100%;     /* Increases the size of the text */
+  width: 100%;        /* Sets a fixed width */
+  height: 100%;        /* Sets a fixed height */
+  border-radius: 15px;  /* Optional: makes the corners rounded */
+
+  flex: 1;       /* Allows the button to grow and fill space */
+   /* Center text inside the button */
+   display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  line-height: normal;
 
 
+}
+
+.beer {
+  background-color: #ebb112;
+  margin-bottom: 0;
+}
+
+.beer:hover {
+  /* transform: translateY(-50px); */
+  background-color: #f3b407;
+  /* Darker shade on hover */
+  transform: scale(1.2);
+  /* Slightly enlarge on hover */
+}
+
+.log-step {
+  background-color: #1a7fea;
+
+}
+
+
+.log-step:hover {
+  /* transform: translateY(-50px); */
+  background-color: #007bff; 
+  /* Darker shade on hover */
+  transform: scale(1.2);
+  /* Slightly enlarge on hover */
+}
+
+
+
+
+
+
+.buttons-container {
+  margin: 0;
+  width: 100%; /* Ensures the container takes full width */
+  display: flex; /* Use flexbox for the buttons to align */
+  flex-wrap: nowrap; /* Prevent buttons from wrapping to the next line */
+  justify-content: center; /* Center buttons within the container */
+}
+
+.button-col {
+  flex: 1; /* Allow columns to grow equally */
+  display: flex; /* Enable flexbox for button alignment */
+  justify-content: center; /* Center the button within the column */
+}
+/* Media Queries for smaller screens */
+
+@media (min-width: 1024px) { 
+
+.massive-button{
+  width: 400px;
+}
+}
+
+
+@media (min-width: 768px) { 
+
+.massive-button{
+  width: 350px;
+}
+
+.buttons-container{
+  width: 100%;
+}
+}
+
+@media (min-width: 1024px) { 
+
+.massive-button{
+  width: 470px;
+}
+}
+
+@media (min-width: 1440px) { 
+
+.massive-button{
+  width: 650px;
+}
+}
 </style>
