@@ -15,7 +15,7 @@
             </div>
             <ul class="squad-list">
               <li v-for="(squad, index) in squads" :key="index">
-                {{ squad.squadName }}
+                <router-link :to="{ name: 'SquadSpace', params: { squadName: squad.squadName } }"> <p class="squad-name">{{ squad.squadName }}</p></router-link>
                 <button class="invite-button" @click="openInviteModal(squad)">+ Invite</button>
                 <button class="leave-button" @click="openLeaveModal(squad)">Leave</button>
               </li>
@@ -401,6 +401,10 @@ body {
   padding-top: 10px;
   padding-bottom: 70px;
   font-weight: 400;
+  color: black;
+}
+
+.squad-name {
   color: black;
 }
 
