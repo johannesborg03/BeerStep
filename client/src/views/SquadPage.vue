@@ -15,7 +15,7 @@
               </div>
               <ul class="list-group mt-3">
                 <li v-for="(squad, index) in squads" :key="index" class="list-group-item d-flex justify-content-between align-items-center">
-                  {{ squad.squadName }}
+                  <router-link :to="{ name: 'SquadSpace', params: { squadName: squad.squadName } }"> <p class="squad-name">{{ squad.squadName }}</p></router-link>
                   <div>
                     <button class="btn btn-warning btn-sm me-2" @click="openInviteModal(squad)">+ Invite</button>
                     <button class="btn btn-danger btn-sm" @click="openLeaveModal(squad)">Leave</button>

@@ -21,7 +21,7 @@ const routes = [
   { path: '/SettingsPage/:username', name: 'SettingsPage', component: SettingsPage },
   { path: '/SquadPage', name: 'SquadPage', component: SquadPage },
   { path: '/ManageSquads', name: 'ManageSquads', component: ManageSquads },
-  { path: '/SquadSpace', name: 'SquadSpace', component: SquadSpace }
+  { path: '/SquadSpace/:squadName', name: 'SquadSpace', component: SquadSpace }
 ]
 
 const router = createRouter({

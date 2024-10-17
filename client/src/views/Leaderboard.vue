@@ -1,58 +1,59 @@
 <template>
   <div class="Leaderboard">
-    <h1>Leaderboard</h1>
-    <BCard class="b-card">
-      <div class="controls">
-        <!-- Squad Dropdown to select squad -->
-        <label for="squadSelect" style="color: whitesmoke;">
-          <strong>Select Squad:</strong>
-        </label>
-        <select v-model="selectedSquad" @change="fetchLeaderboardData" class="squad-select">
-          <option v-for="squad in squads" :key="squad._id" :value="squad">
-            {{ squad.squadName }}
-          </option>
-        </select>
-        <button @click="fetchGlobalLeaderboardData" class="global-leaderboard-button">
-          View Global Leaderboard
-        </button>
-
-        <!-- Filtering Input for Username -->
-        <label class="input-username">
-          <strong>Filter by Username:</strong>
-        </label>
-        <input style="border-radius: 8px;" v-model="usernameFilter" type="text" placeholder="Search by username" />
-
-        <div class="toggle-rank">
-          <label>
-            <input type="checkbox" v-model="showRank" />
-            Show Rank
+    <div class="leaderboard-container">
+      <BCard class="b-card">
+        <div class="controls">
+          <button @click="fetchGlobalLeaderboardData" class="global-leaderboard-button">Global Ranking</button>
+          <!-- Squad Dropdown to select squad -->
+          <label for="squadSelect" style="color: whitesmoke;">
+            <strong>Select Squad:</strong>
           </label>
-        </div>
-      </div>
-    </BCard>
+          <select v-model="selectedSquad" @change="fetchLeaderboardData" class="squad-select">
+            <option v-for="squad in squads" :key="squad._id" :value="squad">
+              {{ squad.squadName }}
+            </option>
+          </select>
 
-    <!-- Leaderboard Table -->
-    <table class="leaderboard-table">
-      <thead>
-        <tr>
-          <th v-if="showRank">Rank</th>
-          <th>User</th>
-          <th @click="sortBy('score')" style="cursor: pointer;">
-            Points
-            <span v-if="sortKey === 'score'">
-              {{ sortOrder === 1 ? '▲' : '▼' }}
-            </span>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(entry, index) in filteredLeaderboard" :key="index">
-          <td v-if="showRank">{{ index + 1 }}</td>
-          <td>{{ entry.user }}</td>
-          <td>{{ entry.score }}</td>
-        </tr>
-      </tbody>
-    </table>
+          <!-- Filtering Input for Username -->
+          <label class="input-username">
+            <strong>Filter by Username:</strong>
+          </label>
+          <input style="border-radius: 8px;" v-model="usernameFilter" type="text" placeholder="Search by username" />
+
+          <div class="toggle-rank">
+            <label>
+              <input type="checkbox" v-model="showRank" />
+              Show Rank
+            </label>
+          </div>
+        </div>
+      </BCard>
+
+      <!-- Leaderboard Table -->
+      <table class="leaderboard-table">
+        <thead>
+          <tr>
+            <th v-if="showRank">Rank</th>
+            <th>User</th>
+            <th @click="sortBy('score')" style="cursor: pointer;">
+              Points
+              <span v-if="sortKey === 'score'">
+                {{ sortOrder === 1 ? '▲' : '▼' }}
+              </span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(entry, index) in filteredLeaderboard" :key="index">
+            <td v-if="showRank">
+              {{ sortOrder === 1 ? index + 1 : filteredLeaderboard.length - index }}
+            </td>
+            <td>{{ entry.user }}</td>
+            <td>{{ entry.score }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -76,7 +77,7 @@ export default {
         .filter(entry => entry.user.toLowerCase().includes(this.usernameFilter.toLowerCase())) 
         .sort((a, b) => {
           if (this.sortKey === 'score') {
-            return (a[this.sortKey] - b[this.sortKey]) * this.sortOrder; 
+            return (a[this.sortKey] - b[this.sortKey]) * this.sortOrder;
           }
           return 0; // Default case (no sorting if not by score)
         });
@@ -171,7 +172,6 @@ export default {
         this.sortKey = key;
         this.sortOrder = 1; // Reset to ascending when a new column is selected
       }
-      // No need to call sortLeaderboard() because it's handled in the computed property
     },
   },
   mounted() {
@@ -191,7 +191,7 @@ export default {
   height: 100vh;
   display: flex;
   flex-direction: column; /* Stack children vertically */
-  align-items: center; /* Center items horizontally */
+  align-items: center;
 }
 
 h1 {
@@ -201,14 +201,16 @@ h1 {
   font-family: Tahoma;
 }
 
+.leaderboard-container {
+  width: 60%;
+  margin: 0 auto; 
+}
+
 .b-card {
   background-color: #333;
-  max-width: 90%; /* Use a percentage for better responsiveness */
-  width: 980px; /* Set a max-width */
-  margin: 0 auto; /* Center it horizontally */
+  width: 100%; 
   border-radius: 15px;
-  align-items: center;
-  padding: 20px; /* Add padding for better appearance */
+  padding: 10px;
 }
 
 .controls {
@@ -219,17 +221,18 @@ h1 {
 }
 
 .squad-select {
-  font-size: 24px;
+  font-size: 18px;
   padding: 5px 20px;
   border-radius: 10px;
   border: 2px solid #333; 
+  font-family: Tahoma;
 }
 
 .global-leaderboard-button {
   font-family: Tahoma;
-  border-radius: 15px;
+  border-radius: 10px;
   background-color: whitesmoke;
-  padding: 10px 5px; 
+  padding: 6.5px 10px;
 }
 
 .input-username {
@@ -242,11 +245,11 @@ h1 {
 }
 
 .leaderboard-table {
-  width: 90%;
+  width: 100%; 
   border-collapse: collapse;
   background-color: #f8f8f8;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  margin: 20px auto;
+  margin: 20px 0;
 }
 
 thead {
@@ -283,18 +286,12 @@ td {
   font-size: 1.2rem;
 }
 
-@media (max-width: 768px) {
-  h1 {
-    font-size: 2rem;
+@media (max-width: 1250px) {
+  .leaderboard-container {
+    width: 75%; /* Reduce width on smaller screens */
   }
 
-  .b-card {
-    width: 100%; 
-    padding: 10px; 
-  }
-
-  th,
-  td {
+  th,td {
     font-size: 1rem;
     padding: 10px;
   }
@@ -307,6 +304,13 @@ td {
 
   .squad-select {
     font-size: 20px; /* Adjust font size for smaller screens */
+  }
+}
+
+
+@media (max-width: 400px) {
+  th,td {
+    font-size: 12px;
   }
 }
 </style>
