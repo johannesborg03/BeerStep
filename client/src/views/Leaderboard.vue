@@ -3,6 +3,7 @@
     <h1>Leaderboard</h1>
     <BCard class="b-card">
       <div class="controls">
+        <button @click="fetchGlobalLeaderboardData" class="global-leaderboard-button">Global Ranking</button>
         <!-- Squad Dropdown to select squad -->
         <label for="squadSelect" style="color: whitesmoke;">
           <strong>Select Squad:</strong>
@@ -12,9 +13,9 @@
             {{ squad.squadName }}
           </option>
         </select>
-        <button @click="fetchGlobalLeaderboardData" class="global-leaderboard-button">
-          View Global Leaderboard
-        </button>
+
+
+       
 
         <!-- Filtering Input for Username -->
         <label class="input-username">
@@ -204,7 +205,7 @@ h1 {
 .b-card {
   background-color: #333;
   max-width: 85%; 
- max-width: 980px; /* Set a max-width */
+ max-width: 980px; 
   margin: 0 auto; /* Center it horizontally */
   border-radius: 15px;
   align-items: center;
@@ -218,17 +219,19 @@ h1 {
 }
 
 .squad-select {
-  font-size: 24px;
+  font-size: 18px;
   padding: 5px 20px;
   border-radius: 10px;
   border: 2px solid #333; 
+  font-family: Tahoma;
 }
 
 .global-leaderboard-button {
   font-family: Tahoma;
-  border-radius: 15px;
+  border-radius: 10px;
   background-color: whitesmoke;
-  padding: 10px 5px; 
+  padding: 6.5px 10px;
+  
 }
 
 .input-username {
@@ -288,7 +291,7 @@ td {
   }
 
   .b-card {
-    width: 100%; 
+    width: 90%; 
     padding: 10px; 
   }
 
@@ -307,5 +310,6 @@ td {
   .squad-select {
     font-size: 20px; /* Adjust font size for smaller screens */
   }
+  
 }
 </style>
