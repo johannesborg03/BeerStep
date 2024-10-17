@@ -1,6 +1,5 @@
 <template>
   <div class="Leaderboard">
-    <h1>Leaderboard</h1>
     <BCard class="b-card">
       <div class="controls">
         <button @click="fetchGlobalLeaderboardData" class="global-leaderboard-button">Global Ranking</button>
@@ -204,11 +203,12 @@ h1 {
 
 .b-card {
   background-color: #333;
-  max-width: 85%; 
  max-width: 980px; 
   margin: 0 auto; /* Center it horizontally */
   border-radius: 15px;
   align-items: center;
+  padding: 0 5px 0 5px;
+  margin-top: 40px;
 }
 
 .controls {
@@ -244,7 +244,7 @@ h1 {
 }
 
 .leaderboard-table {
-  width: 90%;
+  width: 51%;
   border-collapse: collapse;
   background-color: #f8f8f8;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
