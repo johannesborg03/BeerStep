@@ -203,12 +203,11 @@ h1 {
 
 .b-card {
   background-color: #333;
-  max-width: 90%; 
-  width: 980px; /* Set a max-width */
+  max-width: 85%; 
+ max-width: 980px; /* Set a max-width */
   margin: 0 auto; /* Center it horizontally */
   border-radius: 15px;
   align-items: center;
-  height: 100px;
 }
 
 .controls {
@@ -283,7 +282,7 @@ td {
   font-size: 1.2rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 815px) {
   h1 {
     font-size: 2rem;
   }
