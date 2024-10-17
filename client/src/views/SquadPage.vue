@@ -280,7 +280,7 @@ export default {
     },
 
     goToManageSquads() {
-      this.$router.push('/manage-squads')
+      this.$router.push('/ManageSquads')
     }
   }
 }
