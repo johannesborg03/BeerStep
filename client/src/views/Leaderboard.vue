@@ -45,7 +45,9 @@
         </thead>
         <tbody>
           <tr v-for="(entry, index) in filteredLeaderboard" :key="index">
-            <td v-if="showRank">{{ index + 1 }}</td>
+            <td v-if="showRank">
+              {{ sortOrder === 1 ? index + 1 : filteredLeaderboard.length - index }}
+            </td>
             <td>{{ entry.user }}</td>
             <td>{{ entry.score }}</td>
           </tr>
@@ -75,7 +77,7 @@ export default {
         .filter(entry => entry.user.toLowerCase().includes(this.usernameFilter.toLowerCase())) 
         .sort((a, b) => {
           if (this.sortKey === 'score') {
-            return (a[this.sortKey] - b[this.sortKey]) * this.sortOrder; 
+            return (a[this.sortKey] - b[this.sortKey]) * this.sortOrder;
           }
           return 0; // Default case (no sorting if not by score)
         });
@@ -309,7 +311,6 @@ td {
 @media (max-width: 400px) {
   th,td {
     font-size: 12px;
-  
   }
 }
 </style>
