@@ -27,7 +27,7 @@
 
 
              <!-- Fixed button container -->
-      <div class="fixed-bottom bg-light p-3 w-100 text-center">
+      <div class="fixed-bottom bg-dark p-3 w-100 text-center">
         <b-container>
           <b-row class="justify-content-center buttons-container">
             <b-col cols="6" md="auto">
@@ -1051,13 +1051,9 @@ export default {
 
 }
 
-.container {
-
-}
-
 .massive-button {
-  font-family: 'sans-serif';
-  color: rgb(6, 15, 3);
+  font-family: 'Tahoma';
+  color: whitesmoke;
   /* rounded corners */
   cursor: pointer;
   /* Change cursor to pointer on hover */
