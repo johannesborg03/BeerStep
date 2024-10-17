@@ -171,7 +171,7 @@ export default {
         this.sortKey = key;
         this.sortOrder = 1; // Reset to ascending when a new column is selected
       }
-      // No need to call sortLeaderboard() because it's handled in the computed property
+  
     },
   },
   mounted() {
@@ -203,12 +203,12 @@ h1 {
 
 .b-card {
   background-color: #333;
-  max-width: 90%; /* Use a percentage for better responsiveness */
+  max-width: 90%; 
   width: 980px; /* Set a max-width */
   margin: 0 auto; /* Center it horizontally */
   border-radius: 15px;
   align-items: center;
-  padding: 20px; /* Add padding for better appearance */
+  height: 100px;
 }
 
 .controls {
