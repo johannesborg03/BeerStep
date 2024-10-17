@@ -138,18 +138,15 @@ router.get('/api/leaderboards/type/global', async (req, res) => {
     try {
         // Fetch all users with total_steps and total_beers fields
         const users = await User.find({}, 'username total_steps total_beers').exec();
-        
-        // Log the retrieved users
-        console.log('Fetched users:', users);
 
         // Map over the users to calculate their scores and sort them
         const leaderboard = users
             .map(user => {
-                // Log user data before calculation
+                
                 console.log(`Calculating score for user: ${user.username}, total_steps: ${user.total_steps}, total_beers: ${user.total_beers}`);
                 
-                const totalSteps = user.total_steps || 0; // Fallback to 0 if undefined
-                const totalBeers = user.total_beers || 0; // Fallback to 0 if undefined
+                const totalSteps = user.total_steps || 0; 
+                const totalBeers = user.total_beers || 0; 
                 const score = totalSteps - totalBeers * 100;
 
                 // Log the calculated score
@@ -160,15 +157,9 @@ router.get('/api/leaderboards/type/global', async (req, res) => {
                     score: score
                 };
             })
-            .sort((a, b) => b.score - a.score); // Sort leaderboard by score in descending order
-
-        // Log the final leaderboard before sending the response
-        console.log('Final sorted leaderboard:', leaderboard);
-
-        // Send the leaderboard as a response
+            .sort((a, b) => b.score - a.score); 
         res.json(leaderboard);
     } catch (error) {
-        // Log the error if something goes wrong
         console.error('Error fetching global leaderboard:', error);
         res.status(500).json({ error: 'Failed to fetch leaderboard' });
     }

@@ -9,16 +9,19 @@
         <div class="box">
           <!-- Left side: Squads list -->
           <div class="squad-list-container">
-            <h2 class="squad-list-title">Your Squads</h2>
+            <div class="squad-list-header">
+              <h2 class="squad-list-title">Your Squads</h2>
+              <button class="manage-button" @click="goToManageSquads">Manage</button>
+            </div>
             <ul class="squad-list">
               <li v-for="(squad, index) in squads" :key="index">
-                {{ squad.squadName }} <!-- Display squad name -->
+                {{ squad.squadName }}
                 <button class="invite-button" @click="openInviteModal(squad)">+ Invite</button>
                 <button class="leave-button" @click="openLeaveModal(squad)">Leave</button>
               </li>
-              <li v-if="squads.length === 0" class="no-squads">No squads yet</li>
-            </ul>
-          </div>
+            <li v-if="squads.length === 0" class="no-squads">No squads yet</li>
+          </ul>
+        </div>
 
           <router-link to="/SquadSpace">Squad page</router-link>
 
@@ -206,94 +209,94 @@ export default {
     },
 
     async sendInvite() {
-    if (this.inviteUsername.trim()) {
-        const squad_id = this.selectedSquad._id;
-        const username = this.inviteUsername;
+      if (this.inviteUsername.trim()) {
+        const squad_id = this.selectedSquad._id
+        const username = this.inviteUsername
 
         if (squad_id && username) {
+          try {
+            // PATCH request to send the invite
+            const response = await fetch(`http://localhost:3000/api/squads/${squad_id}/users/${username}`, {
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            })
 
-
-            try {
-                // PATCH request to send the invite
-                const response = await fetch(`http://localhost:3000/api/squads/${squad_id}/users/${username}`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                if (response.ok) {
-                    const data = await response.json(); // Parse JSON response
-                    console.log('Invite sent:', data);
-                    alert(`Invite sent to ${this.inviteUsername} for squad ${this.selectedSquad.squadName}!`); // Success message
-                    this.closeInviteModal(); // Close the modal after sending the invite
-                } else {
-                    throw new Error('Failed to send invite'); // Throw an error for non-200 responses
-                }
-            } catch (error) {
-                console.error('Error sending invite:', error);
-                alert('An error occurred while sending the invite. Please try again.'); // Error handling
+            if (response.ok) {
+              const data = await response.json() // Parse JSON response
+              console.log('Invite sent:', data)
+              alert(`Invite sent to ${this.inviteUsername} for squad ${this.selectedSquad.squadName}!`) // Success message
+              this.closeInviteModal() // Close the modal after sending the invite
+            } else {
+              throw new Error('Failed to send invite') // Throw an error for non-200 responses
             }
+          } catch (error) {
+            console.error('Error sending invite:', error)
+            alert('An error occurred while sending the invite. Please try again.') // Error handling
+          }
         } else {
-            alert('Invalid squad or username.'); // Additional validation if necessary
+          alert('Invalid squad or username.') // Additional validation if necessary
         }
-    } else {
-        alert('Please enter a username to invite.'); // Input validation
-    }
+      } else {
+        alert('Please enter a username to invite.') // Input validation
+      }
     },
     openLeaveModal(squad) {
       this.selectedSquad = squad // Store the selected squad
       this.showLeaveModal = true // Show the modal
     },
 
-
     async confirmLeave() {
-    const username = localStorage.getItem('username'); // Get the current user's username
+      const username = localStorage.getItem('username') // Get the current user's username
 
-    if (!username) {
-        alert('No username found, please log in again.');
-        return;
-    }
+      if (!username) {
+        alert('No username found, please log in again.')
+        return
+      }
 
-    if (this.selectedSquad && this.selectedSquad._id) { // Check for squad _id instead of squadName
-        const squad_id = this.selectedSquad._id; // Use _id to match the backend requirement
+      if (this.selectedSquad && this.selectedSquad._id) { 
+        const squad_id = this.selectedSquad._id 
 
         try {
-            // DELETE request to leave the squad
-            const response = await fetch(`http://localhost:3000/api/squads/${squad_id}/users/${username}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-                // No body needed for DELETE request
-            });
-
-            // Check the response
-            if (response.ok) {
-                const data = await response.json();
-                console.log('Successfully left the squad:', data.message);
-                alert(`You have left the squad "${this.selectedSquad.squadName}".`);
-                this.showLeaveModal = false;
-                this.selectedSquad = null;
-                await this.fetchSquads(); // Refresh the squads list
-            } else {
-                const errorData = await response.json();
-                throw new Error(`Failed to leave squad: ${errorData.message}`);
+          
+          const response = await fetch(`http://localhost:3000/api/squads/${squad_id}/users/${username}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json'
             }
+            
+          })
+
+          
+          if (response.ok) {
+            const data = await response.json()
+            console.log('Successfully left the squad:', data.message)
+            alert(`You have left the squad "${this.selectedSquad.squadName}".`)
+            this.showLeaveModal = false
+            this.selectedSquad = null
+            await this.fetchSquads() 
+          } else {
+            const errorData = await response.json()
+            throw new Error(`Failed to leave squad: ${errorData.message}`)
+          }
         } catch (error) {
-            console.error('Error while leaving the squad:', error);
-            alert('An error occurred while trying to leave the squad. Please try again.');
+          console.error('Error while leaving the squad:', error)
+          alert('An error occurred while trying to leave the squad. Please try again.')
         }
-    } else {
-        alert('No squad selected to leave.');
-    }
-    },    
+      } else {
+        alert('No squad selected to leave.')
+      }
+    },
     // Close the Leave Squad Modal
     closeLeaveModal() {
       this.showLeaveModal = false // Hide the modal
+    },
+
+    goToManageSquads() {
+      this.$router.push('/ManageSquads');
     }
 
-    
   }
 }
 </script>
@@ -339,6 +342,27 @@ body {
   width: 40%;
   text-align: left;
   margin-right: 20px;
+}
+
+.squad-list-header {
+  display: flex;
+  justify-content: space-between; /* This spaces out the title and button */
+  align-items: center;
+  margin-bottom: 20px; /* Adds space below the header */
+}
+
+.manage-button {
+  margin-left: 10px; /* Slight margin for spacing */
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.manage-button:hover {
+  background-color: #0056b3;
 }
 
 .squad-list-title {
@@ -418,7 +442,7 @@ body {
   justify-content: center;
   align-items: center;
   position: fixed;
-  z-index: 1000; /* Increased z-index for visibility */
+  z-index: 1000; 
   left: 0;
   top: 0;
   width: 100%;
@@ -429,12 +453,12 @@ body {
 
 .modal-content {
   background-color: white;
-  margin: auto; /* Centers the modal horizontally */
+  margin: auto; 
   padding: 20px;
   border: 1px solid #888;
-  width: 300px; /* Fixed width for better alignment */
+  width: 300px; 
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Added shadow for depth */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
 }
 
 .close {

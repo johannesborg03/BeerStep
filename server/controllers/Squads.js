@@ -172,4 +172,62 @@ router.delete('/api/squads/:id/users/:username', async function (req, res, next)
     }
 });
 
+// Get users of particular squad
+router.get('/api/squads/:id/users/', async function (req, res, next) {
+    
+    try {
+        const squad_id = req.params.id;
+
+        const squad = await Squad.findById(squad_id).populate('users');
+
+        if(!squad) {
+        return res.status(404).json({ message: "Squad not found" });
+        }
+
+        res.status(200).json(squad.users);
+
+    } catch (error) {
+
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+        
+    }
+
+
+});
+
+
+// Delete particular squad
+router.delete('/api/squads/:id/', async function (req, res, next) {
+    const squad_id = req.params.id;
+
+    try {
+        
+        const squad = await Squad.findById(squad_id);
+
+        if (!squad) {
+            return res.status(404).json({ message: "Squad not found" });
+        }
+
+        // Delete the associated leaderboard
+        if (squad.leaderboard) {
+            await Leaderboard.findByIdAndDelete(squad.leaderboard);
+        }
+
+        // Remove the squad reference from all users
+        await User.updateMany(
+            { squads: squad_id },
+            { $pull: { squads: squad_id } }
+        );
+
+        // Delete the squad
+        await Squad.findByIdAndDelete(squad_id);
+
+        return res.status(200).json({ message: "Squad and its leaderboard deleted successfully." });
+    } catch (error) {
+        console.error('Error deleting squad:', error);
+        return res.status(500).json({ message: "Internal server error." });
+    }
+});
+
 module.exports = router;
