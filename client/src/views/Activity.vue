@@ -1078,6 +1078,7 @@ export default {
   align-items: center;
   text-align: center;
   line-height: normal;
+  
 
 
 }
@@ -1091,7 +1092,7 @@ export default {
   /* transform: translateY(-50px); */
   background-color: #f3b407;
   /* Darker shade on hover */
-  transform: scale(1.2);
+  transform: scale(1.05);
   /* Slightly enlarge on hover */
 }
 
@@ -1105,7 +1106,7 @@ export default {
   /* transform: translateY(-50px); */
   background-color: #007bff; 
   /* Darker shade on hover */
-  transform: scale(1.2);
+  transform: scale(1.05);
   /* Slightly enlarge on hover */
 }
 
