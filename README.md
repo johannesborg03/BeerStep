@@ -62,7 +62,7 @@ Open the `server` and `client` in separate VSCode workspaces or open the combine
 
 ### Purpose
 
-BeerStep combines health and fun by merging step-taking with beer drinking in a friendly competition. Users can invite friends to join a "Squad" and log their daily steps and earn points. To maintain balance, each user are to log their consumed beers (or other alcoholic beverages) which deducts points, promoting keeping a healthy relationship with alcohol. A leaderboard keeps every squad member motivated to outstep their friends!
+BeerStep combines health and fun by merging step-taking with beer drinking in a friendly competition. Users can invite friends to join a "Squad" and log their daily steps and earn points. To maintain balance, each user are to log their consumed beers (or other alcoholic beverages) which deducts points, promoting keeping a healthy relationship with alcohol. A leaderboard keeps every squad member motivated to outstep their friends! 
 
 ### Pages
 
