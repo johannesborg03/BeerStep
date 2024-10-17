@@ -15,7 +15,9 @@
               </div>
               <ul class="list-group mt-3">
                 <li v-for="(squad, index) in squads" :key="index" class="list-group-item d-flex justify-content-between align-items-center">
-                  <router-link :to="{ name: 'SquadSpace', params: { squadName: squad.squadName } }"> <p class="squad-name">{{ squad.squadName }}</p></router-link>
+                  <router-link :to="{ name: 'SquadSpace', params: { squadName: squad.squadName } }">
+                    <p class="squad-name">{{ squad.squadName }}</p>
+                  </router-link>
                   <div>
                     <button class="btn btn-warning btn-sm me-2" @click="openInviteModal(squad)">+ Invite</button>
                     <button class="btn btn-danger btn-sm" @click="openLeaveModal(squad)">Leave</button>
@@ -24,8 +26,6 @@
                 <li v-if="squads.length === 0" class="list-group-item text-muted">No squads yet</li>
               </ul>
             </div>
-
-            <router-link to="/SquadSpace" class="btn btn-link mt-3">Squadspace</router-link>
           </div>
 
           <div class="col-md-6">
@@ -49,6 +49,7 @@
         </div>
       </div>
 
+      <!-- Invite and Leave Modals remain unchanged -->
       <div v-if="showInviteModal" class="modal d-block">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -277,6 +278,8 @@ export default {
 
     openForm() {
       this.showForm = true
+      this.successMessage = ''
+      this.squadName = ''
     },
 
     goToManageSquads() {
@@ -337,5 +340,15 @@ body {
 
 .modal-dialog {
   max-width: 400px;
+}
+
+.squad-name {
+  margin: 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+.squad-name:hover {
+  cursor: pointer;
 }
 </style>
