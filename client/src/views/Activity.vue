@@ -32,8 +32,10 @@
             <p class="beer-chart-title">Beer Progress:</p>
             <!-- INSERT BEER CHART-->
 
-              <!-- Insert your Chart component here -->
-              <beer-vs-steps-chart :totalBeers="user.total_beers" :totalSteps="user.total_steps" />
+              <!-- Insert your Chart component here
+              <beer-vs-steps-chart :totalBeers="total_beers" :totalSteps="total_steps" />
+            -->
+            <BeerVsStepsChart :chart-data="chartData" />
 
 
 
@@ -385,14 +387,32 @@ export default {
       total_beers: 0,
       total_steps: 0,
       steps_needed: 0,
+      chartData: {
+      labels: ['Beers vs Steps'],
+      datasets: [
+        {
+          label: 'Beer Consumption',
+          backgroundColor: '#42A5F5',
+          borderColor: '#42A5F5',
+          data: [{ x: this.total_beers, y: this.total_steps }],
+        },
+        {
+          label: 'Steps Taken',
+          backgroundColor: '#66BB6A',
+          borderColor: '#66BB6A',
+          data: [{ x: this.total_beers, y: this.total_steps }],
+        },
+      ],
+    },
+  };
+},
 
-
-    };
-  },
 
   mounted() {
     this.fetchUserData();
     this.fetchUserMilestones();
+    console.log('Total Beers:', this.totalBeers);
+  console.log('Total Steps:', this.totalSteps);
   },
   methods: {
    

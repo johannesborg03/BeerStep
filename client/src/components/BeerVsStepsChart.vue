@@ -1,6 +1,6 @@
 <template>
     <div>
-      <line-chart :chart-data="data" :options="options" />
+      <line-chart :data="chartData" :options="options" />
     </div>
   </template>
   
@@ -17,48 +17,25 @@ ChartJS.register(Title, Tooltip, Legend, PointElement, LineElement, CategoryScal
     },
 
     props: {
-      totalBeers: {
-      type: Number,
-      required: true
-    },
-    totalSteps: {
-      type: Number,
+    chartData: {
+      type: Object,
       required: true
     }
   },
-  computed: {
-    chartData(){
-      return {
-        labels: ['Beers vs Steps'], // Optional, could also be dates or milestones
-        datasets: [
-          {
-            label: 'Beer Consumption vs Steps Taken',
-            backgroundColor: '#42A5F5',
-            borderColor: '#42A5F5',
-            fill: false,
-            data: [
-              {
-                x: this.totalSteps,  // Total steps on the x-axis
-                y: this.totalBeers   // Total beers on the y-axis
-              }
-            ]
-          }
-        ]
-      }
-    }
-  },
-    data() {
-      return {
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales:{
-            x: {
+
+  data() {
+    return {
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            type: 'linear',
             title: {
               display: true,
               text: 'Total Steps'
-          }
-            },
+            }
+          },
           y: {
             title: {
               display: true,
@@ -67,8 +44,12 @@ ChartJS.register(Title, Tooltip, Legend, PointElement, LineElement, CategoryScal
           }
         }
       }
-    }
+    };
+  },
+
+  mounted() {
+    console.log('Chart data:', this.chartData);
   }
-}
-  </script>
+};
+</script>
   
