@@ -394,25 +394,46 @@ export default {
           label: 'Beer Consumption',
           backgroundColor: '#42A5F5',
           borderColor: '#42A5F5',
-          data: [{ x: this.total_beers, y: this.total_steps }],
+          data: [{ x: this.total_beers, y: 0}],
         },
         {
           label: 'Steps Taken',
           backgroundColor: '#66BB6A',
           borderColor: '#66BB6A',
-          data: [{ x: this.total_beers, y: this.total_steps }],
-        },
+          data: [{ x: 0, y: this.total_steps}],
+        }, 
       ],
     },
   };
 },
 
+computed: {
+  chartData() {
+    return {
+      labels: ['Beers vs Steps'],
+                datasets: [
+                    {
+                        label: 'Beer Consumption',
+                        backgroundColor: '#42A5F5',
+                        borderColor: '#42A5F5',
+                        data: [{ x: this.total_beers, y: 0 }],
+                    },
+                    {
+                        label: 'Steps Taken',
+                        backgroundColor: '#66BB6A',
+                        borderColor: '#66BB6A',
+                        data: [{ x: 0, y: this.total_steps }],
+                    },
+                ],
+            };
+        },
+    },
+
 
   mounted() {
     this.fetchUserData();
     this.fetchUserMilestones();
-    console.log('Total Beers:', this.totalBeers);
-  console.log('Total Steps:', this.totalSteps);
+  //  this.updateChartData();
   },
   methods: {
    
@@ -681,10 +702,12 @@ export default {
           this.total_beers = user.total_beers;
           this.total_steps = user.total_steps;
           this.steps_needed = user.steps_needed;
+          
         })
         .catch((error) => {
           console.error('Error fetching user data:', error);
         });
+        
     },
 
 
@@ -751,6 +774,7 @@ export default {
           this.total_beers = user.total_beers;
           this.total_steps = user.total_steps;
           this.steps_needed = user.steps_needed;
+          this.updateChartData();
         })
         .catch((error) => {
           console.error('Error fetching user data:', error);
@@ -865,6 +889,16 @@ export default {
           this.showToastNotification('Failed to log beer. Please try again.');
         });
     },
+    updateChartData() {
+    if (this.chartData && this.chartData.datasets) {
+        this.chartData.datasets[0].data[0].x = this.total_beers; // Update Beer Consumption
+        this.chartData.datasets[1].data[0].y = this.total_steps; // Update Steps Taken
+        console.log('Updating chart data:', this.total_beers, this.total_steps);
+    // Update logic...
+    } else {
+        console.error('chartData or datasets is not defined.');
+    }
+},
   },
 };
 </script>
