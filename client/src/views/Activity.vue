@@ -8,6 +8,7 @@
         </b-col>
       </b-row>
 
+      <!--
       <BRow class="current-beer-container">
         <p class="current-beer">
           <img src="/src/assets/beerPic.webp" alt="Beer" class="beer-image" />
@@ -21,6 +22,17 @@
           :     {{ total_steps }} <br>
          Steps Needed: {{ steps_needed }}
           </p>
+        </BRow>
+        -->
+
+
+        <BRow class="bcard">
+          <BCard class="box">
+            <h1 class="title">Activity Status</h1>
+            <p class="beer-chart-title">Beer Progress:</p>
+            <!-- INSERT BEER CHART-->
+
+          </BCard>
         </BRow>
 
 
