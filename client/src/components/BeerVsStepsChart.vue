@@ -1,14 +1,17 @@
 <template>
   <div>
-    <line-chart :data="chartData" :options="options" />
+    <line-chart :data="chartData" :options="chartOptions" />
   </div>
 </template>
 
 <script>
-import { Line } from 'vue-chartjs'
-import { Chart as ChartJS, Title, Tooltip, Legend, PointElement, LineElement, CategoryScale, LinearScale } from 'chart.js'
+import { Line } from 'vue-chartjs';
+import { Chart as ChartJS, Title, Tooltip, Legend, PointElement, LineElement, CategoryScale, LinearScale, TimeScale } from 'chart.js'; // Import TimeScale
+import 'chartjs-adapter-date-fns'; // Import the date adapter
 
-ChartJS.register(Title, Tooltip, Legend, PointElement, LineElement, CategoryScale, LinearScale)
+
+// Register all necessary components
+ChartJS.register(Title, Tooltip, Legend, PointElement, LineElement, CategoryScale, LinearScale, TimeScale);
 
 
 export default {
@@ -20,26 +23,39 @@ export default {
   chartData: {
     type: Object,
     required: true
+  },
+  options: {
+    type: Object,
+    required: true
   }
 },
 
 data() {
   return {
-    options: {
+    chartOptions: {
       responsive: true,
       maintainAspectRatio: false,
       scales: {
         x: {
-          type: 'linear',
+          type: 'time',
           title: {
             display: true,
-            text: 'Total Beers'
-          }
+            text: 'Date'
+          },
+          time: {
+            unit: 'day', // Set the unit of time
+            tooltipFormat: 'yyyy-mm-dd', // Format for tooltips
+            displayFormats: {
+              day: 'yyyy-mm-dd' // Format for x-axis labels
+            },
+          },
+          min: null, // This will be set in the computed property
+          max: null, // This will be set in the computed property
         },
         y: {
           title: {
             display: true,
-            text: 'Total Steps'
+            text: 'Total Beers'
           }
         }
       }
