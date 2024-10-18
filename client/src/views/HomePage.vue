@@ -75,6 +75,10 @@ export default {
   background-position: center;
 }
 
+.main {
+  overflow-x: hidden;
+}
+
 .overlay {
   position: absolute;
   color: white;
