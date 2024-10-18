@@ -16,7 +16,6 @@
                     </BRow>
                 </BCard>
                 <BCard class="form-card text-start">
-                    <h3 class="title text-start">SquadSpace</h3>
                     <ul>
                         <li v-for="(formPost, index) in squadforum" :key="index">
                             <p>
@@ -57,6 +56,7 @@ export default {
         };
     },
     mounted() {
+        this.username = localStorage.getItem('username'); 
         this.fetchSquadPosts(); 
     },
     methods: {
