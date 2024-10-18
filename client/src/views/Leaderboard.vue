@@ -4,11 +4,12 @@
       <BCard class="b-card">
         <div class="controls">
           <button @click="fetchGlobalLeaderboardData" class="global-leaderboard-button">Global Ranking</button>
-          <!-- Squad Dropdown to select squad -->
+
+          <!-- Bootstrap Select Squad Dropdown -->
           <label for="squadSelect" style="color: whitesmoke;">
             <strong>Select Squad:</strong>
           </label>
-          <select v-model="selectedSquad" @change="fetchLeaderboardData" class="squad-select">
+          <select v-model="selectedSquad" @change="fetchLeaderboardData" class="form-select squad-select">
             <option v-for="squad in squads" :key="squad._id" :value="squad">
               {{ squad.squadName }}
             </option>
@@ -35,18 +36,13 @@
           <tr>
             <th v-if="showRank">Rank</th>
             <th>User</th>
-            <th @click="sortBy('score')" style="cursor: pointer;">
-              Points
-              <span v-if="sortKey === 'score'">
-                {{ sortOrder === 1 ? '▲' : '▼' }}
-              </span>
-            </th>
+            <th>Points</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(entry, index) in filteredLeaderboard" :key="index">
             <td v-if="showRank">
-              {{ sortOrder === 1 ? index + 1 : filteredLeaderboard.length - index }}
+              {{ index + 1 }}
             </td>
             <td>{{ entry.user }}</td>
             <td>{{ entry.score }}</td>
@@ -65,22 +61,15 @@ export default {
       leaderboardData: [], // To store leaderboard rankings
       squads: [], // To store the fetched squads
       selectedSquad: null, // Stores the selected squad object
-      sortKey: 'score', // Sort by score by default
-      sortOrder: 1, // 1 for ascending, -1 for descending
       usernameFilter: '', // Filter for username
       showRank: true, // Control rank visibility
     };
   },
   computed: {
     filteredLeaderboard() {
-      return this.leaderboardData
-        .filter(entry => entry.user.toLowerCase().includes(this.usernameFilter.toLowerCase())) 
-        .sort((a, b) => {
-          if (this.sortKey === 'score') {
-            return (a[this.sortKey] - b[this.sortKey]) * this.sortOrder;
-          }
-          return 0; // Default case (no sorting if not by score)
-        });
+      return this.leaderboardData.filter(entry =>
+        entry.user.toLowerCase().includes(this.usernameFilter.toLowerCase())
+      );
     },
   },
   methods: {
@@ -133,7 +122,6 @@ export default {
             user: ranking.userId.username,
             score: ranking.score,
           }));
-          // Sorting is handled in the computed property
         } else {
           alert('Error fetching leaderboard. Please try again.');
         }
@@ -155,22 +143,11 @@ export default {
             user: entry.username,
             score: entry.score,
           }));
-          // Sorting is handled in the computed property
         } else {
           alert('Error fetching global leaderboard. Please try again.');
         }
       } catch (error) {
         alert('Error fetching global leaderboard. Please try again.');
-      }
-    },
-
-    // Sort the leaderboard by the selected key (only score in this case)
-    sortBy(key) {
-      if (this.sortKey === key) {
-        this.sortOrder *= -1; // Toggle sorting order
-      } else {
-        this.sortKey = key;
-        this.sortOrder = 1; // Reset to ascending when a new column is selected
       }
     },
   },
@@ -181,7 +158,7 @@ export default {
 </script>
 
 <style scoped>
-/* Leaderboard Styles */
+
 .Leaderboard {
   padding: 20px;
   text-align: center;
@@ -190,7 +167,7 @@ export default {
   background-position: center;
   height: 100vh;
   display: flex;
-  flex-direction: column; /* Stack children vertically */
+  flex-direction: column; 
   align-items: center;
 }
 
@@ -288,7 +265,7 @@ td {
 
 @media (max-width: 1250px) {
   .leaderboard-container {
-    width: 75%; /* Reduce width on smaller screens */
+    width: 75%; 
   }
 
   th,td {
@@ -297,13 +274,13 @@ td {
   }
 
   .controls {
-    flex-direction: column; /* Stack controls vertically on smaller screens */
+    flex-direction: column; 
     align-items: stretch; 
     gap: 10px; 
   }
 
   .squad-select {
-    font-size: 20px; /* Adjust font size for smaller screens */
+    font-size: 20px; 
   }
 }
 
