@@ -182,7 +182,7 @@ li {
 
 .text-center {
     color: black;
-    background-color: whitesmoke;
+    background-color: #333;
 }
 
 .inputfield {
