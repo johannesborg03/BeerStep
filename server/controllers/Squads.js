@@ -77,7 +77,7 @@ router.patch('/api/squads/:id/users/:username', async function (req, res) {
 
         // Check if the user is already part of the squad
         if (squad.users.includes(user._id)) {
-            return res.status(400).json({ message: "User is already in the squad" });
+            return res.status(409).json({ message: "User is already in the squad" });
         }
 
         // Add the user to the squad
