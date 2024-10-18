@@ -32,6 +32,11 @@
             <p class="beer-chart-title">Beer Progress:</p>
             <!-- INSERT BEER CHART-->
 
+              <!-- Insert your Chart component here -->
+              <beer-vs-steps-chart :totalBeers="user.total_beers" :totalSteps="user.total_steps" />
+
+
+
           </BCard>
         </BRow>
 
@@ -325,7 +330,16 @@
 </template>
 
 <script>
+// Import your Chart Component
+import BeerVsStepsChart from '/Users/Lenovo/group-25-web-2/client/src/components/BeerVsStepsChart.vue'
+
+
+
+
 export default {
+  components: {
+    BeerVsStepsChart
+  },
   data() {
     return {
       showMilestones: false,
