@@ -16,10 +16,15 @@
                     </BRow>
                 </BCard>
                 <BCard class="form-card text-start">
-                    <h3 class="title text-start">SquadSpace</h3> 
-                    <ul> 
+                    <h3 class="title text-start">SquadSpace</h3>
+                    <ul>
                         <li v-for="(formPost, index) in squadforum" :key="index">
-                            <p> <span style="color: darkorange;"><strong>{{ formPost.username }}</strong></span>: {{ formPost.message }}</p>
+                            <p>
+                                <span style="color: darkorange;">
+                                    <strong>{{ formPost.username }}</strong>
+                                </span>
+                                : {{ formPost.message }}
+                            </p>
                         </li>
                     </ul>
                 </BCard>
@@ -28,15 +33,13 @@
 
         <div class="toast-container position-fixed top-0 end-0 p-3">
             <div id="liveToast" class="toast bg-dark" role="alert" style="color: white;" aria-live="assertive"
-                aria-atomic="true" :class="{ 'show': showToast }">
+                aria-atomic="true" :class="{ show: showToast }">
                 <div class="toast-header bg-dark" style="color: white;">
                     <strong class="me-auto">Post Tracker</strong>
                     <small>Just now</small>
                     <button type="button" class="btn-close" @click="showToast = false" aria-label="Close"></button>
                 </div>
-                <div class="toast-body">
-                    {{ toastMessage }}
-                </div>
+                <div class="toast-body">{{ toastMessage }}</div>
             </div>
         </div>
     </BContainer>
@@ -47,47 +50,83 @@ export default {
     data() {
         return {
             username: '',
+            squadName: '',
             message: '',
-            squadforum: [], // Holds the list of forum posts
-            showToast: false, // Controls toast visibility
-            toastMessage: ''  // Message to display in the toast
+            showToast: false,
+            toastMessage: ''
         };
     },
     mounted() {
-        const storedUsername = localStorage.getItem('username')?.trim();
-        this.username = storedUsername ? storedUsername : 'Guest';
+        this.fetchSquadPosts();
     },
     methods: {
         firstIndex() {
             return this.username.charAt(0).toUpperCase();
         },
-        onSubmit() {
+
+        async fetchSquadPosts() {
+            try {
+                const squadName = localStorage.getItem('squadName')
+                const response = await fetch(`http://localhost:3000/api/squads/squadSpace/${squadName}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    this.squadforum = data;  // Assuming backend returns the `squadSpace` array
+                } else {
+                    console.error('Error fetching squad posts');
+                }
+            } catch (error) {
+                console.error('Error fetching squad posts:', error);
+            }
+        },
+
+        async onSubmit() {
             if (this.message.trim() === '') {
+                alert('Please enter a message before submitting.');
                 return; // Prevent empty submissions
             }
 
-            // Create a new post object
-            const formPost = {
-                username: this.username, // Use the username from localStorage
-                message: this.message
+            const newPost = {
+                username: this.username,
+                message: this.message,
             };
 
-            // Add the post to the forum
-            this.squadforum.push(formPost);
+            try {
+                const squadName = localStorage.getItem('squadName')
+                const response = await fetch(`http://localhost:3000/api/squads/squadSpace/${squadName}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(newPost),
+                });
 
-            // Trigger the toast notification
-            this.toastMessage = 'Post submitted successfully!';
-            this.showToast = true;
+                if (response.ok) {
+                    // Update the squad forum with the new post
+                    this.squadforum.push(newPost);
 
-            // Automatically hide the toast after a few seconds
-            setTimeout(() => {
-                this.showToast = false;
-            }, 3000);
+                    // Show success toast
+                    this.toastMessage = 'Post submitted successfully!';
+                    this.showToast = true;
+                    setTimeout(() => this.showToast = false, 3000);
 
-            // Reset the message field
-            this.message = '';
-        }
-    }
+                    // Reset the input field
+                    this.message = '';
+                } else {
+                    const errorData = await response.json();
+                    alert(`Error submitting post: ${errorData.message}`);
+                }
+            } catch (err) {
+                console.error('Error submitting post:', err);
+                alert('An error occurred while submitting the post. Please try again.');
+            }
+        },
+    },
 };
 </script>
 
@@ -113,9 +152,9 @@ export default {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
     overflow-y: auto;
-    max-height: 600px; 
-    min-height: 600px; 
-    
+    max-height: 600px;
+    min-height: 600px;
+
 }
 
 .title {
@@ -143,6 +182,8 @@ li {
 .text-center {
     color: white;
     background-color: #292929;
+    padding-bottom: 12px;
+
 }
 
 .inputfield {
