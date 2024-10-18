@@ -342,8 +342,8 @@ body {
 
 .squad-name {
   margin: 0;
-  text-decoration: none;
-  color: inherit;
+  color: #0d6efd;
+  font-weight: 500;
 }
 
 .squad-name:hover {
