@@ -12,7 +12,6 @@
             {{ squad.squadName }}
           </option>
         </select>
-
         <label class="input-username">
           <strong>Filter by Username:</strong>
         </label>
@@ -51,7 +50,6 @@
     </table>
   </div>
 </template>
-
 <script>
 export default {
   name: 'Leaderboard',
@@ -174,46 +172,54 @@ export default {
 </script>
 
 <style scoped>
+
 .Leaderboard {
   padding: 20px;
   text-align: center;
-  background-image: url('/src/assets/squad.jpg');
+  background-image: url('/src/assets/set&homeBackground.jpg');
   background-size: cover;
   background-position: center;
   height: 100vh;
   display: flex;
-  flex-direction: column;
+  flex-direction: column; 
   align-items: center;
 }
 
 h1 {
-  font-size: 1rem;
+  font-size: 3rem;
   color: whitesmoke;
   margin-bottom: 20px;
   font-family: Tahoma;
 }
 
+.leaderboard-container {
+  width: 60%;
+  margin: 0 auto; 
+}
+
 .b-card {
   background-color: #333;
-  width: 70%;
+  width: 70%; 
   border-radius: 15px;
   padding: 10px;
-  margin-top: 55px;
+  margin-top: 45px;
 }
 
 .controls {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
+  align-items: center; 
+  justify-content: center; 
+  gap: 20px; 
 }
 
 .squad-select {
-  font-size: 18px;
-  padding: 5px 20px;
-  border-radius: 10px;
-  border: 2px solid #333;
   font-family: Tahoma;
+  font-size: 18px;
+  width: 700px;
+  border-radius: 10px;
+  border: 2px solid #333; 
+  font-family: Tahoma;
+  padding: 8px 3px;
 }
 
 .global-leaderboard-button {
@@ -233,7 +239,7 @@ h1 {
 }
 
 .leaderboard-table {
-  width: 70%;
+  width: 70%; 
   border-collapse: collapse;
   background-color: #f8f8f8;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
@@ -276,23 +282,30 @@ td {
 
 @media (max-width: 1250px) {
   .leaderboard-container {
-    width: 75%;
+    width: 75%; 
   }
 
-  th,
-  td {
+  th,td {
     font-size: 1rem;
     padding: 10px;
   }
 
   .controls {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
+    flex-direction: column; 
+    align-items: stretch; 
+    gap: 10px; 
   }
 
   .squad-select {
-    font-size: 20px;
+    font-size: 20px; 
+    width: 100%;
+  }
+}
+
+
+@media (max-width: 400px) {
+  th,td {
+    font-size: 12px;
   }
 }
 </style>
