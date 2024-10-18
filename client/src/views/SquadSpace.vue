@@ -120,7 +120,6 @@ export default {
 
 .title {
     color: white;
-   
 }
 
 ul {

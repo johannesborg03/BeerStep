@@ -13,7 +13,7 @@
       <BCol class="quotes text-start">
         <p style="color: #ebb112;">Quote of the week</p>
         <BCard class="card-quotes">
-          <p>Walk off the beer and enjoy the next one guilt-free!</p>
+          <p> {{ quote }}</p>
         </BCard>
       </BCol>
       <BCol class="middleColumn"></BCol>
@@ -37,12 +37,14 @@ export default {
       submittedGoal: "",   
       stepsNeeded: 0,      
       username: "",     
+      quote: ""
     };
   },
 
   mounted() {
     this.username = localStorage.getItem("username") || "Guest";
     this.displaySteps(); 
+    this.quote = this.displayQuotes(); 
   },
 
   methods: {
@@ -67,6 +69,13 @@ export default {
         this.goal = ""; 
       }
     },
+    displayQuotes(){
+
+    const quotesArray = ['Walk off the beer and enjoy the next one guilt-free!','Step it up! Each one brings you one step closer to beer o’clock!','The more steps you take, the more reasons you have to enjoy that brew!','gKeep stepping and let the beer flow guilt-free!"'];
+
+    const randomIndex = Math.floor(Math.random() * quotesArray.length);
+    return quotesArray[randomIndex];
+    }
   },
 };
 </script>

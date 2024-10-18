@@ -12,8 +12,8 @@ import ManageSquads from './views/ManageSquads.vue'
 import SquadSpace from './views/SquadSpace.vue'
 
 const routes = [
-  { path: '/LogIn', name: 'LogIn', component: LogIn , meta: { hideNavbar: true } },
-  { path: '/Register', name: 'Register', component: Register, meta: { hideNavbar: true }  },
+  { path: '/LogIn', name: 'LogIn', component: LogIn, meta: { hideNavbar: true } },
+  { path: '/Register', name: 'Register', component: Register, meta: { hideNavbar: true } },
   { path: '/HomePage', name: 'HomePage', component: HomePage },
   { path: '/', name: 'Home', component: Home, meta: { hideNavbar: true } },
   { path: '/Activity', name: 'Activity', component: Activity },
@@ -21,7 +21,7 @@ const routes = [
   { path: '/SettingsPage/:username', name: 'SettingsPage', component: SettingsPage },
   { path: '/SquadPage', name: 'SquadPage', component: SquadPage },
   { path: '/ManageSquads', name: 'ManageSquads', component: ManageSquads },
-  { path: '/SquadSpace', name: 'SquadSpace', component: SquadSpace }
+  { path: '/SquadSpace/:squadName', name: 'SquadSpace', component: SquadSpace }
 ]
 
 const router = createRouter({
