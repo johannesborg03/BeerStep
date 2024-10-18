@@ -1,55 +1,54 @@
 <template>
   <div class="Leaderboard">
-    <div class="leaderboard-container">
-      <BCard class="b-card">
-        <div class="controls">
-          <button @click="fetchGlobalLeaderboardData" class="global-leaderboard-button">Global Ranking</button>
+    <BCard class="b-card">
+      <div class="controls">
+        <button @click="fetchGlobalLeaderboardData" class="global-leaderboard-button">Global Ranking</button>
+        
+        <label for="squadSelect" style="color: whitesmoke;">
+          <strong>Select Squad:</strong>
+        </label>
+        <select v-model="selectedSquad" @change="fetchLeaderboardData" class="squad-select">
+          <option v-for="squad in squads" :key="squad._id" :value="squad">
+            {{ squad.squadName }}
+          </option>
+        </select>
 
-          <!-- Bootstrap Select Squad Dropdown -->
-          <label for="squadSelect" style="color: whitesmoke;">
-            <strong>Select Squad:</strong>
+        <label class="input-username">
+          <strong>Filter by Username:</strong>
+        </label>
+        <input style="border-radius: 8px;" v-model="usernameFilter" type="text" placeholder="Search by username" />
+
+        <div class="toggle-rank">
+          <label>
+            <input type="checkbox" v-model="showRank" />
+            Show Rank
           </label>
-          <select v-model="selectedSquad" @change="fetchLeaderboardData" class="form-select squad-select">
-            <option v-for="squad in squads" :key="squad._id" :value="squad">
-              {{ squad.squadName }}
-            </option>
-          </select>
-
-          <!-- Filtering Input for Username -->
-          <label class="input-username">
-            <strong>Filter by Username:</strong>
-          </label>
-          <input style="border-radius: 8px;" v-model="usernameFilter" type="text" placeholder="Search by username" />
-
-          <div class="toggle-rank">
-            <label>
-              <input type="checkbox" v-model="showRank" />
-              Show Rank
-            </label>
-          </div>
         </div>
-      </BCard>
+      </div>
+    </BCard>
 
-      <!-- Leaderboard Table -->
-      <table class="leaderboard-table">
-        <thead>
-          <tr>
-            <th v-if="showRank">Rank</th>
-            <th>User</th>
-            <th>Points</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(entry, index) in filteredLeaderboard" :key="index">
-            <td v-if="showRank">
-              {{ index + 1 }}
-            </td>
-            <td>{{ entry.user }}</td>
-            <td>{{ entry.score }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <!-- Leaderboard Table -->
+    <table class="leaderboard-table">
+      <thead>
+        <tr>
+          <th v-if="showRank">Rank</th>
+          <th>User</th>
+          <th @click="sortBy('score')" style="cursor: pointer;">
+            Points
+            <span v-if="sortKey === 'score'">
+              {{ sortOrder === 1 ? '▲' : '▼' }}
+            </span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(entry, index) in filteredLeaderboard" :key="index">
+          <td v-if="showRank">{{ index + 1 }}</td>
+          <td>{{ entry.user }}</td>
+          <td>{{ entry.score }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
@@ -61,15 +60,22 @@ export default {
       leaderboardData: [], // To store leaderboard rankings
       squads: [], // To store the fetched squads
       selectedSquad: null, // Stores the selected squad object
+      sortKey: 'score', // Sort by score by default
+      sortOrder: 1, // 1 for ascending, -1 for descending
       usernameFilter: '', // Filter for username
       showRank: true, // Control rank visibility
     };
   },
   computed: {
     filteredLeaderboard() {
-      return this.leaderboardData.filter(entry =>
-        entry.user.toLowerCase().includes(this.usernameFilter.toLowerCase())
-      );
+      return this.leaderboardData
+        .filter(entry => entry.user.toLowerCase().includes(this.usernameFilter.toLowerCase()))
+        .sort((a, b) => {
+          if (this.sortKey === 'score') {
+            return (b[this.sortKey] - a[this.sortKey]) * this.sortOrder; // Change to descending order for ranking
+          }
+          return 0; // Default case (no sorting if not by score)
+        });
     },
   },
   methods: {
@@ -122,6 +128,7 @@ export default {
             user: ranking.userId.username,
             score: ranking.score,
           }));
+          // Sorting is handled in the computed property
         } else {
           alert('Error fetching leaderboard. Please try again.');
         }
@@ -143,11 +150,20 @@ export default {
             user: entry.username,
             score: entry.score,
           }));
+          // Sorting is handled in the computed property
         } else {
           alert('Error fetching global leaderboard. Please try again.');
         }
       } catch (error) {
         alert('Error fetching global leaderboard. Please try again.');
+      }
+    },
+    sortBy(key) {
+      if (this.sortKey === key) {
+        this.sortOrder *= -1; // Toggle sorting order
+      } else {
+        this.sortKey = key;
+        this.sortOrder = 1; // Reset to ascending when a new column is selected
       }
     },
   },
@@ -158,16 +174,15 @@ export default {
 </script>
 
 <style scoped>
-
 .Leaderboard {
   padding: 20px;
-  text-align: center; 
-  background-image: url('/src/assets/set&homeBackground.jpg');
+  text-align: center;
+  background-image: url('/src/assets/squad.jpg');
   background-size: cover;
   background-position: center;
   height: 100vh;
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   align-items: center;
 }
 
@@ -178,31 +193,26 @@ h1 {
   font-family: Tahoma;
 }
 
-.leaderboard-container {
-  width: 60%;
-  margin: 0 auto; 
-}
-
 .b-card {
-  margin-top: 50px;
   background-color: #333;
-  width: 100%; 
+  width: 70%;
   border-radius: 15px;
   padding: 10px;
+  margin-top: 55px;
 }
 
 .controls {
   display: flex;
-  align-items: center; 
-  justify-content: center; 
-  gap: 20px; 
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
 }
 
 .squad-select {
   font-size: 18px;
   padding: 5px 20px;
   border-radius: 10px;
-  border: 2px solid #333; 
+  border: 2px solid #333;
   font-family: Tahoma;
 }
 
@@ -223,7 +233,7 @@ h1 {
 }
 
 .leaderboard-table {
-  width: 100%; 
+  width: 70%;
   border-collapse: collapse;
   background-color: #f8f8f8;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
@@ -266,29 +276,23 @@ td {
 
 @media (max-width: 1250px) {
   .leaderboard-container {
-    width: 75%; 
+    width: 75%;
   }
 
-  th,td {
+  th,
+  td {
     font-size: 1rem;
     padding: 10px;
   }
 
   .controls {
-    flex-direction: column; 
-    align-items: stretch; 
-    gap: 10px; 
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
   }
 
   .squad-select {
-    font-size: 20px; 
-  }
-}
-
-
-@media (max-width: 400px) {
-  th,td {
-    font-size: 12px;
+    font-size: 20px;
   }
 }
 </style>
