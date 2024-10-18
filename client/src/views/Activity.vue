@@ -28,6 +28,7 @@
 
       <BRow class="bcard">
         <BCard class="box">
+          <BRow class="bcard"></BRow>
           <h1 class="title">Activity Status</h1>
           <p class="beer-chart-title">Beer Progress:</p>
           <!-- INSERT BEER CHART-->
@@ -41,12 +42,15 @@
 
           
           
-          <div class="d-flex justify-content-center align-items-center mb-3 activity-box">
+      
 
-            <BCard class="buttons-box">
+
+          <BCard class="container">
+          <div class="row">
+          
             
-              <div>
-            <p class="view-info" style="font-weight: 550;">Total Steps: {{ total_steps }}</p>
+              <div class="col-md-3">
+            <p class="view-info" style="font-weight: 550;">Steps: {{ total_steps }}</p>
             <div class="d-flex justify-content-center mb-3">
               <div class="reset">
                 <b-button @click="confirmResetSteps" variant="danger" class="reset-button">
@@ -56,7 +60,7 @@
             </div>
           </div>
 
-          <div>
+          <div class="col-md-6">
             <div class="d-flex justify-content-center mb-3">
         <div class="milestones">
           <b-button @click="toggleMilestones" class="milestones-button">
@@ -66,7 +70,7 @@
       </div>
     </div>
 
-      <div>
+      <div class="col-md-3">
             <p class="view-info" style="font-weight: 550;">Total Beers: {{ total_beers }} </p>
             <div class="d-flex justify-content-center mb-3">
               <div class="reset">
@@ -77,9 +81,9 @@
             </div>
           </div>
 
-          </BCard>
-          </div>
-        
+         
+        </div>
+      </BCard>
 
           
 
@@ -1326,10 +1330,9 @@ export default {
   width: 100%;
 }
 
-@media (min-width: 1440px) {
 
-.activity-box {
- 
-}
+
+.bcard-box{
+  
 }
 </style>
