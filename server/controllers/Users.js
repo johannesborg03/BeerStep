@@ -23,7 +23,7 @@ router.post('/api/users', async function (req, res, next) {
     try {
         await user.save();
         // Respond with the user and activity
-        res.status(200).json({
+        res.status(201).json({
             message: "User created successfully",
             user: user
         });
