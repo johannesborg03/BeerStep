@@ -33,13 +33,13 @@ ChartJS.register(Title, Tooltip, Legend, PointElement, LineElement, CategoryScal
             type: 'linear',
             title: {
               display: true,
-              text: 'Total Steps'
+              text: 'Total Beers'
             }
           },
           y: {
             title: {
               display: true,
-              text: 'Total Beers'
+              text: 'Total Steps'
             }
           }
         }

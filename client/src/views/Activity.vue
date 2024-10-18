@@ -387,23 +387,25 @@ export default {
       total_beers: 0,
       total_steps: 0,
       steps_needed: 0,
-      chartData: {
+    /*  chartData: {
       labels: ['Beers vs Steps'],
       datasets: [
         {
           label: 'Beer Consumption',
           backgroundColor: '#42A5F5',
           borderColor: '#42A5F5',
-          data: [{ x: this.total_beers, y: 0}],
+          data: [{ x: this.total_beers, y: this.total_steps}],
         },
+        
         {
           label: 'Steps Taken',
           backgroundColor: '#66BB6A',
           borderColor: '#66BB6A',
           data: [{ x: 0, y: this.total_steps}],
         }, 
+        
       ],
-    },
+    }, */
   };
 },
 
@@ -416,14 +418,14 @@ computed: {
                         label: 'Beer Consumption',
                         backgroundColor: '#42A5F5',
                         borderColor: '#42A5F5',
-                        data: [{ x: this.total_beers, y: 0 }],
-                    },
+                        data: [{ x: this.total_beers, y: this.total_steps }],
+                    },/*
                     {
                         label: 'Steps Taken',
                         backgroundColor: '#66BB6A',
                         borderColor: '#66BB6A',
                         data: [{ x: 0, y: this.total_steps }],
-                    },
+                    }, */
                 ],
             };
         },
@@ -892,7 +894,7 @@ computed: {
     updateChartData() {
     if (this.chartData && this.chartData.datasets) {
         this.chartData.datasets[0].data[0].x = this.total_beers; // Update Beer Consumption
-        this.chartData.datasets[1].data[0].y = this.total_steps; // Update Steps Taken
+     //   this.chartData.datasets[1].data[0].y = this.total_steps; // Update Steps Taken
         console.log('Updating chart data:', this.total_beers, this.total_steps);
     // Update logic...
     } else {
