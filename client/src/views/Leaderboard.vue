@@ -221,6 +221,7 @@ h1 {
   border: 2px solid #333; 
   font-family: Tahoma;
   padding: 8px 3px;
+  color: #000;
 }
 
 .global-leaderboard-button {
@@ -241,12 +242,11 @@ h1 {
 
 .leaderboard-table {
   width: 70%; 
-  border-collapse: collapse;
-  background-color: #f8f8f8;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   margin: 20px 0;
   border-radius: 15px; 
   overflow: hidden; 
+  border: 0.5px solid #333;
 }
 
 thead {
@@ -254,10 +254,10 @@ thead {
   color: #f1f1f1;
   border-top-left-radius: 15px; 
   border-top-right-radius: 15px;
+  padding: 10px;
 }
 
-th,
-td {
+th,td {
   padding: 15px;
   text-align: left;
   font-size: 1.5rem;
