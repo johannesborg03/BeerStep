@@ -5,7 +5,7 @@
                 <BCard class="text-center" style="margin-top: 5%;">
                     <BRow class="d-flex align-items-center">
                         <BCol class="Avatar text-start">
-                            <BAvatar class="avatar" :text="firstIndex()" />
+                            <BAvatar class="avatar" :text= "firstIndex()" />
                         </BCol>
                         <BCol class="inputfield text-center">
                             <BFormInput class="form" v-model="message" placeholder="Share or Ask Something" />
@@ -32,8 +32,7 @@
         </BRow>
 
         <div class="toast-container position-fixed top-0 end-0 p-3">
-            <div id="liveToast" class="toast bg-dark" role="alert" style="color: white;" aria-live="assertive"
-                aria-atomic="true" :class="{ show: showToast }">
+            <div id="liveToast" class="toast bg-dark" role="alert" style="color: white;" aria-live="assertive" aria-atomic="true" :class="{ show: showToast }">
                 <div class="toast-header bg-dark" style="color: white;">
                     <strong class="me-auto">Post Tracker</strong>
                     <small>Just now</small>
@@ -49,24 +48,26 @@
 export default {
     data() {
         return {
-            username: '',
+            username: '', 
             squadName: '',
             message: '',
             showToast: false,
-            toastMessage: ''
+            toastMessage: '',
+            squadforum: [] // Initialize the array to hold forum posts
         };
     },
     mounted() {
-        this.fetchSquadPosts();
+        this.fetchSquadPosts(); 
     },
     methods: {
         firstIndex() {
-            return this.username.charAt(0).toUpperCase();
+            const username = localStorage.getItem('username')
+            return this.username.charAt(0).toUpperCase(); 
         },
 
         async fetchSquadPosts() {
             try {
-                const squadName = this.$route.params.squadName;
+                const squadName = this.$route.params.squadName; 
                 const response = await fetch(`http://localhost:3000/api/squads/squadSpace/${squadName}`, {
                     method: 'GET',
                     headers: {
@@ -76,7 +77,7 @@ export default {
 
                 if (response.ok) {
                     const data = await response.json();
-                    this.squadforum = data;  // Assuming backend returns the `squadSpace` array
+                    this.squadforum = data;  
                 } else {
                     console.error('Error fetching squad posts');
                 }
@@ -88,11 +89,12 @@ export default {
         async onSubmit() {
             if (this.message.trim() === '') {
                 alert('Please enter a message before submitting.');
-                return; // Prevent empty submissions
+                return;
             }
 
+            this.username = localStorage.getItem('username')
             const newPost = {
-                username: this.username,
+                username: this.username,  
                 message: this.message,
             };
 
@@ -107,15 +109,13 @@ export default {
                 });
 
                 if (response.ok) {
-                    // Update the squad forum with the new post
+                    // Add the new post to the squad forum
                     this.squadforum.push(newPost);
 
-                    // Show success toast
                     this.toastMessage = 'Post submitted successfully!';
                     this.showToast = true;
                     setTimeout(() => this.showToast = false, 3000);
 
-                    // Reset the input field
                     this.message = '';
                 } else {
                     const errorData = await response.json();
@@ -154,7 +154,10 @@ export default {
     overflow-y: auto;
     max-height: 600px;
     min-height: 600px;
+}
 
+.form {
+    border-color: rgb(125, 125, 125);
 }
 
 .title {
@@ -164,7 +167,6 @@ export default {
 ul {
     list-style: none;
     padding: 0;
-
 }
 
 li {
@@ -172,7 +174,6 @@ li {
     border-radius: 8px;
     color: black;
 }
-
 
 .submit-button {
     background-color: #f0ad4e;
@@ -182,8 +183,6 @@ li {
 .text-center {
     color: black;
     background-color: whitesmoke;
-    padding-bottom: 12px;
-
 }
 
 .inputfield {
@@ -204,6 +203,5 @@ li {
     .form::placeholder {
         visibility: hidden;
     }
-
 }
 </style>

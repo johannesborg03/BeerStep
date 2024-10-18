@@ -11,7 +11,7 @@
       </BCol>
 
       <BCol class="quotes text-center">
-        <p style="color: #ebb112;">Quote of the week</p>
+        <p style="color: #ebb112;">Words of Wisdom</p>
         <BCard class="card-quotes">
           <p> {{ quote }}</p>
         </BCard>
