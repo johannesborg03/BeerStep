@@ -1,6 +1,6 @@
 <template>
   <body>
-    <header style="margin-bottom: 50px;"></header>
+    <header style="margin-bottom: 40px;"></header>
     <main>
       <div class="container">
         <div class="row">

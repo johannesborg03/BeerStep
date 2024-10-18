@@ -161,8 +161,8 @@ export default {
 
 .Leaderboard {
   padding: 20px;
-  text-align: center;
-  background-image: url('/src/assets/squad.jpg');
+  text-align: center; 
+  background-image: url('/src/assets/set&homeBackground.jpg');
   background-size: cover;
   background-position: center;
   height: 100vh;
@@ -184,6 +184,7 @@ h1 {
 }
 
 .b-card {
+  margin-top: 50px;
   background-color: #333;
   width: 100%; 
   border-radius: 15px;
