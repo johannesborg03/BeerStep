@@ -10,21 +10,12 @@
         <router-link to="/Activity" class="btn btn-danger w-25">Log activity</router-link>
       </BCol>
 
-      <BCol class="quotes text-start">
+      <BCol class="quotes text-center">
         <p style="color: #ebb112;">Quote of the week</p>
         <BCard class="card-quotes">
           <p> {{ quote }}</p>
         </BCard>
-      </BCol>
-      <BCol class="middleColumn"></BCol>
-      <BCol class="goal text-end">
-        <p style="color: #ebb112; font-size: 20px;">Personal Goal</p>
-        <BCard class="card-goal">
-          <pre v-if="submittedGoal" class="goal-display">My Goal: {{ submittedGoal }}</pre>
-          <BFormInput id="inputfield" v-model="goal" placeholder="Enter your goal..." />
-          <BButton variant="warning" @click="submitGoal" class="button">Submit Goal</BButton>
-        </BCard>
-      </BCol>
+      </BCol> 
     </BRow>
   </div>
 </template>
@@ -32,8 +23,7 @@
 <script>
 export default {
   data() {
-    return {
-      goal: "",            
+    return {          
       submittedGoal: "",   
       stepsNeeded: 0,      
       username: "",     
@@ -62,16 +52,9 @@ export default {
       }
     },
 
-    // Submit goal and clear input field
-    submitGoal() {
-      if (this.goal.trim()) {
-        this.submittedGoal = this.goal;
-        this.goal = ""; 
-      }
-    },
     displayQuotes(){
 
-    const quotesArray = ['Walk off the beer and enjoy the next one guilt-free!','Step it up! Each one brings you one step closer to beer o’clock!','The more steps you take, the more reasons you have to enjoy that brew!','Keep stepping and let the beer flow guilt-free!"'];
+    const quotesArray = ['Walk off the beer and enjoy the next one guilt-free!','Step it up! Each one brings you one step closer to beer o’clock!','The more steps you take, the more reasons you have to enjoy that brew!','Keep stepping and let the beer flow guilt-free!'];
 
     const randomIndex = Math.floor(Math.random() * quotesArray.length);
     return quotesArray[randomIndex];
@@ -109,31 +92,23 @@ export default {
   transform: translateY(-3px);
 }
 
-.quotes{
-margin-top: 2%;
-color: #292929;
-font-size: 20px;
-margin-left: 5%;
-
+.quotes {
+  margin-top: 2%;
+  color: #292929;
+  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
 }
 
-.card-quotes{
+.card-quotes {
   background-color: #292929; 
   color: white; 
   height: 70%; 
   text-align: center; 
-  padding-top: 10%;
-}
-.goal{
-display: flex; 
-flex-direction: column; 
-align-items: center;
-margin: 2% 7%;
-}
-
-.card-goal{
-width: 100%; 
-background-color: #292929;
+  padding: 40px ;
+  width: 100%; 
+  max-width: 500px; 
 }
 
 #inputfield{
@@ -157,13 +132,6 @@ margin-bottom:20px;
 
 @media (max-width: 768px) {
 
-.quotes{
-  display: none;
-}
-
-.middleColumn{
-display: none;
-}
 
 .overlay{
 margin-top: 200px;
@@ -173,6 +141,9 @@ margin-top: 200px;
 font-size: 12px;
 }
 
+.card-quotes{
+width: 95%;
+}
 
 }
 </style>
