@@ -419,13 +419,13 @@ computed: {
                         backgroundColor: '#42A5F5',
                         borderColor: '#42A5F5',
                         data: [{ x: this.total_beers, y: this.total_steps }],
-                    },/*
+                    },
                     {
                         label: 'Steps Taken',
                         backgroundColor: '#66BB6A',
                         borderColor: '#66BB6A',
                         data: [{ x: 0, y: this.total_steps }],
-                    }, */
+                    }, 
                 ],
             };
         },
