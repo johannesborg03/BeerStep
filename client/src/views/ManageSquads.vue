@@ -1,7 +1,7 @@
 <template>
   <body>
     <header>
-      <h1>Manage Squads</h1>
+
     </header>
 
     <main>
@@ -325,7 +325,6 @@ body {
 }
 
 header {
-  background-color: #343a40;
   color: white;
   text-align: center;
   padding: 1rem 0;
