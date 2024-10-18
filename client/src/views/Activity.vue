@@ -35,6 +35,7 @@
               <!-- Insert your Chart component here
               <beer-vs-steps-chart :totalBeers="total_beers" :totalSteps="total_steps" />
             -->
+            
             <BeerVsStepsChart :chart-data="chartData" />
 
 
@@ -438,9 +439,11 @@ computed: {
     },
 
 
+
   mounted() {
     this.fetchUserData();
     this.fetchUserMilestones();
+    console.log('Chart data on mount:', this.chartData);
   //  this.updateChartData();
   },
   methods: {
@@ -710,8 +713,11 @@ computed: {
           this.total_beers = user.total_beers;
           this.total_steps = user.total_steps;
           this.steps_needed = user.steps_needed;
-          this.beerLogs = user.beerLogs || []; // Assign beerLogs from the user object
+          this.beerLogs = user.beerLogs; // Assign beerLogs from the user object
           
+
+          console.log('Fetched beerLogs:', this.beerLogs); // Log to check data
+          this.updateChartData(); // Call to update chart with new data
         })
         .catch((error) => {
           console.error('Error fetching user data:', error);
@@ -768,31 +774,7 @@ computed: {
       // You might also want to reset any other related state here
       console.log("Total steps reset to 0");
     },
-    fetchUserData(){
-      const username = localStorage.getItem('username');
-      
-      fetch(`http://localhost:3000/api/users/${username}`)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(`Error fetching user data: ${response.statusText}`);
-          }
-          return response.json();
-        })
-        .then((user) => {
-          // Update the total beers, total steps, and steps needed
-          this.total_beers = user.total_beers;
-          this.total_steps = user.total_steps;
-          this.steps_needed = user.steps_needed;
-          this.
-
-
-
-          this.updateChartData();
-        })
-        .catch((error) => {
-          console.error('Error fetching user data:', error);
-        });
-    },
+   
     // Toggle the beer selection OffCanvas
     toggleCanvas() {
       this.showBeerCanvas = !this.showBeerCanvas;
@@ -924,14 +906,24 @@ computed: {
         });
     },
     updateChartData() {
-    if (this.chartData && this.chartData.datasets) {
-        this.chartData.datasets[0].data[0].x = this.total_beers; // Update Beer Consumption
-     //   this.chartData.datasets[1].data[0].y = this.total_steps; // Update Steps Taken
-        console.log('Updating chart data:', this.total_beers, this.total_steps);
-    // Update logic...
-    } else {
-        console.error('chartData or datasets is not defined.');
-    }
+    // Clear existing data in the datasets
+    this.chartData.datasets[0].data = []; // For Beer Consumption
+    this.chartData.datasets[1].data = []; // For Steps Taken
+
+    // Prepare beer data from the logs
+    const beerData = this.beerLogs.map(log => ({
+        x: new Date(log.date).getTime(), // Convert date to timestamp for the x-axis
+        y: log.count, // Each log's count (1 for each logged beer)
+    }));
+
+    // Add the beer data to the chart
+    this.chartData.datasets[0].data = beerData;
+
+    // Optionally, if you want to include steps over time (assuming steps are logged similarly):
+    // Assuming steps are recorded at the same time as beers, you would fetch that data similarly.
+    this.chartData.datasets[1].data = [{ x: new Date(), y: this.total_steps }]; // Update with current total steps
+
+    console.log('Updating chart data:', this.chartData);
 },
   },
 };
