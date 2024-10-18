@@ -277,7 +277,7 @@ tbody tr:nth-child(odd) {
   background-color: #f2f2f2;
 }
 
-tbody tr:hover {
+tbody tr {
   background-color: #ddd;
 }
 
