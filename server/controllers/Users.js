@@ -18,6 +18,7 @@ router.post('/api/users', async function (req, res, next) {
         total_steps: 0,
         steps_needed: 0,
         milestones: req.body.milestones,
+        beerLogs: req.body.beerLogs,
     });
 
     try {

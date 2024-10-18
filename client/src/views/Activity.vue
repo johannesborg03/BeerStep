@@ -387,6 +387,7 @@ export default {
       total_beers: 0,
       total_steps: 0,
       steps_needed: 0,
+      beerLogs: [],
     /*  chartData: {
       labels: ['Beers vs Steps'],
       datasets: [
@@ -411,6 +412,11 @@ export default {
 
 computed: {
   chartData() {
+    const beerData = this.beerLogs.map(log => ({
+            x: new Date(log.date).getTime(), // Use timestamps for x-axis
+            y: log.count,
+        }));
+
     return {
       labels: ['Beers vs Steps'],
                 datasets: [
@@ -418,7 +424,7 @@ computed: {
                         label: 'Beer Consumption',
                         backgroundColor: '#42A5F5',
                         borderColor: '#42A5F5',
-                        data: [{ x: this.total_beers, y: this.total_steps }],
+                        data: beerData,
                     },
                     {
                         label: 'Steps Taken',
@@ -704,6 +710,7 @@ computed: {
           this.total_beers = user.total_beers;
           this.total_steps = user.total_steps;
           this.steps_needed = user.steps_needed;
+          this.beerLogs = user.beerLogs || []; // Assign beerLogs from the user object
           
         })
         .catch((error) => {
@@ -776,6 +783,10 @@ computed: {
           this.total_beers = user.total_beers;
           this.total_steps = user.total_steps;
           this.steps_needed = user.steps_needed;
+          this.
+
+
+
           this.updateChartData();
         })
         .catch((error) => {
@@ -863,16 +874,37 @@ computed: {
           const newTotalBeers = user.total_beers + 1;
           const newStepsNeeded = user.steps_needed + 2000;
 
+            // Prepare the new beer log
+            const newBeerLog = {
+                date: new Date(), // Current date and time
+                count: newTotalBeers, // Total beers after increment
+            };
+
+
+              // Prepare the request body
+      const requestBody = {
+        total_beers: newTotalBeers,
+        steps_needed: newStepsNeeded,
+        beerLogs: [...user.beerLogs, newBeerLog], // Combine existing logs with the new one
+      };
+
+
           return fetch(`http://localhost:3000/api/users/${username}`, {
             method: 'PATCH',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ 
-              total_beers: newTotalBeers,
-              steps_needed: newStepsNeeded }),
-          });
-        })
+            body: JSON.stringify(requestBody ),
+
+
+         //     total_beers: newTotalBeers,
+         //     steps_needed: newStepsNeeded }),
+                 // Use $push to add the new beer log
+       //   beerLogs: newBeerLog // This is the key change
+           //   $push: { beerLogs: newBeerLog }, // Push new log into beerLogs array
+          
+        });
+      })
         .then((response) => {
           if (!response.ok) {
             throw new Error(`Error updating beer count: ${response.statusText}`);
