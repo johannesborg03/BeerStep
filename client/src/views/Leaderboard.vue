@@ -203,6 +203,7 @@ h1 {
   border-radius: 15px;
   padding: 10px;
   margin-top: 45px;
+  border-radius: 15px;
 }
 
 .controls {
@@ -244,11 +245,15 @@ h1 {
   background-color: #f8f8f8;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   margin: 20px 0;
+  border-radius: 15px; 
+  overflow: hidden; 
 }
 
 thead {
   background-color: #333;
   color: #f1f1f1;
+  border-top-left-radius: 15px; 
+  border-top-right-radius: 15px;
 }
 
 th,
