@@ -66,7 +66,7 @@ export default {
 
         async fetchSquadPosts() {
             try {
-                const squadName = localStorage.getItem('squadName')
+                const squadName = this.$route.params.squadName;
                 const response = await fetch(`http://localhost:3000/api/squads/squadSpace/${squadName}`, {
                     method: 'GET',
                     headers: {
@@ -97,7 +97,7 @@ export default {
             };
 
             try {
-                const squadName = localStorage.getItem('squadName')
+                const squadName = this.$route.params.squadName;
                 const response = await fetch(`http://localhost:3000/api/squads/squadSpace/${squadName}`, {
                     method: 'POST',
                     headers: {
@@ -133,11 +133,11 @@ export default {
 <style scoped>
 .brow {
     min-height: 100vh;
-    width: 60%;
+    width: 50%;
 }
 
 .page-wrapper {
-    background-image: url('@/assets/squad.jpg');
+    background-image: url('@/assets/set&homeBackground.jpg');
     background-size: cover;
     background-position: center;
     height: 100vh;
@@ -147,7 +147,7 @@ export default {
 }
 
 .form-card {
-    background-color: #292929;
+    background-color: whitesmoke;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
@@ -158,7 +158,7 @@ export default {
 }
 
 .title {
-    color: white;
+    color: rgb(0, 0, 0);
 }
 
 ul {
@@ -170,7 +170,7 @@ ul {
 li {
     padding: 15px;
     border-radius: 8px;
-    color: white;
+    color: black;
 }
 
 
@@ -180,14 +180,14 @@ li {
 }
 
 .text-center {
-    color: white;
-    background-color: #292929;
+    color: black;
+    background-color: whitesmoke;
     padding-bottom: 12px;
 
 }
 
 .inputfield {
-    color: white;
+    color: black;
 }
 
 @media (max-width: 768px) {
