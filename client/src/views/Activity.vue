@@ -49,7 +49,7 @@
           <div class="row">
           
             
-              <div class="col-md-3">
+              <div class="col-md-3 steps">
             <p class="view-info" style="font-weight: 550;">Steps: {{ total_steps }}</p>
             <div class="d-flex justify-content-center mb-3">
               <div class="reset">
@@ -60,7 +60,7 @@
             </div>
           </div>
 
-          <div class="col-md-6">
+          <div class="col-md-6 milestone">
             <div class="d-flex justify-content-center mb-3">
         <div class="milestones">
           <b-button @click="toggleMilestones" class="milestones-button">
@@ -70,8 +70,8 @@
       </div>
     </div>
 
-      <div class="col-md-3">
-            <p class="view-info" style="font-weight: 550;">Total Beers: {{ total_beers }} </p>
+      <div class="col-md-3 ber">
+            <p class="view-info" style="font-weight: 550;">Beers: {{ total_beers }} </p>
             <div class="d-flex justify-content-center mb-3">
               <div class="reset">
                 <b-button @click="confirmResetBeer" variant="danger" class="reset-button">
@@ -1309,6 +1309,26 @@ export default {
   .buttons-container {
     width: 100%;
   }
+
+  .milestone {
+    
+  }
+  .milestones-button {
+    width: 100px;
+    margin-top: 60px;
+    height: 70px;
+
+  }
+
+  .steps {
+    
+  text-align: center;
+  /* Center the button within the column */
+  }
+
+  .ber{
+    text-align: center;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -1316,14 +1336,70 @@ export default {
   .massive-button {
     width: 470px;
   }
+  .milestones-button {
+    width: 150px;
+    margin-top: 60px;
+    height: 70px;
+
+  }
+
+  .steps {
+    
+  text-align: center;
+  /* Center the button within the column */
+  }
+
+  .ber{
+    text-align: center;
+    margin-top: 25px;
+  }
 }
 
 @media (min-width: 1440px) {
 
+  .row{
+    justify-content: center;
+    gap: 10px;
+  }
+  .milestone {
+
+    width: 100px;
+  }
+
+
+
   .massive-button {
     width: 650px;
   }
+  
 }
+.milestones-button {
+    width: 150px;
+    margin-top: 60px;
+    height: 70px;
+    gap: 50px;
+
+  }
+
+  .steps {
+    
+  margin-top: 40px;
+  text-align: center;
+  width: 200px;
+  /* Center the button within the column */
+  }
+
+  .ber{
+    margin-top: 40px;
+    text-align: center;
+    width: 200px
+
+  }
+  .reset-button {
+    width: 150px;
+    margin-left: 50px;
+    margin-right: 50px;
+  }
 
 
 .activity-box {
