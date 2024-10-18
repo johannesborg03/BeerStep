@@ -23,8 +23,14 @@ var squadSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref : 'Leaderboard',
         unique: false
-    }
+    },
+
+    squadSpace: [{
+        username: String,
+        message: String,
+    }]
 });
+
 
 var Squad = mongoose.model('Squad', squadSchema);
 

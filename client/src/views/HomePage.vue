@@ -71,7 +71,7 @@ export default {
     },
     displayQuotes(){
 
-    const quotesArray = ['Walk off the beer and enjoy the next one guilt-free!','Step it up! Each one brings you one step closer to beer o’clock!','The more steps you take, the more reasons you have to enjoy that brew!','gKeep stepping and let the beer flow guilt-free!"'];
+    const quotesArray = ['Walk off the beer and enjoy the next one guilt-free!','Step it up! Each one brings you one step closer to beer o’clock!','The more steps you take, the more reasons you have to enjoy that brew!','Keep stepping and let the beer flow guilt-free!"'];
 
     const randomIndex = Math.floor(Math.random() * quotesArray.length);
     return quotesArray[randomIndex];
