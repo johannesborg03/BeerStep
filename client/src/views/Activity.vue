@@ -263,7 +263,7 @@
                       placeholder="Enter number of steps"></b-form-input>
                   </b-form-group>
 
-                  <b-button type="submit" variant="success">Save Milestone</b-button>
+                  <b-button class="save-milestone" type="submit" variant="success">Save Milestone</b-button>
                   <b-button @click="goBackToMilestonesFromCreateMilestone" class="go-back-button">
               Go Back
             </b-button>
@@ -686,6 +686,7 @@ export default {
       this.isBcardView = true;
     },
     goBackToMilestonesFromCreateMilestone(){
+      this.milestone = { title: '', description: '', beers: 0, steps: 0 }; // Reset form fields
       this.showCreateMilestones = false;
       this.isMilestoneView = true;
       this.isBcardView = true;
@@ -1167,7 +1168,10 @@ export default {
 
 .go-back-button{
   margin-top: 5%;
-  color:#007bff;
+  background-color: #ff5733; /* Your desired background color */
+  color: white; /* Text color */
+  border: none; /* Remove border */
+  
 
 }
 
