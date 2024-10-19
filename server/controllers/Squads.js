@@ -230,4 +230,23 @@ router.delete('/api/squads/:id/', async function (req, res, next) {
     }
 });
 
+
+router.get('/api/squads/squadSpace/:squadName', async function (req, res, next) {
+    try {
+        const squadName = req.params.squadName;
+
+        // Find the squad by squadName (not by ID)
+        const squad = await Squad.findOne({ squadName: squadName });
+        if (!squad) {
+            return res.status(404).json({ message: "Squad not found" });
+        }
+
+        // Return the squad's message space
+        res.status(200).json(squad.squadSpace);
+    } catch (error) {
+        console.error('Error retrieving squadSpace:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
 module.exports = router;
