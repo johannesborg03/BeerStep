@@ -264,6 +264,10 @@
                   </b-form-group>
 
                   <b-button type="submit" variant="success">Save Milestone</b-button>
+                  <b-button @click="goBackToMilestonesFromCreateMilestone" class="go-back-button">
+              Go Back
+            </b-button>
+                  
                 </b-form>
               </b-col>
             </BCard>
@@ -297,9 +301,15 @@
                     placeholder="Enter number of steps"></b-form-input>
                 </b-form-group>
 
-                <b-button type="save-milestone" variant="success">
+                <div>
+                <b-button class="save-milestone" type="save-milestone" variant="success">
                   Save Milestone
                 </b-button>
+              </div>
+
+                <b-button @click="goBackToMilestonesFromEditMilestone" class="go-back-button">
+              Go Back
+            </b-button>
               </b-form>
             </b-col>
           </BCard>
@@ -347,15 +357,6 @@
 
     </b-container>
   </div>
-
-
-
-
-
-
-
-
-
 
 
 
@@ -529,7 +530,10 @@ export default {
 
       await this.fetchMilestone(milestone._id);
       this.milestone = { ...milestone }; // Clone the milestone data to the form
+      this.isBcardView = false;
+      this.isMilestoneView = false;
       this.showEditMilestoneForm = true; // Show the form
+      
     },
 
     saveMilestone(milestone) {
@@ -564,6 +568,8 @@ export default {
           this.showEditMilestoneForm = false; // Hide the form
           this.milestone = { _id: '', title: '', description: '', beers: 0, steps: 0 }; // Reset the form fields
           this.showToastNotification('Milestone successfully updated!');
+          this.isBcardView = true;
+          this.isMilestoneView = true;
 
         })
         .catch((error) => {
@@ -673,6 +679,16 @@ export default {
     toggleMilestones() {
       this.isMilestoneView = !this.isMilestoneView;
       this.isActivityView = !this.isActivityView;
+    },
+    goBackToMilestonesFromEditMilestone(){
+      this.showEditMilestoneForm = false;
+      this.isMilestoneView = true;
+      this.isBcardView = true;
+    },
+    goBackToMilestonesFromCreateMilestone(){
+      this.showCreateMilestones = false;
+      this.isMilestoneView = true;
+      this.isBcardView = true;
     },
 
     confirmDeleteMilestones() {
@@ -1034,6 +1050,10 @@ export default {
   margin: 0; /* Remove default margin */
   padding: 0; /* Remove default padding */
 
+}
+
+.save-milestone{
+  margin-top: 5%;
 }
 
 .title{
