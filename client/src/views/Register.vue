@@ -148,7 +148,7 @@
 
 .text-center {
   border-radius: 20px;
-  margin-bottom: 200px;
+  margin-bottom: 230px;
 }
 
 .mb-3 {
