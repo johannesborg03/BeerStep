@@ -1,10 +1,11 @@
 <template>
+
   <div class="activity-view">
     <b-container>
       <b-row>
         <b-col>
 
-          <p class="text-center">Log your steps (or Beer ;)</p>
+         
         </b-col>
       </b-row>
 
@@ -40,37 +41,17 @@
           <BeerVsStepsChart ref="myChart" :chart-data="chartData" :options="chartOptions" />
 
 
-          
+         
           
       
 
 
-          <BCard class="container">
-          <div class="row">
+          <BCard class="activity-buttons-container">
+          <div class="row d-flex flex-column align-items-center">
           
             
-              <div class="col-md-3 steps">
-            <p class="view-info" style="font-weight: 550;">Steps: {{ total_steps }}</p>
-            <div class="d-flex justify-content-center mb-3">
-              <div class="reset">
-                <b-button @click="confirmResetSteps" variant="danger" class="reset-button">
-                  Reset Steps
-                </b-button>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-6 milestone">
-            <div class="d-flex justify-content-center mb-3">
-        <div class="milestones">
-          <b-button @click="toggleMilestones" class="milestones-button">
-            Milestones
-          </b-button>
-        </div>
-      </div>
-    </div>
-
-      <div class="col-md-3 ber">
+            <div class="col-md-3 d-flex flex-column align-items-center ber">
+              
             <p class="view-info" style="font-weight: 550;">Beers: {{ total_beers }} </p>
             <div class="d-flex justify-content-center mb-3">
               <div class="reset">
@@ -79,6 +60,33 @@
                 </b-button>
               </div>
             </div>
+          
+          </div>
+
+          <div class="col-md-6 d-flex flex-column align-items-center milestone">
+            
+            <p class="view-info" style="font-weight: 550;">Milestones: {{ total_milestones }}</p>
+            <div class="d-flex justify-content-center">
+        <div class="milestones">
+          <b-button @click="toggleMilestones" variant="primary" class="milestones-button">
+            Milestones
+          </b-button>
+        </div>
+      </div>
+  
+    </div>
+
+    <div class="col-md-3 d-flex flex-column align-items-center steps">
+    
+            <p class="view-info" style="font-weight: 550;">Steps: {{ total_steps }}</p>
+            <div class="d-flex justify-content-center mb-3">
+              <div class="reset">
+                <b-button @click="confirmResetSteps" variant="danger" class="reset-button">
+                  Reset Steps
+                </b-button>
+              </div>
+            </div>
+          
           </div>
 
          
@@ -127,13 +135,6 @@
     -->
 
 
-      <div class="d-flex justify-content-center mb-3">
-        <div class="reset">
-          <b-button @click="confirmResetBeer" variant="danger" class="reset-button">
-            Reset Beers
-          </b-button>
-        </div>
-      </div>
 
       <!-- OffCanvas for beer selection -->
       <b-offcanvas v-model="showBeerCanvas" title="Choose Your Beer" :placement="'bottom'" class="bg-dark"
@@ -158,13 +159,7 @@
          -->
 
 
-      <div class="d-flex justify-content-center mb-3">
-        <div class="reset">
-          <b-button @click="confirmResetSteps" variant="danger" class="reset-button">
-            Reset Steps
-          </b-button>
-        </div>
-      </div>
+      
 
 
 
@@ -188,14 +183,7 @@
       </div>
     -->
 
-      <div class="d-flex justify-content-center mb-3">
-        <div class="milestones">
-          <b-button @click="toggleMilestones" class="milestones-button">
-            Milestones
-          </b-button>
-        </div>
-      </div>
-
+      
 
 
 
@@ -350,8 +338,6 @@
 
     </b-container>
   </div>
-
-
 
 
 
@@ -1014,17 +1000,31 @@ export default {
 
 <style scoped>
 /* Add view-specific styles */
+
+
+
 .activity-view {
-  text-align: center;
-  background-color: #2b2b2b;
-  overflow: auto;
-  width: 100%;
-  height: 100vh;
-  margin: 0 auto;
-  position: relative;
-  background-image: url('@/assets/squad.jpg');
-  background-size: cover;
-  background-position: center;
+
+  background: url('@/assets/set&homeBackground.jpg') no-repeat center center fixed;
+  background-size: cover; /* Ensure the image covers the entire area */
+  height: 100vh; /* Set full height for the body */
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+
+}
+
+.title{
+  background-color: whitesmoke;
+  color:#007bff;
+}
+
+.beer-chart-title{
+  background-color: whitesmoke;
+  color:#007bff;
+}
+
+.view-info{
+  color: whitesmoke;
 }
 
 .step-input-container {
@@ -1131,6 +1131,7 @@ export default {
 .reset {
   margin-bottom: 0%;
   margin-top: 0%;
+  border-radius: 15px;
 
 }
 
@@ -1155,8 +1156,8 @@ export default {
   margin-top: 10%;
   width: 15vh;
   height: 10vh;
-  color: #000000;
-  background-color: #ebb112;
+  color: whitesmoke;
+  
 }
 
 
@@ -1168,10 +1169,10 @@ export default {
 }
 
 .box {
-  background-color: rgb(238, 238, 238);
+  background-color: #02032b;
   border-radius: 3%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 15%;
+  margin-bottom: 0%;
   width: 50%;
   /* Adjust the width */
   padding: 0;
@@ -1183,6 +1184,8 @@ export default {
   display: flex;
   /* Aligns content inside */
   width: 100%;
+  
+
 }
 
 .milestone-list {
@@ -1289,8 +1292,42 @@ export default {
   justify-content: center;
   /* Center the button within the column */
 }
+.milestones-button{
+  border-radius: 15px;
+  height: 100%;
 
+}
+
+.ber{
+  margin-top: 0%;
+}
+
+.milestone {
+}
+
+.activity-buttons-container{
+
+  background-color: #333;
+}
 /* Media Queries for smaller screens */
+
+@media (min-width: 320px) {
+
+  .milestones-button{
+    width: 100px;
+  }
+  
+  .reset-button{
+    width: 10px;
+    margin: 0%;
+  }
+  .box{
+    margin-top: 50px;
+
+  }
+  
+ 
+}
 
 @media (min-width: 1024px) {
 
@@ -1302,6 +1339,7 @@ export default {
 
 @media (min-width: 768px) {
 
+
   .massive-button {
     width: 350px;
   }
@@ -1310,18 +1348,10 @@ export default {
     width: 100%;
   }
 
-  .milestone {
-    
-  }
-  .milestones-button {
-    width: 100px;
-    margin-top: 60px;
-    height: 70px;
-
-  }
+ 
 
   .steps {
-    
+  margin-top: 5%;
   text-align: center;
   /* Center the button within the column */
   }
@@ -1331,17 +1361,16 @@ export default {
   }
 }
 
+.milestones-button{
+  margin: 0%;
+}
+
 @media (min-width: 1024px) {
 
   .massive-button {
     width: 470px;
   }
-  .milestones-button {
-    width: 150px;
-    margin-top: 60px;
-    height: 70px;
-
-  }
+  
 
   .steps {
     
@@ -1349,10 +1378,7 @@ export default {
   /* Center the button within the column */
   }
 
-  .ber{
-    text-align: center;
-    margin-top: 25px;
-  }
+  
 }
 
 @media (min-width: 1440px) {
@@ -1361,10 +1387,7 @@ export default {
     justify-content: center;
     gap: 10px;
   }
-  .milestone {
-
-    width: 100px;
-  }
+  
 
 
 
@@ -1373,32 +1396,15 @@ export default {
   }
   
 }
-.milestones-button {
-    width: 150px;
-    margin-top: 60px;
-    height: 70px;
-    gap: 50px;
 
-  }
+ 
 
-  .steps {
-    
-  margin-top: 40px;
-  text-align: center;
-  width: 200px;
-  /* Center the button within the column */
-  }
-
-  .ber{
-    margin-top: 40px;
-    text-align: center;
-    width: 200px
-
-  }
+  
   .reset-button {
     width: 150px;
     margin-left: 50px;
     margin-right: 50px;
+    
   }
 
 

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="view">
     <line-chart :data="chartData" :options="chartOptions" />
   </div>
 </template>
@@ -68,4 +68,12 @@ mounted() {
 }
 };
 </script>
+
+<style scoped>
+.view{
+  background-color: whitesmoke;
+  margin-bottom: 5%;
+}
+</style>
+
 
