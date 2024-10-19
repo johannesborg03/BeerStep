@@ -27,8 +27,10 @@
         -->
 
 
-      <BRow class="bcard">
+      <BRow class="bcard" v-if="isBcardView">
         <BCard class="box">
+
+          
 
 
           <div class="milestone-view" v-if="isMilestoneView">
@@ -81,13 +83,6 @@
               Go Back
             </b-button>
       </div>
-
-
-
-
-
-
-
 
       <div class="activity" v-if="!isActivityView">
           <h1 class="title">Activity Status</h1>
@@ -386,6 +381,7 @@ export default {
     return {
       showCreateMilestones: false,
       showEditMilestoneForm: false,
+      isBcardView: true,
       showMilestoneForm: false, // Toggle milestone form visibility
       isActivityView: false, // Determines which container is visible
       isMilestoneView: false,
@@ -648,7 +644,9 @@ export default {
           this.fetchUserMilestones();
           this.showToastNotification('Milestone successfully saved!'); // Show success toast
           this.milestone = { title: '', description: '', beers: 0, steps: 0 }; // Reset the form fields
-          this.showCreateMilestones = false; // Hide the form
+          
+          this.toggleCreateMilestones();
+          
         })
         .catch((error) => {
           console.error('Error saving milestone:', error);
@@ -657,14 +655,19 @@ export default {
 
           this.milestone = { title: '', description: '', beers: 0, steps: 0 }; // Reset form fields
           this.showMilestoneForm = false; // Hide the form
+         
 
         });
     },
+
+    
     toggleMilestoneForm() {
       this.showMilestoneForm = !this.showMilestoneForm;
     },
     toggleCreateMilestones() {
       this.showCreateMilestones= !this.showCreateMilestones;
+      this.isMilestoneView =!this.isMilestoneView;
+      this.isBcardView = !this.isBcardView;
     },
 
     toggleMilestones() {
@@ -1223,6 +1226,9 @@ export default {
   list-style-type: none;
   width: 100%;
   margin-bottom: 5%;
+  max-height: 400px; /* Set a maximum height for the milestone list */
+    overflow-y: auto; /* Allow vertical scrolling */
+    padding-right: 15px; /* Add some padding to avoid scrollbar overlap */
 }
 
 
