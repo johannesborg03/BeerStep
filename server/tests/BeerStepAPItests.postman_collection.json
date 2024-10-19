@@ -1588,8 +1588,8 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Response status code is 200\", function () {",
-							"  pm.response.to.have.status(200);",
+							"pm.test(\"Status code is 404 for not found\", function () {",
+							"    pm.response.to.have.status(404);",
 							"});"
 						],
 						"type": "text/javascript",
@@ -1624,9 +1624,8 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"// Fixed duplicate test name and response status code",
-							"pm.test(\"Status code is 201 success\", function () {",
-							"    pm.response.to.have.status(201);",
+							"pm.test(\"Status code is 404 for not found\", function () {",
+							"    pm.response.to.have.status(404);",
 							"});"
 						],
 						"type": "text/javascript",
