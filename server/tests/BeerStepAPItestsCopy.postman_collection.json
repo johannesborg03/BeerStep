@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "11af6913-6571-4b87-9446-aa4de1b4b819",
-		"name": "BeerStep API tests Copy",
+		"name": "BeerStep API tests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "38271747"
 	},
@@ -1585,7 +1585,21 @@
 			"name": "GET Squads SquadSpace Forum by Squad Name",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/squads/squadSpace/Hello",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"squads",
+						"squadSpace",
+						"Hello"
+					]
+				}
 			},
 			"response": []
 		},
@@ -1613,7 +1627,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\" : \"jabo\",\n    \"email\" : \"email@gmail.com\",\n    \"password\" : \"password\",\n    \"total_beers\" : 0,\n    \"total_steps\" : 0,\n    \"steps_needed\" : 0\n}",
+					"raw": "{\n    \"username\" : \"Peter\",\n    \"message\" : \"Tjena kingen\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1621,7 +1635,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/users",
+					"raw": "http://localhost:3000/api/squads/squadSpace/Hello",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -1629,7 +1643,9 @@
 					"port": "3000",
 					"path": [
 						"api",
-						"users"
+						"squads",
+						"squadSpace",
+						"Hello"
 					]
 				}
 			},
