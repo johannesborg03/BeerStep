@@ -1,8 +1,6 @@
 <template>
   <div class="login-wrapper">
-    <div class="title">
-        <h1>BeerStep</h1>
-    </div>
+        <h1 class ="title">BeerStep</h1>
     <b-container class="d-flex justify-content-center align-items-center vh-100">
         <b-card class="text-center">
             <h1 class="mb-3">Welcome Back!</h1>
@@ -133,11 +131,8 @@ export default {
 
 .custom-input {
     border-radius: 20px;
-    /* Add custom border radius */
     padding: 10px;
-    /* Optional: Add padding for better spacing */
     border: 1px solid #ced4da;
-    /* Optional: Define a border color */
 }
 
 .text-center {
@@ -154,6 +149,7 @@ export default {
 }
 
 .title {
+    font-family:  Tahoma;
     text-align: center;
     color: White;
     font-size: 16px;

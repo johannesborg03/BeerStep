@@ -5,7 +5,7 @@
                 <BCard class="text-center" style="margin-top: 5%;">
                     <BRow class="d-flex align-items-center">
                         <BCol class="Avatar text-start">
-                            <BAvatar class="avatar" :text="firstIndex()" />
+                            <BAvatar class="avatar" :text= "firstIndex()" />
                         </BCol>
                         <BCol class="inputfield text-center">
                             <BFormInput class="form" v-model="message" placeholder="Share or Ask Something" />
@@ -16,10 +16,14 @@
                     </BRow>
                 </BCard>
                 <BCard class="form-card text-start">
-                    <h3 class="title text-start">SquadSpace</h3> 
-                    <ul> 
+                    <ul>
                         <li v-for="(formPost, index) in squadforum" :key="index">
-                            <p> <span style="color: darkorange;"><strong>{{ formPost.username }}</strong></span>: {{ formPost.message }}</p>
+                            <p>
+                                <span style="color: darkorange;">
+                                    <strong>{{ formPost.username }}</strong>
+                                </span>
+                                : {{ formPost.message }}
+                            </p>
                         </li>
                     </ul>
                 </BCard>
@@ -27,16 +31,13 @@
         </BRow>
 
         <div class="toast-container position-fixed top-0 end-0 p-3">
-            <div id="liveToast" class="toast bg-dark" role="alert" style="color: white;" aria-live="assertive"
-                aria-atomic="true" :class="{ 'show': showToast }">
+            <div id="liveToast" class="toast bg-dark" role="alert" style="color: white;" aria-live="assertive" aria-atomic="true" :class="{ show: showToast }">
                 <div class="toast-header bg-dark" style="color: white;">
                     <strong class="me-auto">Post Tracker</strong>
                     <small>Just now</small>
                     <button type="button" class="btn-close" @click="showToast = false" aria-label="Close"></button>
                 </div>
-                <div class="toast-body">
-                    {{ toastMessage }}
-                </div>
+                <div class="toast-body">{{ toastMessage }}</div>
             </div>
         </div>
     </BContainer>
@@ -46,59 +47,97 @@
 export default {
     data() {
         return {
-            username: '',
+            username: '', 
+            squadName: '',
             message: '',
-            squadforum: [], // Holds the list of forum posts
-            showToast: false, // Controls toast visibility
-            toastMessage: ''  // Message to display in the toast
+            showToast: false,
+            toastMessage: '',
+            squadforum: [] // Initialize the array to hold forum posts
         };
     },
     mounted() {
-        const storedUsername = localStorage.getItem('username')?.trim();
-        this.username = storedUsername ? storedUsername : 'Guest';
+        this.username = localStorage.getItem('username'); 
+        this.fetchSquadPosts(); 
     },
     methods: {
         firstIndex() {
-            return this.username.charAt(0).toUpperCase();
+            const username = localStorage.getItem('username')
+            return this.username.charAt(0).toUpperCase(); 
         },
-        onSubmit() {
+
+        async fetchSquadPosts() {
+            try {
+                const squadName = this.$route.params.squadName; 
+                const response = await fetch(`http://localhost:3000/api/squads/squadSpace/${squadName}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    this.squadforum = data;  
+                } else {
+                    console.error('Error fetching squad posts');
+                }
+            } catch (error) {
+                console.error('Error fetching squad posts:', error);
+            }
+        },
+
+        async onSubmit() {
             if (this.message.trim() === '') {
-                return; // Prevent empty submissions
+                alert('Please enter a message before submitting.');
+                return;
             }
 
-            // Create a new post object
-            const formPost = {
-                username: this.username, // Use the username from localStorage
-                message: this.message
+            this.username = localStorage.getItem('username')
+            const newPost = {
+                username: this.username,  
+                message: this.message,
             };
 
-            // Add the post to the forum
-            this.squadforum.push(formPost);
+            try {
+                const squadName = this.$route.params.squadName;
+                const response = await fetch(`http://localhost:3000/api/squads/squadSpace/${squadName}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(newPost),
+                });
 
-            // Trigger the toast notification
-            this.toastMessage = 'Post submitted successfully!';
-            this.showToast = true;
+                if (response.ok) {
+                    // Add the new post to the squad forum
+                    this.squadforum.push(newPost);
 
-            // Automatically hide the toast after a few seconds
-            setTimeout(() => {
-                this.showToast = false;
-            }, 3000);
+                    this.toastMessage = 'Post submitted successfully!';
+                    this.showToast = true;
+                    setTimeout(() => this.showToast = false, 3000);
 
-            // Reset the message field
-            this.message = '';
-        }
-    }
+                    this.message = '';
+                } else {
+                    const errorData = await response.json();
+                    alert(`Error submitting post: ${errorData.message}`);
+                }
+            } catch (err) {
+                console.error('Error submitting post:', err);
+                alert('An error occurred while submitting the post. Please try again.');
+            }
+        },
+    },
 };
 </script>
 
 <style scoped>
 .brow {
     min-height: 100vh;
-    width: 60%;
+    width: 50%;
 }
 
 .page-wrapper {
-    background-image: url('@/assets/squad.jpg');
+    background-image: url('@/assets/set&homeBackground.jpg');
     background-size: cover;
     background-position: center;
     height: 100vh;
@@ -108,32 +147,33 @@ export default {
 }
 
 .form-card {
-    background-color: #292929;
+    background-color: whitesmoke;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
     overflow-y: auto;
-    max-height: 600px; 
-    min-height: 600px; 
-    
+    max-height: 600px;
+    min-height: 600px;
+}
+
+.form {
+    border-color: rgb(125, 125, 125);
 }
 
 .title {
-    color: white;
+    color: rgb(0, 0, 0);
 }
 
 ul {
     list-style: none;
     padding: 0;
-
 }
 
 li {
     padding: 15px;
     border-radius: 8px;
-    color: white;
+    color: black;
 }
-
 
 .submit-button {
     background-color: #f0ad4e;
@@ -141,12 +181,12 @@ li {
 }
 
 .text-center {
-    color: white;
-    background-color: #292929;
+    color: black;
+    background-color: #333;
 }
 
 .inputfield {
-    color: white;
+    color: black;
 }
 
 @media (max-width: 768px) {
@@ -163,6 +203,5 @@ li {
     .form::placeholder {
         visibility: hidden;
     }
-
 }
 </style>
