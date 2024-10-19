@@ -29,7 +29,67 @@
 
       <BRow class="bcard">
         <BCard class="box">
-          <BRow class="bcard"></BRow>
+
+
+          <div class="milestone-view" v-if="isMilestoneView">
+        <div class="d-flex justify-content-center mb-3">
+        </div>
+        <h3 class="milestone-title">Your Milestones: ({{ milestones.length }}) </h3>
+        <b-row v-if="milestones.length > 0" class="mt-3">
+          <b-col cols="12">
+          
+            <ul class="list-group">
+              <li v-for="(milestone, index) in milestones" :key="index" class="list-group-item">
+                <strong>Title: {{ milestone.title }} <br>
+                </strong>
+                <strong>Description: {{ milestone.description }}
+                  <br>
+                </strong>
+                Beers: {{ milestone.beers }}<br>
+                Steps: {{ milestone.steps }}
+                <div>
+                  <b-button @click="prepareEditMilestone(milestone)" variant="primary" class="edit-milestones-button">
+                    Edit Milestone
+                  </b-button>
+                </div>
+              </li>
+            </ul>
+          </b-col>
+        </b-row>
+
+        <b-row>
+          
+          <div class="col-md-6">
+        <div class="milestones">
+            <b-button @click="toggleCreateMilestones" class="milestones-button">
+              Create Milestone
+            </b-button>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+        <div class="delete-milestones">
+          <b-button @click="confirmDeleteMilestones" variant="danger" class="delete-milestones-button">
+            Delete Milestones
+          </b-button>
+        </div>
+      </div>
+
+      </b-row>
+
+        <b-button @click="toggleMilestones" class="milestones-button">
+              Go Back
+            </b-button>
+      </div>
+
+
+
+
+
+
+
+
+      <div class="activity" v-if="!isActivityView">
           <h1 class="title">Activity Status</h1>
           <p class="beer-chart-title">Beer Progress:</p>
           <!-- INSERT BEER CHART-->
@@ -39,12 +99,6 @@
             -->
 
           <BeerVsStepsChart ref="myChart" :chart-data="chartData" :options="chartOptions" />
-
-
-         
-          
-      
-
 
           <BCard class="activity-buttons-container">
           <div class="row d-flex flex-column align-items-center">
@@ -93,7 +147,7 @@
         </div>
       </BCard>
 
-          
+    </div>
 
         </BCard>
       </BRow>
@@ -188,18 +242,9 @@
 
 
 
-      <b-row v-if="showMilestones" class="justify-content-center mb-3">
-
-
-        <div class="d-flex justify-content-center mb-3">
-          <div class="milestones">
-            <b-button @click="toggleMilestoneForm" class="milestones-button">
-              Create Milestone
-            </b-button>
-          </div>
-        </div>
-
-        <b-row v-if="showMilestoneForm" class="justify-content-center mb-3">
+      <b-row v-if="showCreateMilestones" class="justify-content-center mb-3 milestone-view">
+      <div class="create-milestone-view">
+        <b-row v-if="showCreateMilestones" class="justify-content-center mb-3">
           <BRow class="bcard">
             <BCard class="box">
               <b-col cols="12" md="8" class="milestone-form">
@@ -227,40 +272,9 @@
                 </b-form>
               </b-col>
             </BCard>
-
           </BRow>
         </b-row>
-
-
-        <b-row v-if="milestones.length > 0" class="mt-3">
-          <b-col cols="12">
-            <h3>Your Milestones</h3>
-            <ul class="list-group">
-              <li v-for="(milestone, index) in milestones" :key="index" class="list-group-item">
-                <strong>Title: {{ milestone.title }} <br>
-                </strong>
-                <strong>Description: {{ milestone.description }}
-                  <br>
-                </strong>
-                Beers: {{ milestone.beers }}<br>
-                Steps: {{ milestone.steps }}
-                <div>
-                  <b-button @click="prepareEditMilestone(milestone)" variant="primary" class="edit-milestones-button">
-                    Edit Milestone
-                  </b-button>
-                </div>
-              </li>
-            </ul>
-          </b-col>
-        </b-row>
-
-        <div class="delete-milestones">
-          <b-button @click="confirmDeleteMilestones" variant="danger" class="delete-milestones-button">
-            Delete Milestones
-          </b-button>
-        </div>
-
-
+      </div>
       </b-row>
 
       <!-- Milestone form for editing -->
@@ -370,9 +384,11 @@ export default {
   },
   data() {
     return {
-      showMilestones: false,
+      showCreateMilestones: false,
       showEditMilestoneForm: false,
       showMilestoneForm: false, // Toggle milestone form visibility
+      isActivityView: false, // Determines which container is visible
+      isMilestoneView: false,
       milestone: {
         _id: '',
         title: '',
@@ -632,7 +648,7 @@ export default {
           this.fetchUserMilestones();
           this.showToastNotification('Milestone successfully saved!'); // Show success toast
           this.milestone = { title: '', description: '', beers: 0, steps: 0 }; // Reset the form fields
-          this.showMilestoneForm = false; // Hide the form
+          this.showCreateMilestones = false; // Hide the form
         })
         .catch((error) => {
           console.error('Error saving milestone:', error);
@@ -647,9 +663,13 @@ export default {
     toggleMilestoneForm() {
       this.showMilestoneForm = !this.showMilestoneForm;
     },
+    toggleCreateMilestones() {
+      this.showCreateMilestones= !this.showCreateMilestones;
+    },
 
     toggleMilestones() {
-      this.showMilestones = !this.showMilestones;
+      this.isMilestoneView = !this.isMilestoneView;
+      this.isActivityView = !this.isActivityView;
     },
 
     confirmDeleteMilestones() {
