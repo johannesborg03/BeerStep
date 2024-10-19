@@ -149,6 +149,82 @@
 					"response": []
 				},
 				{
+					"name": "GET Squads User is Member of by Username",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const username = pm.collectionVariables.get('defaultUsernameUsers');\r",
+									"pm.environment.set('userName', username);\r",
+									"const userId = pm.collectionVariables.get('defaultUserIdUsers');\r",
+									"\r",
+									"// Create squad to retrieve\r",
+									"pm.sendRequest({\r",
+									"        url: 'http://localhost:3000/api/squads',\r",
+									"        method: 'POST',\r",
+									"        header: {\r",
+									"            'Content-Type': 'application/json'\r",
+									"        },\r",
+									"        body: {\r",
+									"            mode: 'raw',\r",
+									"            raw: JSON.stringify({\r",
+									"                squadName: 'Team Awesome4',\r",
+									"                created_by: userId\r",
+									"            })\r",
+									"        }\r",
+									"    }, function (err, res) {\r",
+									"        if (err) {\r",
+									"            console.error(err);\r",
+									"            return;\r",
+									"        }\r",
+									"    });\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200, successfully retrieved squads of user\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/users/:username/squads",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								":username",
+								"squads"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "{{userName}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "PUT User by Username",
 					"event": [
 						{
@@ -512,7 +588,7 @@
 			"name": "API/SQUADS",
 			"item": [
 				{
-					"name": "POST/SQUADS",
+					"name": "POST Create Squad",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -566,16 +642,13 @@
 					"response": []
 				},
 				{
-					"name": "PATCH/SQUADS/ID/USERS/USERNAME",
+					"name": "PATCH Invite User to Squad by Username",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"",
-									"",
-									"",
-									"pm.test(\"Status code 200 is for successful\", function () {",
+									"pm.test(\"Status 200, successfully invited user to squad\", function () {",
 									"    pm.response.to.have.status(200);",
 									"});"
 								],
@@ -587,34 +660,33 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"// Create the first user\r",
-									"pm.sendRequest({\r",
-									"    url: 'http://localhost:3000/api/users',\r",
-									"    method: 'POST',\r",
-									"    header: {\r",
-									"        'Content-Type': 'application/json'\r",
-									"    },\r",
-									"    body: {\r",
-									"        mode: 'raw',\r",
-									"        raw: JSON.stringify({\r",
-									"            username: 'john_doe',\r",
-									"            email: 'john@example.com',\r",
-									"            password: 'password123'\r",
-									"        })\r",
-									"    }\r",
-									"}, function (err, res) {\r",
-									"    if (err) {\r",
-									"        console.error(err);\r",
-									"        return;\r",
-									"    }\r",
-									"    \r",
-									"    // Get the user ID from the response and save it as an environment variable\r",
-									"    const userId = res.json().user._id; \r",
-									"    console.log('Created User ID:', userId);\r",
-									"    pm.environment.set('createdUserId', userId); // Save user ID in environment variable\r",
+									"const userId = pm.collectionVariables.get('defaultUserIdSquads'); // Get userId from API/SQUADS default user\r",
 									"\r",
-									"    // Create a squad\r",
-									"    pm.sendRequest({\r",
+									"pm.sendRequest({\r",
+									"        url: 'http://localhost:3000/api/users',\r",
+									"        method: 'POST',\r",
+									"        header: {\r",
+									"            'Content-Type': 'application/json'\r",
+									"        },\r",
+									"        body: {\r",
+									"            mode: 'raw',\r",
+									"            raw: JSON.stringify({\r",
+									"                username: 'inviteThisUser',\r",
+									"                email: 'invitedUser@example.com',\r",
+									"                password: 'password123'\r",
+									"            })\r",
+									"        }\r",
+									"    }, function (err, res) {\r",
+									"        if (err) {\r",
+									"            console.error(err);\r",
+									"            return;\r",
+									"        }\r",
+									"        const username = res.json().user.username;\r",
+									"        pm.environment.set(\"inviteUsernameSquads\", username);\r",
+									"});\r",
+									"\r",
+									"// Create squad to update\r",
+									"pm.sendRequest({\r",
 									"        url: 'http://localhost:3000/api/squads',\r",
 									"        method: 'POST',\r",
 									"        header: {\r",
@@ -623,8 +695,8 @@
 									"        body: {\r",
 									"            mode: 'raw',\r",
 									"            raw: JSON.stringify({\r",
-									"                squadName: 'Team Awesome',\r",
-									"                created_by: userId // Use the created user ID directly here\r",
+									"                squadName: 'SquadForInvite',\r",
+									"                created_by: userId\r",
 									"            })\r",
 									"        }\r",
 									"    }, function (err, res) {\r",
@@ -634,39 +706,11 @@
 									"        }\r",
 									"\r",
 									"        // Get the squad ID from the response and save it as an environment variable\r",
+									"        // to be used in params\r",
 									"        const squadId = res.json().squad._id; \r",
-									"        console.log('Created Squad ID:', squadId);\r",
-									"        pm.environment.set('createdSquadId', squadId); // Save squad ID in environment variable\r",
-									"\r",
-									"        // Now create the second user\r",
-									"        pm.sendRequest({\r",
-									"            url: 'http://localhost:3000/api/users',\r",
-									"            method: 'POST',\r",
-									"            header: {\r",
-									"                'Content-Type': 'application/json'\r",
-									"            },\r",
-									"            body: {\r",
-									"                mode: 'raw',\r",
-									"                raw: JSON.stringify({\r",
-									"                    username: 'johnny',\r",
-									"                    email: 'johnny@example.com',\r",
-									"                    password: 'password123'\r",
-									"                })\r",
-									"            }\r",
-									"        }, function (err, res) {\r",
-									"            if (err) {\r",
-									"                console.error(err);\r",
-									"                return;\r",
-									"            }\r",
-									"\r",
-									"            const invite_username = res.json().user.username; \r",
-									"            console.log('Created Invite Username:', invite_username);\r",
-									"            \r",
-									"            // Save the user ID in an environment variable\r",
-									"            pm.environment.set('inviteUsername', invite_username);\r",
-									"        });\r",
-									"    });\r",
-									"});"
+									"        pm.environment.set('inviteSquadId', squadId); \r",
+									"        \r",
+									"    });"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -702,11 +746,11 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "{{createdSquadId}}"
+									"value": "{{inviteSquadId}}"
 								},
 								{
 									"key": "username",
-									"value": "{{inviteUsername}}"
+									"value": "{{inviteUsernameSquads}}"
 								}
 							]
 						}
@@ -714,35 +758,16 @@
 					"response": []
 				},
 				{
-					"name": "DELETE/SQUADS/ID",
+					"name": "DELETE Squad by ID",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"// Create the first user\r",
-									"pm.sendRequest({\r",
-									"    url: 'http://localhost:3000/api/users',\r",
-									"    method: 'POST',\r",
-									"    header: {\r",
-									"        'Content-Type': 'application/json'\r",
-									"    },\r",
-									"    body: {\r",
-									"        mode: 'raw',\r",
-									"        raw: JSON.stringify({\r",
-									"            username: 'john_doe4',\r",
-									"            email: 'john4@example.com',\r",
-									"            password: 'password123'\r",
-									"        })\r",
-									"    }\r",
-									"}, function (err, res) {\r",
-									"    if (err) {\r",
-									"        console.error(err);\r",
-									"        return;\r",
-									"    }\r",
+									"const userId = pm.collectionVariables.get('defaultUserIdSquads'); // Get userId from API/SQUADS default user\r",
 									"\r",
-									"    // Create a squad\r",
-									"    pm.sendRequest({\r",
+									"// Create squad to update\r",
+									"pm.sendRequest({\r",
 									"        url: 'http://localhost:3000/api/squads',\r",
 									"        method: 'POST',\r",
 									"        header: {\r",
@@ -751,7 +776,7 @@
 									"        body: {\r",
 									"            mode: 'raw',\r",
 									"            raw: JSON.stringify({\r",
-									"                squadName: 'Team Awesome4',\r",
+									"                squadName: 'SquadForDelete',\r",
 									"                created_by: userId\r",
 									"            })\r",
 									"        }\r",
@@ -762,11 +787,11 @@
 									"        }\r",
 									"\r",
 									"        // Get the squad ID from the response and save it as an environment variable\r",
+									"        // to be used in params\r",
 									"        const squadId = res.json().squad._id; \r",
-									"        console.log('Created Squad ID:', squadId);\r",
-									"        pm.environment.set('createdSquadId', squadId); // Save squad ID in environment variable\r",
-									"    });\r",
-									"});"
+									"        pm.environment.set('deleteSquadId', squadId); \r",
+									"        \r",
+									"    });"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -776,7 +801,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code 200 is for successful\", function () {\r",
+									"pm.test(\"Status 200, successfully deleted squad\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});"
 								],
@@ -803,7 +828,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "{{createdSquadId}}"
+									"value": "{{deleteSquadId}}"
 								}
 							]
 						}
@@ -811,43 +836,16 @@
 					"response": []
 				},
 				{
-					"name": "GET/SQUADS/ID/USERS",
+					"name": "GET Users of Squad",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"// Create the first user\r",
-									"pm.sendRequest({\r",
-									"    url: 'http://localhost:3000/api/users',\r",
-									"    method: 'POST',\r",
-									"    header: {\r",
-									"        'Content-Type': 'application/json'\r",
-									"    },\r",
-									"    body: {\r",
-									"        mode: 'raw',\r",
-									"        raw: JSON.stringify({\r",
-									"            username: 'john_doe3',\r",
-									"            email: 'john3@example.com',\r",
-									"            password: 'password123'\r",
-									"        })\r",
-									"    }\r",
-									"}, function (err, res) {\r",
-									"    if (err) {\r",
-									"        console.error(err);\r",
-									"        return;\r",
-									"    }\r",
-									"    \r",
-									"    // Get the user ID from the response and save it as an environment variable\r",
-									"    const userId = res.json().user._id; \r",
-									"    console.log('Created User ID:', userId);\r",
-									"    const username = res.json().user.username;\r",
-									"    console.log('Created Username:', username);\r",
-									"    pm.environment.set('createdUsername2', username); // Save Username in environment variable\r",
-									"    pm.environment.set('createdUserId2', userId); // Save user ID in environment variable\r",
+									"const userId = pm.collectionVariables.get('defaultUserIdSquads'); // Get userId from API/SQUADS default user\r",
 									"\r",
-									"    // Create a squad\r",
-									"    pm.sendRequest({\r",
+									"// Create squad to update\r",
+									"pm.sendRequest({\r",
 									"        url: 'http://localhost:3000/api/squads',\r",
 									"        method: 'POST',\r",
 									"        header: {\r",
@@ -856,7 +854,7 @@
 									"        body: {\r",
 									"            mode: 'raw',\r",
 									"            raw: JSON.stringify({\r",
-									"                squadName: 'Team Awesome3',\r",
+									"                squadName: 'SquadForGetMembers',\r",
 									"                created_by: userId\r",
 									"            })\r",
 									"        }\r",
@@ -867,11 +865,11 @@
 									"        }\r",
 									"\r",
 									"        // Get the squad ID from the response and save it as an environment variable\r",
+									"        // to be used in params\r",
 									"        const squadId = res.json().squad._id; \r",
-									"        console.log('Created Squad ID:', squadId);\r",
-									"        pm.environment.set('createdSquadId', squadId); // Save squad ID in environment variable\r",
-									"    });\r",
-									"});"
+									"        pm.environment.set('membersSquadId', squadId); \r",
+									"        \r",
+									"    });"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -881,7 +879,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code 200 is for successful\", function () {\r",
+									"pm.test(\"Status 200, successfully retrieved members of squad\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});"
 								],
@@ -909,7 +907,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "{{createdSquadId}}"
+									"value": "{{membersSquadId}}"
 								}
 							]
 						}
@@ -917,43 +915,38 @@
 					"response": []
 				},
 				{
-					"name": "DELETE/SQUADS/ID/USERS/USERNAME",
+					"name": "DELETE Member of Squad by Username",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"// Create the first user\r",
-									"pm.sendRequest({\r",
-									"    url: 'http://localhost:3000/api/users',\r",
-									"    method: 'POST',\r",
-									"    header: {\r",
-									"        'Content-Type': 'application/json'\r",
-									"    },\r",
-									"    body: {\r",
-									"        mode: 'raw',\r",
-									"        raw: JSON.stringify({\r",
-									"            username: 'john_doe2',\r",
-									"            email: 'john2@example.com',\r",
-									"            password: 'password123'\r",
-									"        })\r",
-									"    }\r",
-									"}, function (err, res) {\r",
-									"    if (err) {\r",
-									"        console.error(err);\r",
-									"        return;\r",
-									"    }\r",
-									"    \r",
-									"    // Get the user ID from the response and save it as an environment variable\r",
-									"    const userId = res.json().user._id; \r",
-									"    console.log('Created User ID:', userId);\r",
-									"    const username = res.json().user.username;\r",
-									"    console.log('Created Username:', username);\r",
-									"    pm.environment.set('createdUsername2', username); // Save Username in environment variable\r",
-									"    pm.environment.set('createdUserId2', userId); // Save user ID in environment variable\r",
+									"const userId = pm.collectionVariables.get('defaultUserIdSquads'); // Get userId from API/SQUADS default user\r",
 									"\r",
-									"    // Create a squad\r",
-									"    pm.sendRequest({\r",
+									"pm.sendRequest({\r",
+									"        url: 'http://localhost:3000/api/users',\r",
+									"        method: 'POST',\r",
+									"        header: {\r",
+									"            'Content-Type': 'application/json'\r",
+									"        },\r",
+									"        body: {\r",
+									"            mode: 'raw',\r",
+									"            raw: JSON.stringify({\r",
+									"                username: 'removeThisUser',\r",
+									"                email: 'removedUser@example.com',\r",
+									"                password: 'password123'\r",
+									"            })\r",
+									"        }\r",
+									"    }, function (err, res) {\r",
+									"        if (err) {\r",
+									"            console.error(err);\r",
+									"            return;\r",
+									"        }\r",
+									"        const username = res.json().user.username;\r",
+									"        pm.environment.set(\"deleteUsernameSquads\", username);\r",
+									"\r",
+									"        // Create squad\r",
+									"        pm.sendRequest({\r",
 									"        url: 'http://localhost:3000/api/squads',\r",
 									"        method: 'POST',\r",
 									"        header: {\r",
@@ -962,7 +955,7 @@
 									"        body: {\r",
 									"            mode: 'raw',\r",
 									"            raw: JSON.stringify({\r",
-									"                squadName: 'Team Awesome2',\r",
+									"                squadName: 'SquadForDelMember',\r",
 									"                created_by: userId\r",
 									"            })\r",
 									"        }\r",
@@ -973,11 +966,31 @@
 									"        }\r",
 									"\r",
 									"        // Get the squad ID from the response and save it as an environment variable\r",
+									"        // to be used in params\r",
 									"        const squadId = res.json().squad._id; \r",
-									"        console.log('Created Squad ID:', squadId);\r",
-									"        pm.environment.set('createdSquadId2', squadId); // Save squad ID in environment variable\r",
+									"        pm.environment.set('deleteMemberOfSquadId', squadId); \r",
+									"\r",
+									"        const patchUrl = `http://localhost:3000/api/squads/${squadId}/users/${username}`;\r",
+									"        pm.sendRequest({\r",
+									"        url: patchUrl,\r",
+									"        method: 'PATCH',\r",
+									"        header: {\r",
+									"            'Content-Type': 'application/json'\r",
+									"        },\r",
+									"    }, function (err, res) {\r",
+									"        if (err) {\r",
+									"            console.error(err);\r",
+									"            return;\r",
+									"        }\r",
+									"        \r",
 									"    });\r",
-									"});"
+									"        \r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"    "
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -1016,11 +1029,11 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "{{createdSquadId2}}"
+									"value": "{{deleteMemberOfSquadId}}"
 								},
 								{
 									"key": "username",
-									"value": "{{createdUsername2}}"
+									"value": "{{deleteUsernameSquads}}"
 								}
 							]
 						}
