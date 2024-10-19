@@ -1,6 +1,8 @@
 <template>
   <div class="login-wrapper">
-        <h1 class ="title">BeerStep</h1>
+    <div class="title">
+        <h1>BeerStep</h1>
+      </div>
     <b-container class="d-flex justify-content-center align-items-center vh-100">
         <b-card class="text-center">
             <h1 class="mb-3">Welcome Back!</h1>
