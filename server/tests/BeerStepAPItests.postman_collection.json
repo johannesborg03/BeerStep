@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "11af6913-6571-4b87-9446-aa4de1b4b819",
+		"_postman_id": "a618e09c-9692-4345-af33-c341acd968be",
 		"name": "BeerStep API tests Copy",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "38271747"
+		"_exporter_id": "32895985"
 	},
 	"item": [
 		{
@@ -1581,59 +1581,59 @@
 			},
 			"response": []
 		},
+{
+	"name": "GET Squads SquadSpace Forum by Squad Name",
+	"request": {
+		"method": "GET",
+		"header": []
+	},
+	"response": []
+},
+{
+	"name": "POST Message in SquadSpace",
+	"event": [
 		{
-			"name": "GET Squads SquadSpace Forum by Squad Name",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "POST Message in SquadSpace",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200 success\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"username\" : \"jabo\",\n    \"email\" : \"email@gmail.com\",\n    \"password\" : \"password\",\n    \"total_beers\" : 0,\n    \"total_steps\" : 0,\n    \"steps_needed\" : 0\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/api/users",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"users"
-					]
-				}
-			},
-			"response": []
+			"listen": "test",
+			"script": {
+				"exec": [
+					"pm.test(\"Status code is 200 success\", function () {",
+					"    pm.response.to.have.status(200);",
+					"});",
+					"",
+					"",
+					""
+				],
+				"type": "text/javascript",
+				"packages": {}
+			}
 		}
-	]
+	],
+	"request": {
+		"method": "POST",
+		"header": [],
+		"body": {
+			"mode": "raw",
+			"raw": "{\n    \"username\" : \"jabo\",\n    \"email\" : \"email@gmail.com\",\n    \"password\" : \"password\",\n    \"total_beers\" : 0,\n    \"total_steps\" : 0,\n    \"steps_needed\" : 0\n}",
+			"options": {
+				"raw": {
+					"language": "json"
+				}
+			}
+		},
+		"url": {
+			"raw": "http://localhost:3000/api/users",
+			"protocol": "http",
+			"host": [
+				"localhost"
+			],
+			"port": "3000",
+			"path": [
+				"api",
+				"users"
+			]
+		}
+	},
+	"response": []
+}
+]
 }
