@@ -249,4 +249,35 @@ router.get('/api/squads/squadSpace/:squadName', async function (req, res, next) 
     }
 });
 
+
+router.post('/api/squads/squadSpace/:squadName', async function (req, res, next) {
+    try {
+        const { username, message } = req.body;
+        const squadName = req.params.squadName;
+
+        // Find the squad by squadName (not by ID)
+        const squad = await Squad.findOne({ squadName: squadName });
+        if (!squad) {
+            return res.status(404).json({ message: "Squad not found" });
+        }
+
+        // Create a new message object
+        const newMessage = {
+            username: username,
+            message: message,
+        };
+
+        // Add the message to the squad's `squadSpace`
+        squad.squadSpace.push(newMessage);
+
+        // Save the updated squad with the new message
+        await squad.save();
+
+        res.status(201).json({ message: 'Message added successfully', squadSpace: squad.squadSpace });
+    } catch (err) {
+        console.error('Error posting message to squadSpace:', err);
+        res.status(500).json({ message: "Error posting message", error: err.message });
+    }
+});
+
 module.exports = router;
