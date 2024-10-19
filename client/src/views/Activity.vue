@@ -427,35 +427,18 @@ export default {
       total_steps: 0,
       steps_needed: 0,
       beerLogs: [],
-      /*  chartData: {
-        labels: ['Beers vs Steps'],
-        datasets: [
-          {
-            label: 'Beer Consumption',
-            backgroundColor: '#42A5F5',
-            borderColor: '#42A5F5',
-            data: [{ x: this.total_beers, y: this.total_steps}],
-          },
-          
-          {
-            label: 'Steps Taken',
-            backgroundColor: '#66BB6A',
-            borderColor: '#66BB6A',
-            data: [{ x: 0, y: this.total_steps}],
-          }, 
-          
-        ],
-      }, */
+      
     };
   },
 
   computed: {
     chartData() {
-      const beerData = this.beerLogs.map(log => ({
-        //  x: new Date(log.date).getTime(), // Use timestamps for x-axis
-        x: new Date(log.date),
-        y: log.count,
+      const beerLogsData = this.beerLogs.map(log => ({
+      x: new Date(log.date).toISOString().split('T')[0], // Convert the log date to Date object for x-axis
+      y: log.count // Use the beer count for y-axis
       }));
+
+      
       return {
         labels: ['Beers vs Steps'],
         datasets: [
@@ -463,7 +446,7 @@ export default {
             label: 'Beer Consumption',
             backgroundColor: '#42A5F5',
             borderColor: '#42A5F5',
-            data: beerData,
+            data: beerLogsData,
           },
           {
             label: 'Steps Taken',
@@ -476,8 +459,13 @@ export default {
     },
 
     chartOptions() {
-      const firstDate = this.beerLogs.length > 0 ? new Date(this.beerLogs[0].date) : null;
-      const lastDate = this.beerLogs.length > 0 ? new Date(this.beerLogs[this.beerLogs.length - 1].date) : null;
+      // Get first and last date from beerLogs
+    const firstDate = this.beerLogs.length > 0 ? new Date(this.beerLogs[0].date) : null;
+    const lastDate = this.beerLogs.length > 0 ? new Date(this.beerLogs[this.beerLogs.length - 1].date) : null;
+
+    // Ensure min and max are valid Date objects or fallback to default
+    const minDate = firstDate instanceof Date && !isNaN(firstDate) ? firstDate : new Date();
+    const maxDate = lastDate instanceof Date && !isNaN(lastDate) ? lastDate : new Date();
 
       return {
         responsive: true,
@@ -492,15 +480,13 @@ export default {
             time: {
               unit: 'day',
               tooltipFormat: 'yyyy-MM-dd',
-
-              parser: 'yyyy-MM-ddTHH:mm:ss.SSSZ', // Ensure correct date parsing format
+            //  parser: 'yyyy-MM-dd', // Ensure correct date parsing format
               displayFormats: {
                 day: 'yyyy-MM-dd'
               }
             },
-            // Correctly handle min and max values, ensure they are valid Date objects
-            min: firstDate instanceof Date && !isNaN(firstDate) ? firstDate : new Date(), // Fallback to the current date if invalid
-            max: lastDate instanceof Date && !isNaN(lastDate) ? lastDate : new Date(), // Fallback to the current date if invalid
+            min: minDate, // Set min to the first logged beer date
+            max: maxDate, // Set max to the last logged beer date
 
           },
           y: {
@@ -819,14 +805,13 @@ export default {
           this.total_steps = user.total_steps;
           this.steps_needed = user.steps_needed;
           // Make sure beerLogs has valid dates
-          this.beerLogs = user.beerLogs.map(log => ({
-            ...log,
-            date: new Date(log.date), // Convert the date to a valid Date object
-          }));
+           // Ensure beerLogs has valid ISO date strings, no need to convert twice
+      this.beerLogs = user.beerLogs; 
+      console.log('Fetched beerLogs:', this.beerLogs); // Log to check data
 
 
           console.log('Fetched beerLogs:', this.beerLogs); // Log to check data
-          this.updateChartData(); // Call to update chart with new data
+          //this.updateChartData(); // Call to update chart with new data
         })
         .catch((error) => {
           console.error('Error fetching user data:', error);
@@ -967,9 +952,10 @@ export default {
 
           // Prepare the new beer log
           const newBeerLog = {
-            date: new Date(), // Current date and time
+            date: new Date().toISOString(), // Use ISO 8601 format to ensure correct
             count: newTotalBeers, // Total beers after increment
           };
+          
 
 
           // Prepare the request body
@@ -978,6 +964,7 @@ export default {
             steps_needed: newStepsNeeded,
             beerLogs: [...user.beerLogs, newBeerLog], // Combine existing logs with the new one
           };
+          
 
 
           return fetch(`http://localhost:3000/api/users/${username}`, {
@@ -1015,25 +1002,23 @@ export default {
         });
     },
     updateChartData() {
-      // Clear existing data in the datasets
-      this.chartData.datasets[0].data = []; // For Beer Consumption
-      this.chartData.datasets[1].data = []; // For Steps Taken
+       // Prepare beer data from the logs
+  const beerData = this.beerLogs.map(log => {
+    const logDate = new Date(log.date); // Parse the log date
 
-      // Prepare beer data from the logs
-      const beerData = this.beerLogs.map(log => ({
-        x: new Date(log.date),//.getTime(), // Convert date to timestamp for the x-axis
-        y: log.count, // Each log's count (1 for each logged beer)
-      }));
+    return {
+      x: logDate, // Pass the full Date object to Chart.js (it will use the correct month)
+      y: log.count, // Each log's count (1 for each logged beer)
+    };
+  });
 
-      // Add the beer data to the chart
-      this.chartData.datasets[0].data = beerData;
+  // Add the beer data to the chart
+  this.chartData.datasets[0].data = beerData;
 
-      // Optionally, if you want to include steps over time (assuming steps are logged similarly):
-      // Assuming steps are recorded at the same time as beers, you would fetch that data similarly.
-      this.chartData.datasets[1].data = [{ x: new Date(), y: this.total_steps }]; // Update with current total steps
+  
 
-      console.log('Updating chart data:', this.chartData);
-    },
+  console.log('Updating chart data:', this.chartData); // Debugging to verify data
+},
   },
 };
 </script>
@@ -1473,9 +1458,4 @@ export default {
   width: 100%;
 }
 
-
-
-.bcard-box{
-  
-}
 </style>

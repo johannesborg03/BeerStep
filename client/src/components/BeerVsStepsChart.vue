@@ -32,7 +32,9 @@ export default {
 
 data() {
   return {
+    /*
     chartOptions: {
+      
       responsive: true,
       maintainAspectRatio: false,
       scales: {
@@ -44,9 +46,9 @@ data() {
           },
           time: {
             unit: 'day', // Set the unit of time
-            tooltipFormat: 'yyyy-mm-dd', // Format for tooltips
+            tooltipFormat: 'yyyy-MM-dd', // Format for tooltips
             displayFormats: {
-              day: 'yyyy-mm-dd' // Format for x-axis labels
+              day: 'yyyy-MM-dd' // Format for x-axis labels
             },
           },
           min: null, // This will be set in the computed property
@@ -60,6 +62,7 @@ data() {
         }
       }
     }
+      */
   };
 },
 
