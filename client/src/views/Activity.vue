@@ -36,17 +36,17 @@
         </div>
         <h3 class="milestone-title">Your Milestones: ({{ milestones.length }}) </h3>
         <b-row v-if="milestones.length > 0" class="mt-3">
-          <b-col cols="12">
+          <b-col class="milestone-list" cols="12">
           
             <ul class="list-group">
               <li v-for="(milestone, index) in milestones" :key="index" class="list-group-item">
-                <strong>Title: {{ milestone.title }} <br>
-                </strong>
-                <strong>Description: {{ milestone.description }}
+                <strong>{{ milestone.title }}</strong>  <br>
+                
+                <strong>Description: </strong> {{ milestone.description }}
                   <br>
-                </strong>
-                Beers: {{ milestone.beers }}<br>
-                Steps: {{ milestone.steps }}
+                
+                <strong> Beers: </strong> {{ milestone.beers }}<br>
+                <strong> Steps: </strong> {{ milestone.steps }}
                 <div>
                   <b-button @click="prepareEditMilestone(milestone)" variant="primary" class="edit-milestones-button">
                     Edit Milestone
@@ -57,11 +57,11 @@
           </b-col>
         </b-row>
 
-        <b-row>
+        <b-row justify-content-center d-flex>
           
           <div class="col-md-6">
-        <div class="milestones">
-            <b-button @click="toggleCreateMilestones" class="milestones-button">
+        <div class="create-milestones-button" >
+            <b-button @click="toggleCreateMilestones" variant="success" class="create-milestones-button" >
               Create Milestone
             </b-button>
           </div>
@@ -77,7 +77,7 @@
 
       </b-row>
 
-        <b-button @click="toggleMilestones" class="milestones-button">
+        <b-button @click="toggleMilestones" class="go-back-button">
               Go Back
             </b-button>
       </div>
@@ -1047,6 +1047,10 @@ export default {
   color: whitesmoke;
 }
 
+.milestone-title{
+  color: whitesmoke;
+}
+
 .step-input-container {
   display: flex;
   /* Ensures the input and button are aligned */
@@ -1138,6 +1142,11 @@ export default {
   border: 0%;
 }
 
+.go-back-button{
+  margin-top: 5%;
+  color:#007bff;
+
+}
 
 
 
@@ -1155,10 +1164,7 @@ export default {
 
 }
 
-.delete-milestones {
-  margin-top: 2.5%;
 
-}
 
 .edit-milestones-button {
   margin-top: 2.5%;
@@ -1170,6 +1176,11 @@ export default {
   height: 100vh;
   margin-top: 5%;
 
+}
+
+.create-milestones-button {
+  height: 100%;
+  color: whitesmoke;
 }
 
 .milestones-button {
@@ -1211,6 +1222,7 @@ export default {
 .milestone-list {
   list-style-type: none;
   width: 100%;
+  margin-bottom: 5%;
 }
 
 
@@ -1322,8 +1334,7 @@ export default {
   margin-top: 0%;
 }
 
-.milestone {
-}
+
 
 .activity-buttons-container{
 
