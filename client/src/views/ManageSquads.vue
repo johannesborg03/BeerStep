@@ -300,9 +300,41 @@ export default {
     closeLeaveModal() {
       this.showLeaveModal = false;
     },
-    confirmLeave() {
-      alert(`Left the squad: ${this.selectedSquad.squadName}`);
-      this.showLeaveModal = false;
+    async confirmLeave() {
+      const username = localStorage.getItem('username')
+
+      if (!username) {
+        alert('No username found, please log in again.')
+        return
+      }
+
+      if (this.selectedSquad && this.selectedSquad._id) {
+        const squad_id = this.selectedSquad._id
+
+        try {
+          const response = await fetch(`http://localhost:3000/api/squads/${squad_id}/users/${username}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+
+          if (response.ok) {
+            alert(`You have left the squad "${this.selectedSquad.squadName}".`)
+            this.showLeaveModal = false
+            this.selectedSquad = null
+            await this.fetchSquads()
+          } else {
+            const errorData = await response.json()
+            throw new Error(`Failed to leave squad: ${errorData.message}`)
+          }
+        } catch (error) {
+          console.error('Error leaving squad:', error)
+          alert('An error occurred while trying to leave the squad. Please try again.')
+        }
+      } else {
+        alert('No squad selected.')
+      }
     },
 
     isCreator(squad) {
@@ -310,9 +342,36 @@ export default {
       return squad.created_by && squad.created_by.username === username;
     },
 
-    sendInvite() {
-      alert(`Sent invite to ${this.inviteUsername}`);
-      this.closeInviteModal();
+    async sendInvite() {
+      if (this.inviteUsername.trim()) {
+        const squad_id = this.selectedSquad._id
+        const username = this.inviteUsername
+
+        if (squad_id && username) {
+          try {
+            const response = await fetch(`http://localhost:3000/api/squads/${squad_id}/users/${username}`, {
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            })
+
+            if (response.ok) {
+              alert(`Invite sent to ${this.inviteUsername} for squad ${this.selectedSquad.squadName}!`)
+              this.closeInviteModal()
+            } else {
+              throw new Error('Failed to send invite')
+            }
+          } catch (error) {
+            console.error('Error sending invite:', error)
+            alert('An error occurred while sending the invite. Please try again.')
+          }
+        } else {
+          alert('Invalid squad or username.')
+        }
+      } else {
+        alert('Please enter a username to invite.')
+      }
     },
   },
 };
