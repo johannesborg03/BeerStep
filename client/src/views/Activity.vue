@@ -28,7 +28,7 @@
 
 
       <BRow class="bcard" v-if="isBcardView">
-        <BCard class="box">
+        <BCard class="box bg-dark">
 
           
 
@@ -102,12 +102,12 @@
             <div class="col-md-3 d-flex flex-column align-items-center ber">
               
             <p class="view-info" style="font-weight: 550;">Beers: {{ total_beers }} </p>
-            <div class="d-flex justify-content-center mb-3">
-              <div class="reset">
-                <b-button @click="confirmResetBeer" variant="danger" class="reset-button">
+            <div class="d-flex justify-content-center mb-3 reset-button">
+             
+                <b-button @click="confirmResetBeer" variant="danger" class="reset-buton-button">
                   Reset Beers
                 </b-button>
-              </div>
+         
             </div>
           
           </div>
@@ -129,12 +129,12 @@
     
             <p class="view-info-steps" style="font-weight: 550;">Steps: {{ total_steps }}</p>
             <p class="view-info" style="font-weight: 550;">Steps Needed: {{ steps_needed }}</p>
-            <div class="d-flex justify-content-center mb-3">
-              <div class="reset">
-                <b-button @click="confirmResetSteps" variant="danger" class="reset-button">
+            <div class="d-flex justify-content-center mb-3 reset-button">
+      
+                <b-button @click="confirmResetSteps" variant="danger" class="reset-buton-button">
                   Reset Steps
                 </b-button>
-              </div>
+              
             </div>
           
           </div>
@@ -216,7 +216,7 @@
       <!-- Step input container with responsive input and button -->
       
       <b-row v-if="showStepInput" class="justify-content-center mt-1">
-        <BCard class="justify-content-center box">
+        <BCard class="justify-content-center box bg-dark">
         <b-col cols="12" md="12" class="text-step-center">
           <b-form-input v-model="steps" type="number" placeholder="Enter number of steps" class="mb-1" />
         </b-col>
@@ -248,24 +248,24 @@
       <div class="create-milestone-view">
         <b-row v-if="showCreateMilestones" class="justify-content-center mb-3">
           <BRow class="bcard">
-            <BCard class="box">
+            <BCard class="box bg-dark">
               <b-col cols="12" md="8" class="milestone-form">
                 <b-form @submit.prevent="createMilestone">
-                  <b-form-group label="Milestone Title">
+                  <b-form-group label="Milestone Title" label-class="milestone-label">
                     <b-form-input v-model="milestone.title" required placeholder="Enter milestone title"></b-form-input>
                   </b-form-group>
 
-                  <b-form-group label="Milestone Description">
+                  <b-form-group label="Milestone Description" label-class="milestone-label">
                     <b-form-textarea v-model="milestone.description" required
                       placeholder="Enter milestone description"></b-form-textarea>
                   </b-form-group>
 
-                  <b-form-group label="Number of Beers">
+                  <b-form-group label="Number of Beers" label-class="milestone-label">
                     <b-form-input type="number" v-model="milestone.beers" required
                       placeholder="Enter number of beers"></b-form-input>
                   </b-form-group>
 
-                  <b-form-group label="Number of Steps">
+                  <b-form-group label="Number of Steps" label-class="milestone-label">
                     <b-form-input type="number" v-model="milestone.steps" required
                       placeholder="Enter number of steps"></b-form-input>
                   </b-form-group>
@@ -286,7 +286,7 @@
       <!-- Milestone form for editing -->
       <b-row v-if="showEditMilestoneForm" class="justify-content-center mb-3">
         <BRow class="bcard">
-          <BCard class="box">
+          <BCard class="box bg-dark">
             <b-col cols="12" md="8" class="milestone-form">
               <b-form @submit.prevent="saveMilestone(milestone)">
                 <b-form-group label="Milestone Title">
@@ -1109,6 +1109,10 @@ export default {
   padding: 0; /* Remove default padding */
 
 }
+.milestone-label{
+  color: whitesmoke;
+  background-color: whitesmoke;
+}
 
 .save-milestone{
   margin-top: 5%;
@@ -1116,12 +1120,12 @@ export default {
 
 .title{
   background-color: whitesmoke;
-  color:#007bff;
+  color:bg-dark;
 }
 
 .beer-chart-title{
   background-color: whitesmoke;
-  color:#007bff;
+  color:bg-dark;
 }
 
 .view-info{
@@ -1272,12 +1276,7 @@ export default {
   margin-top: 0%;
 }
 
-.reset {
-  margin-bottom: 0%;
-  margin-top: 0%;
-  border-radius: 15px;
 
-}
 
 
 
@@ -1304,6 +1303,10 @@ export default {
   height: 10vh;
   color: whitesmoke;
   
+}
+
+.reset-buton-button{
+  border-radius: 15px;
 }
 
 
@@ -1450,6 +1453,9 @@ export default {
   margin-top: 0%;
 }
 
+.reset-button{
+  border-radius: 15px;
+}
 
 
 .activity-buttons-container{
@@ -1465,8 +1471,8 @@ export default {
   }
   
   .reset-button{
-    width: 10px;
-    margin: 0%;
+    width: 1px;
+   
   }
   .box{
     margin-top: 50px;
