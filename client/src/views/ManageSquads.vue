@@ -52,9 +52,7 @@
                     <button class="btn btn-warning btn-sm me-2" @click.stop="openInviteModal(squad)">
                       + Invite
                     </button>
-                    <button class="btn btn-secondary btn-sm" @click.stop="openLeaveModal(squad)">
-                      Leave
-                    </button>
+                    <button class="btn btn-danger btn-sm" @click="openLeaveModal(squad)" v-if="!isCreator(squad)">Leave</button>
                   </div>
                 </li>
                 <li v-if="filteredSquads.length === 0" class="list-group-item text-center text-muted">
@@ -306,6 +304,12 @@ export default {
       alert(`Left the squad: ${this.selectedSquad.squadName}`);
       this.showLeaveModal = false;
     },
+
+    isCreator(squad) {
+      const username = localStorage.getItem('username');
+      return squad.created_by && squad.created_by.username === username;
+    },
+
     sendInvite() {
       alert(`Sent invite to ${this.inviteUsername}`);
       this.closeInviteModal();
