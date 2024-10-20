@@ -1,9 +1,6 @@
 <template>
   <body>
-    <header>
-      <h1>BeerStep</h1>
-    </header>
-
+    <header style="margin-bottom: 40px;"></header>
     <main>
       <div class="container">
         <div class="row">
@@ -15,9 +12,7 @@
               </div>
               <ul class="list-group mt-3">
                 <li v-for="(squad, index) in squads" :key="index" class="list-group-item d-flex justify-content-between align-items-center">
-                  <router-link :to="{ name: 'SquadSpace', params: { squadName: squad.squadName } }">
-                    <p class="squad-name">{{ squad.squadName }}</p>
-                  </router-link>
+                  <p class="squad-name" @click="goToSquadSpace(squad.squadName)"> {{ squad.squadName }}</p>
                   <div>
                     <button class="btn btn-warning btn-sm me-2" @click="openInviteModal(squad)">+ Invite</button>
                     <button class="btn btn-danger btn-sm" @click="openLeaveModal(squad)">Leave</button>
@@ -284,7 +279,10 @@ export default {
 
     goToManageSquads() {
       this.$router.push('/ManageSquads')
-    }
+    },
+    goToSquadSpace(squadName) {
+    this.$router.push({ name: 'SquadSpace', params: { squadName } });
+  },
   }
 }
 </script>
@@ -344,8 +342,8 @@ body {
 
 .squad-name {
   margin: 0;
-  text-decoration: none;
-  color: inherit;
+  color: #0d6efd;
+  font-weight: 500;
 }
 
 .squad-name:hover {
