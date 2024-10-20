@@ -1267,15 +1267,26 @@
 			"name": "API/MILESTONES",
 			"item": [
 				{
-					"name": "POST/MILESTONE",
+					"name": "POST Create Milestone",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 404 for not found\", function () {",
-									"    pm.response.to.have.status(404);",
+									"pm.test(\"Status 201, milestone successfully created\", function () {",
+									"    pm.response.to.have.status(201);",
 									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const username = pm.collectionVariables.get(\"defaultUsernameMilestones\");\r",
+									"pm.environment.set('username', username);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -1295,7 +1306,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/users/jabo1/milestones",
+							"raw": "http://localhost:3000/api/users/:username/milestones",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1304,22 +1315,120 @@
 							"path": [
 								"api",
 								"users",
-								"jabo1",
+								":username",
 								"milestones"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "{{username}}"
+								}
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "GET/MILESTONES FOR USER",
+					"name": "GET Milestones of Specific User",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 404 for not found\", function () {",
-									"    pm.response.to.have.status(404);",
+									"pm.test(\"Status 200, milestones of user successfully retrieved\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const username = pm.collectionVariables.get(\"defaultUsernameMilestones\");\r",
+									"pm.environment.set('username', username);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/users/:username/milestones",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								":username",
+								"milestones"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "{{username}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Milestone by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200, milestone retrieved successfully\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const username = pm.collectionVariables.get(\"defaultUsernameMilestones\");  // Get username from collection variables\r",
+									"\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url: `http://localhost:3000/api/users/${username}/milestones`,\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            title: \"GetMilestone\",  \r",
+									"            description: \"Get this milestone\",  \r",
+									"            beers: 5,  \r",
+									"            steps: 42000  \r",
+									"        })\r",
+									"    }\r",
+									"}, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.error(\"Error creating milestone:\", err);\r",
+									"        return;\r",
+									"    }\r",
+									"\r",
+									"    \r",
+									"    const milestoneId = res.json().milestone._id;\r",
+									"    pm.environment.set('milestoneId', milestoneId);\r",
+									"    \r",
+									"\r",
 									"});"
 								],
 								"type": "text/javascript",
@@ -1331,43 +1440,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/api/users/jabo1/milestones",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"api",
-								"users",
-								"jabo1",
-								"milestones"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GET MILESTONE _ ID",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 404 for not found\", function () {",
-									"    pm.response.to.have.status(404);",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:3000/api/milestones/670ceccc8a4b7599251800a9",
+							"raw": "http://localhost:3000/api/milestones/:milestone_id",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1376,21 +1449,66 @@
 							"path": [
 								"api",
 								"milestones",
-								"670ceccc8a4b7599251800a9"
+								":milestone_id"
+							],
+							"variable": [
+								{
+									"key": "milestone_id",
+									"value": "{{milestoneId}}"
+								}
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "PUT MILESTONE ID",
+					"name": "PUT Update Milestone by ID",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 404 for not found\", function () {",
-									"    pm.response.to.have.status(404);",
+									"pm.test(\"Status 200, milestone updated successfully\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const username = pm.collectionVariables.get(\"defaultUsernameMilestones\");  // Get username from collection variables\r",
+									"\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url: `http://localhost:3000/api/users/${username}/milestones`,\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            title: \"PutMilestone\",  \r",
+									"            description: \"Put this milestone\",  \r",
+									"            beers: 5,  \r",
+									"            steps: 42000  \r",
+									"        })\r",
+									"    }\r",
+									"}, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.error(\"Error creating milestone:\", err);\r",
+									"        return;\r",
+									"    }\r",
+									"\r",
+									"    \r",
+									"    const milestoneId = res.json().milestone._id;\r",
+									"    pm.environment.set('milestoneId', milestoneId);\r",
+									"    \r",
+									"\r",
 									"});"
 								],
 								"type": "text/javascript",
@@ -1411,7 +1529,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/milestones/670ceccc8a4b7599251800a9",
+							"raw": "http://localhost:3000/api/milestones/:id",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1420,21 +1538,66 @@
 							"path": [
 								"api",
 								"milestones",
-								"670ceccc8a4b7599251800a9"
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{milestoneId}}"
+								}
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "DELETE MILESTONE ID",
+					"name": "DELETE Milestone by ID",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 404 for not found\", function () {",
-									"    pm.response.to.have.status(404);",
+									"pm.test(\"Status 200, milestone successfully deleted\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const username = pm.collectionVariables.get(\"defaultUsernameMilestones\");  // Get username from collection variables\r",
+									"\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url: `http://localhost:3000/api/users/${username}/milestones`,\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            title: \"DeleteMilestone\",  \r",
+									"            description: \"Delete this milestone\",  \r",
+									"            beers: 5,  \r",
+									"            steps: 42000  \r",
+									"        })\r",
+									"    }\r",
+									"}, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.error(\"Error creating milestone:\", err);\r",
+									"        return;\r",
+									"    }\r",
+									"\r",
+									"    \r",
+									"    const milestoneId = res.json().milestone._id;\r",
+									"    pm.environment.set('milestoneId', milestoneId);\r",
+									"    \r",
+									"\r",
 									"});"
 								],
 								"type": "text/javascript",
@@ -1446,7 +1609,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/api/milestones/670ceccc8a4b7599251800a9",
+							"raw": "http://localhost:3000/api/milestones/:id",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1455,20 +1618,26 @@
 							"path": [
 								"api",
 								"milestones",
-								"670ceccc8a4b7599251800a9"
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{milestoneId}}"
+								}
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "DELETE ALL MILESTONES",
+					"name": "DELETE All Milestones",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200 success\", function () {",
+									"pm.test(\"Status 200, all milestones deleted successfully\", function () {",
 									"    pm.response.to.have.status(200);",
 									"});",
 									"",
@@ -1499,14 +1668,47 @@
 					"response": []
 				},
 				{
-					"name": "GET ALL MILESTONES",
+					"name": "GET All Milestones",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 404 for not found\", function () {",
-									"    pm.response.to.have.status(404);",
+									"pm.test(\"Status 200, all milestones retrieved successfully\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const username = pm.collectionVariables.get(\"defaultUsernameMilestones\");  // Get username from collection variables\r",
+									"\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url: `http://localhost:3000/api/users/${username}/milestones`,\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            title: \"GetAllMilestone\",  \r",
+									"            description: \"Get all milestones\",  \r",
+									"            beers: 5,  \r",
+									"            steps: 42000  \r",
+									"        })\r",
+									"    }\r",
+									"}, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.error(\"Error creating milestone:\", err);\r",
+									"        return;\r",
+									"    }\r",
 									"});"
 								],
 								"type": "text/javascript",
@@ -1533,14 +1735,50 @@
 					"response": []
 				},
 				{
-					"name": "PATCH MILESTONE ID",
+					"name": "PATCH Partially Update Milestone by ID",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 404 for not found\", function () {",
-									"    pm.response.to.have.status(404);",
+									"pm.test(\"Status 200, partially updated milestone successfully\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const username = pm.collectionVariables.get(\"defaultUsernameMilestones\");  // Get username from collection variables\r",
+									"\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url: `http://localhost:3000/api/users/${username}/milestones`,\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            title: \"PatchMilestone\",  \r",
+									"            description: \"Patch milestone\",  \r",
+									"            beers: 5,  \r",
+									"            steps: 42000  \r",
+									"        })\r",
+									"    }\r",
+									"}, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.error(\"Error creating milestone:\", err);\r",
+									"        return;\r",
+									"    }\r",
+									"\r",
+									"    const milestoneId = res.json().milestone._id;\r",
+									"    pm.environment.set('milestoneId', milestoneId);\r",
 									"});"
 								],
 								"type": "text/javascript",
@@ -1553,7 +1791,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\n    \"title\" : \"COOL-Gamers\",\n    \"description\" : \"w beers\",\n    \"beers\" : 52,\n    \"steps\" : 50200\n\n}",
+							"raw": "{\n\n    \"beers\" : 52,\n    \"steps\" : 50200\n\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1561,7 +1799,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/milestones/670cfa4addb5b774917c210b",
+							"raw": "http://localhost:3000/api/milestones/:id",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1570,22 +1808,39 @@
 							"path": [
 								"api",
 								"milestones",
-								"670cfa4addb5b774917c210b"
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{milestoneId}}"
+								}
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "DELETE USERS MILESTONES",
+					"name": "DELETE Milestones of User by Username",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 404 for not found\", function () {",
-									"    pm.response.to.have.status(404);",
+									"pm.test(\"Status 200, user's milestones deleted successfully\", function () {",
+									"    pm.response.to.have.status(200);",
 									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const username = pm.collectionVariables.get(\"defaultUsernameMilestones\");\r",
+									"pm.environment.set('username', username);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -1596,7 +1851,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/api/users/jabo1/milestones",
+							"raw": "http://localhost:3000/api/users/:username/milestones",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1605,12 +1860,69 @@
 							"path": [
 								"api",
 								"users",
-								"jabo1",
+								":username",
 								"milestones"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "{{username}}"
+								}
 							]
 						}
 					},
 					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"if (!pm.collectionVariables.has('defaultAPI/MILESTONESCreated')) {\r",
+							"    pm.sendRequest({\r",
+							"        url: 'http://localhost:3000/api/users',\r",
+							"        method: 'POST',\r",
+							"        header: {\r",
+							"            'Content-Type': 'application/json'\r",
+							"        },\r",
+							"        body: {\r",
+							"            mode: 'raw',\r",
+							"            raw: JSON.stringify({\r",
+							"                username: 'defaultAPIMilestones',\r",
+							"                email: 'defaultusermilestones@example.com',\r",
+							"                password: 'password123'\r",
+							"            })\r",
+							"        }\r",
+							"    }, function (err, res) {\r",
+							"        if (err) {\r",
+							"            console.error(err);\r",
+							"            return;\r",
+							"        }\r",
+							"\r",
+							"        const userId = res.json().user._id;\r",
+							"        console.log(userId);\r",
+							"        const username = res.json().user.username;\r",
+							"        pm.collectionVariables.set(\"defaultUserIdMilestones\", userId);\r",
+							"        pm.collectionVariables.set(\"defaultUsernameMilestones\", username);\r",
+							"    });\r",
+							"    \r",
+							"    pm.collectionVariables.set('defaultAPI/MILESTONESCreated', true);\r",
+							"}"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		}
