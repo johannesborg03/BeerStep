@@ -642,7 +642,7 @@
 					"response": []
 				},
 				{
-					"name": "PATCH Invite User to Squad by Username",
+					"name": "PATCH Add User to Squad by Username",
 					"event": [
 						{
 							"listen": "test",
@@ -1000,7 +1000,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code 200 is for successful\", function () {\r",
+									"pm.test(\"Status 200, user removed from squad\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});"
 								],
@@ -1093,619 +1093,526 @@
 			]
 		},
 		{
-			"name": "POST/LEADERBOARD",
-			"event": [
+			"name": "API/LEADERBOARDS",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 400 for bad request\", function () {",
-							"    pm.response.to.have.status(400);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
+					"name": "GET All Leaderboards",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200, all leaderboards retrievd successfully\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/leaderboards",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"leaderboards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Leaderboard by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200, leaderboard retrieved successfully\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const leaderboardIdId = pm.collectionVariables.get('leaderboardId'); // Get userId from API/SQUADS default user\r",
+									"pm.environment.set('id', leaderboardIdId);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/leaderboards/:leaderboard_id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"leaderboards",
+								":leaderboard_id"
+							],
+							"variable": [
+								{
+									"key": "leaderboard_id",
+									"value": "{{id}}"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"leaderboard_id\" : 2,\n    \"month\" : \"January\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"if (!pm.collectionVariables.has('defaultAPI/LEADBOARDSCreated')) {\r",
+							"    pm.sendRequest({\r",
+							"        url: 'http://localhost:3000/api/users',\r",
+							"        method: 'POST',\r",
+							"        header: {\r",
+							"            'Content-Type': 'application/json'\r",
+							"        },\r",
+							"        body: {\r",
+							"            mode: 'raw',\r",
+							"            raw: JSON.stringify({\r",
+							"                username: 'defaultAPILBoards',\r",
+							"                email: 'defaultuserlboards@example.com',\r",
+							"                password: 'password123'\r",
+							"            })\r",
+							"        }\r",
+							"    }, function (err, res) {\r",
+							"        if (err) {\r",
+							"            console.error(err);\r",
+							"            return;\r",
+							"        }\r",
+							"\r",
+							"        const userId = res.json().user._id;\r",
+							"        console.log(userId);\r",
+							"        const username = res.json().user.username;\r",
+							"        pm.collectionVariables.set(\"defaultUserIdLeaderboards\", userId);\r",
+							"        pm.collectionVariables.set(\"defaultUsernameLeaderboards\", username);\r",
+							"\r",
+							"        pm.sendRequest({\r",
+							"            url: 'http://localhost:3000/api/squads',\r",
+							"            method: 'POST',\r",
+							"            header: {\r",
+							"            'Content-Type': 'application/json'\r",
+							"        },\r",
+							"            body: {\r",
+							"                mode: 'raw',\r",
+							"                raw: JSON.stringify({\r",
+							"                    squadName: 'SquadForLeaderboards',\r",
+							"                    created_by: userId\r",
+							"            })\r",
+							"        }\r",
+							"    }, function (err, res) {\r",
+							"        if (err) {\r",
+							"            console.error(err);\r",
+							"            return;\r",
+							"        }\r",
+							"\r",
+							"        const squadId = res.json().squad._id; \r",
+							"        const leaderboardId = res.json().squad.leaderboard;\r",
+							"        pm.collectionVariables.set('leaderboardsSquadId', squadId); \r",
+							"        pm.collectionVariables.set('leaderboardId', leaderboardId);\r",
+							"        \r",
+							"    });\r",
+							"    });\r",
+							"\r",
+							"   \r",
+							"    \r",
+							"\r",
+							"    pm.collectionVariables.set('defaultAPI/LEADBOARDSCreated', true);\r",
+							"}"
+						]
 					}
 				},
-				"url": {
-					"raw": "http://localhost:3000/api/leaderboards",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"leaderboards"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "DELETE/LEADERBOARDS",
-			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200 for success\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						],
 						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/api/leaderboards",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"leaderboards"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET/LEADERBOARDS",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
+						"packages": {},
 						"exec": [
-							"pm.test(\"Status code is 200 for success\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/api/leaderboards",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"leaderboards"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET/LEADERBOARD_ID",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 500 for not error\", function () {",
-							"    pm.response.to.have.status(500);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/api/leaderboards/2",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"leaderboards",
-						"2"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "PUT/LEADERBOARD_ID",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 404 for not found\", function () {",
-							"    pm.response.to.have.status(404);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"leaderboard_id\" : 1,\n    \"month\" : \"January\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/api/leaderboards/2",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"leaderboards",
-						"2"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "DELETE/LEADERBOARD_ID",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 404 for not found\", function () {",
-							"    pm.response.to.have.status(404);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/api/leaderboards/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"leaderboards",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "PATCH/LEADERBOARD_ID",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 404 for not found\", function () {",
-							"    pm.response.to.have.status(404);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "PATCH",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"leaderboard_id\" : 2,\n    \"month\" : \"January\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/api/leaderboards/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"leaderboards",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "POST/MILESTONE",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 404 for not found\", function () {",
-							"    pm.response.to.have.status(404);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\n    \"title\" : \"Gamers\",\n    \"description\" : \"WOaw beers\",\n    \"beers\" : 5,\n    \"steps\" : 5000\n\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/api/users/jabo1/milestones",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"users",
-						"jabo1",
-						"milestones"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET/MILESTONES FOR USER",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 404 for not found\", function () {",
-							"    pm.response.to.have.status(404);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/api/users/jabo1/milestones",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"users",
-						"jabo1",
-						"milestones"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET MILESTONE _ ID",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 404 for not found\", function () {",
-							"    pm.response.to.have.status(404);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/api/milestones/670ceccc8a4b7599251800a9",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"milestones",
-						"670ceccc8a4b7599251800a9"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "PUT MILESTONE ID",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 404 for not found\", function () {",
-							"    pm.response.to.have.status(404);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\n    \"title\" : \"Non-Gamers\",\n    \"description\" : \"WOaw beers\",\n    \"beers\" : 5,\n    \"steps\" : 5000\n\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/api/milestones/670ceccc8a4b7599251800a9",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"milestones",
-						"670ceccc8a4b7599251800a9"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "DELETE MILESTONE ID",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 404 for not found\", function () {",
-							"    pm.response.to.have.status(404);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/api/milestones/670ceccc8a4b7599251800a9",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"milestones",
-						"670ceccc8a4b7599251800a9"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "DELETE ALL MILESTONES",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200 success\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"",
 							""
-						],
-						"type": "text/javascript",
-						"packages": {}
+						]
 					}
 				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/api/milestones",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"milestones"
-					]
-				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "GET ALL MILESTONES",
-			"event": [
+			"name": "API/MILESTONES",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 404 for not found\", function () {",
-							"    pm.response.to.have.status(404);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/api/milestones",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"milestones"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "PATCH MILESTONE ID",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 404 for not found\", function () {",
-							"    pm.response.to.have.status(404);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "PATCH",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\n    \"title\" : \"COOL-Gamers\",\n    \"description\" : \"w beers\",\n    \"beers\" : 52,\n    \"steps\" : 50200\n\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"name": "POST/MILESTONE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404 for not found\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
 						}
-					}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n    \"title\" : \"Gamers\",\n    \"description\" : \"WOaw beers\",\n    \"beers\" : 5,\n    \"steps\" : 5000\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users/jabo1/milestones",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"jabo1",
+								"milestones"
+							]
+						}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:3000/api/milestones/670cfa4addb5b774917c210b",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"milestones",
-						"670cfa4addb5b774917c210b"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "DELETE USERS MILESTONES",
-			"event": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 404 for not found\", function () {",
-							"    pm.response.to.have.status(404);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/api/users/jabo1/milestones",
-					"protocol": "http",
-					"host": [
-						"localhost"
+					"name": "GET/MILESTONES FOR USER",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404 for not found\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
 					],
-					"port": "3000",
-					"path": [
-						"api",
-						"users",
-						"jabo1",
-						"milestones"
-					]
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/users/jabo1/milestones",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"jabo1",
+								"milestones"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET MILESTONE _ ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404 for not found\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/milestones/670ceccc8a4b7599251800a9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"milestones",
+								"670ceccc8a4b7599251800a9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT MILESTONE ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404 for not found\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n    \"title\" : \"Non-Gamers\",\n    \"description\" : \"WOaw beers\",\n    \"beers\" : 5,\n    \"steps\" : 5000\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/milestones/670ceccc8a4b7599251800a9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"milestones",
+								"670ceccc8a4b7599251800a9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE MILESTONE ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404 for not found\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/milestones/670ceccc8a4b7599251800a9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"milestones",
+								"670ceccc8a4b7599251800a9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE ALL MILESTONES",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 success\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/milestones",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"milestones"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL MILESTONES",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404 for not found\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/milestones",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"milestones"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH MILESTONE ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404 for not found\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n    \"title\" : \"COOL-Gamers\",\n    \"description\" : \"w beers\",\n    \"beers\" : 52,\n    \"steps\" : 50200\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/milestones/670cfa4addb5b774917c210b",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"milestones",
+								"670cfa4addb5b774917c210b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE USERS MILESTONES",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404 for not found\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/users/jabo1/milestones",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"jabo1",
+								"milestones"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		}
 	],
 	"event": [
