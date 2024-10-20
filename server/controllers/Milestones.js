@@ -3,6 +3,8 @@ var router = express.Router();
 var Milestone = require('../models/Milestone.js');
 var User = require('../models/User.js');
 
+const mongoose = require('mongoose');
+
 // Create a new milestone for a specific user (POST /api/users/:id/milestones)
 router.post('/api/users/:username/milestones', async function (req, res) {
     try {
@@ -65,6 +67,43 @@ router.get('/api/users/:username/milestones', async function (req, res) {
         });
     }
 });
+
+// Get a specific milestone for a user (GET /api/users/:username/milestones/:milestone_id)
+router.get('/api/users/:username/milestones/:milestone_id', async function (req, res) {
+    try {
+        // Find the user by username
+        const user = await User.findOne({ username: req.params.username });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Ensure the milestone_id is a valid ObjectId
+        let milestoneId;
+        try {
+            milestoneId = new mongoose.Types.ObjectId(req.params.milestone_id); // Use 'new' with Mongoose ObjectId
+        } catch (error) {
+            return res.status(400).json({ message: "Invalid milestone ID format" });
+        }
+
+        // Find the specific milestone by milestone ID for the user
+        const milestone = await Milestone.findOne({ _id: milestoneId, username: user._id });
+        if (!milestone) {
+            return res.status(404).json({ message: "Milestone not found for this user" });
+        }
+
+        res.status(200).json({
+            message: "Milestone retrieved successfully",
+            milestone: milestone
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Server error while retrieving milestone",
+            error: error.message,
+        });
+    }
+});
+
+
 
 // Get all milestones
 router.get('/api/milestones', async function (req, res) {
