@@ -413,4 +413,25 @@ h1 {
 .modal-backdrop.show {
   background-color: rgba(0, 0, 0, 0.5);
 }
+
+.form-select {
+  width: 100%;
+  max-width: 200px;
+  padding: 0.4rem;
+}
+
+@media (max-width: 600px) {
+  .form-select {
+    max-width: 100%;
+    font-size: 14px;
+    padding: 0.3rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .form-select {
+    font-size: 12px;
+    padding: 0.25rem;
+  }
+}
 </style>
