@@ -274,7 +274,7 @@ router.patch('/api/squads/:squadName', async function (req, res, next) {
         // Save the updated squad with the new message
         await squad.save();
 
-        res.status(201).json({ message: 'Message added successfully', squadSpace: squad.squadSpace });
+        res.status(200).json({ message: 'Message added successfully', squadSpace: squad.squadSpace });
     } catch (err) {
         console.error('Error posting message to squadSpace:', err);
         res.status(500).json({ message: "Error posting message", error: err.message });
