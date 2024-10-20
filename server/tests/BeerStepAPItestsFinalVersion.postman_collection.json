@@ -1,0 +1,1952 @@
+{
+	"info": {
+		"_postman_id": "ec5b3e2c-3b88-4d7e-8057-8a59baee6e5a",
+		"name": "BeerStep API tests Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32895985"
+	},
+	"item": [
+		{
+			"name": "API/USERS",
+			"item": [
+				{
+					"name": "POST Create User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 201, user created successfully\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\" : \"jabo\",\n    \"email\" : \"email@gmail.com\",\n    \"password\" : \"password\",\n    \"total_beers\" : 0,\n    \"total_steps\" : 0,\n    \"steps_needed\" : 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET All Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200, successfully retrieved all users\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET User by Username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200, successfully retrieved user by username\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const username = pm.collectionVariables.get('defaultUsernameUsers');\r",
+									"pm.environment.set('userName', username);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/users/:username",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								":username"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "{{userName}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Squads User is Member of by Username",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const username = pm.collectionVariables.get('defaultUsernameUsers');\r",
+									"pm.environment.set('userName', username);\r",
+									"const userId = pm.collectionVariables.get('defaultUserIdUsers');\r",
+									"\r",
+									"// Create squad to retrieve\r",
+									"pm.sendRequest({\r",
+									"        url: 'http://localhost:3000/api/squads',\r",
+									"        method: 'POST',\r",
+									"        header: {\r",
+									"            'Content-Type': 'application/json'\r",
+									"        },\r",
+									"        body: {\r",
+									"            mode: 'raw',\r",
+									"            raw: JSON.stringify({\r",
+									"                squadName: 'Team Awesome4',\r",
+									"                created_by: userId\r",
+									"            })\r",
+									"        }\r",
+									"    }, function (err, res) {\r",
+									"        if (err) {\r",
+									"            console.error(err);\r",
+									"            return;\r",
+									"        }\r",
+									"    });\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200, successfully retrieved squads of user\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/users/:username/squads",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								":username",
+								"squads"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "{{userName}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT User by Username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200, Successfully updated all fields of user by username\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\" : \"John\",\n    \"email\" : \"email@gmail.com\",\n    \"password\" : \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users/jabo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"jabo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Override to GET with Body",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200, successfully overwrote POST with _method: GET body\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const username = pm.collectionVariables.get('defaultUsernameUsers');\r",
+									"pm.environment.set('userName', username);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_method\": \"GET\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users/:username",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								":username"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "{{userName}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH/USER_ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200, successfully updated user partially\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const userName = pm.collectionVariables.get('defaultUsernameUsers');\r",
+									"pm.environment.set(\"username\", userName);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"total_beers\": 1,\n    \"total_steps\": 0,\n    \"steps_needed\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users/:username",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								":username"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "{{username}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Squads User Created,",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200, successfully deleted all squad user created\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const userId = pm.collectionVariables.get('defaultUserIdUsers');\r",
+									"console.log(userId);\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url: 'http://localhost:3000/api/squads',\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            squadName: 'SquadTest',\r",
+									"            created_by: userId\r",
+									"        })\r",
+									"    }\r",
+									"}, function (err, res) {\r",
+									"    const userName = pm.collectionVariables.get('defaultUsernameUsers');\r",
+									"    pm.environment.set(\"userName\", userName);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/users/:username/squads",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								":username",
+								"squads"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "{{userName}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE User by Username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200, successfully deleted user\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/users/John",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"John"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE All Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200, successfully deleted all users\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Requests and tests concering api/users",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"if (!pm.collectionVariables.has('defaultAPI/USERSCreated')) {\r",
+							"    pm.sendRequest({\r",
+							"        url: 'http://localhost:3000/api/users',\r",
+							"        method: 'POST',\r",
+							"        header: {\r",
+							"            'Content-Type': 'application/json'\r",
+							"        },\r",
+							"        body: {\r",
+							"            mode: 'raw',\r",
+							"            raw: JSON.stringify({\r",
+							"                username: 'defaultAPIUsers',\r",
+							"                email: 'defaultuserusers@example.com',\r",
+							"                password: 'password123'\r",
+							"            })\r",
+							"        }\r",
+							"    }, function (err, res) {\r",
+							"        if (err) {\r",
+							"            console.error(err);\r",
+							"            return;\r",
+							"        }\r",
+							"\r",
+							"        const userId = res.json().user._id;\r",
+							"        console.log(userId);\r",
+							"        const username = res.json().user.username;\r",
+							"        pm.collectionVariables.set(\"defaultUserIdUsers\", userId);\r",
+							"        pm.collectionVariables.set(\"defaultUsernameUsers\", username);\r",
+							"    });\r",
+							"    \r",
+							"    pm.collectionVariables.set('defaultAPI/USERSCreated', true);\r",
+							"}"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "API/SQUADS",
+			"item": [
+				{
+					"name": "POST Create Squad",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const userId = pm.collectionVariables.get('defaultUserIdSquads');\r",
+									"pm.environment.set('userId', userId);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 201, successfully created squad\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"squadName\" : \"Created Squad\",\r\n    \"created_by\": \"{{userId}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/squads",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"squads"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH Add User to Squad by Username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200, successfully invited user to squad\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const userId = pm.collectionVariables.get('defaultUserIdSquads'); // Get userId from API/SQUADS default user\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"        url: 'http://localhost:3000/api/users',\r",
+									"        method: 'POST',\r",
+									"        header: {\r",
+									"            'Content-Type': 'application/json'\r",
+									"        },\r",
+									"        body: {\r",
+									"            mode: 'raw',\r",
+									"            raw: JSON.stringify({\r",
+									"                username: 'inviteThisUser',\r",
+									"                email: 'invitedUser@example.com',\r",
+									"                password: 'password123'\r",
+									"            })\r",
+									"        }\r",
+									"    }, function (err, res) {\r",
+									"        if (err) {\r",
+									"            console.error(err);\r",
+									"            return;\r",
+									"        }\r",
+									"        const username = res.json().user.username;\r",
+									"        pm.environment.set(\"inviteUsernameSquads\", username);\r",
+									"});\r",
+									"\r",
+									"// Create squad to update\r",
+									"pm.sendRequest({\r",
+									"        url: 'http://localhost:3000/api/squads',\r",
+									"        method: 'POST',\r",
+									"        header: {\r",
+									"            'Content-Type': 'application/json'\r",
+									"        },\r",
+									"        body: {\r",
+									"            mode: 'raw',\r",
+									"            raw: JSON.stringify({\r",
+									"                squadName: 'SquadForInvite',\r",
+									"                created_by: userId\r",
+									"            })\r",
+									"        }\r",
+									"    }, function (err, res) {\r",
+									"        if (err) {\r",
+									"            console.error(err);\r",
+									"            return;\r",
+									"        }\r",
+									"\r",
+									"        // Get the squad ID from the response and save it as an environment variable\r",
+									"        // to be used in params\r",
+									"        const squadId = res.json().squad._id; \r",
+									"        pm.environment.set('inviteSquadId', squadId); \r",
+									"        \r",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/squads/:id/users/:username",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"squads",
+								":id",
+								"users",
+								":username"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{inviteSquadId}}"
+								},
+								{
+									"key": "username",
+									"value": "{{inviteUsernameSquads}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Squad by ID",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const userId = pm.collectionVariables.get('defaultUserIdSquads'); // Get userId from API/SQUADS default user\r",
+									"\r",
+									"// Create squad to update\r",
+									"pm.sendRequest({\r",
+									"        url: 'http://localhost:3000/api/squads',\r",
+									"        method: 'POST',\r",
+									"        header: {\r",
+									"            'Content-Type': 'application/json'\r",
+									"        },\r",
+									"        body: {\r",
+									"            mode: 'raw',\r",
+									"            raw: JSON.stringify({\r",
+									"                squadName: 'SquadForDelete',\r",
+									"                created_by: userId\r",
+									"            })\r",
+									"        }\r",
+									"    }, function (err, res) {\r",
+									"        if (err) {\r",
+									"            console.error(err);\r",
+									"            return;\r",
+									"        }\r",
+									"\r",
+									"        // Get the squad ID from the response and save it as an environment variable\r",
+									"        // to be used in params\r",
+									"        const squadId = res.json().squad._id; \r",
+									"        pm.environment.set('deleteSquadId', squadId); \r",
+									"        \r",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200, successfully deleted squad\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/squads/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"squads",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{deleteSquadId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Users of Squad",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const userId = pm.collectionVariables.get('defaultUserIdSquads'); // Get userId from API/SQUADS default user\r",
+									"\r",
+									"// Create squad to update\r",
+									"pm.sendRequest({\r",
+									"        url: 'http://localhost:3000/api/squads',\r",
+									"        method: 'POST',\r",
+									"        header: {\r",
+									"            'Content-Type': 'application/json'\r",
+									"        },\r",
+									"        body: {\r",
+									"            mode: 'raw',\r",
+									"            raw: JSON.stringify({\r",
+									"                squadName: 'SquadForGetMembers',\r",
+									"                created_by: userId\r",
+									"            })\r",
+									"        }\r",
+									"    }, function (err, res) {\r",
+									"        if (err) {\r",
+									"            console.error(err);\r",
+									"            return;\r",
+									"        }\r",
+									"\r",
+									"        // Get the squad ID from the response and save it as an environment variable\r",
+									"        // to be used in params\r",
+									"        const squadId = res.json().squad._id; \r",
+									"        pm.environment.set('membersSquadId', squadId); \r",
+									"        \r",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200, successfully retrieved members of squad\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/squads/:id/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"squads",
+								":id",
+								"users"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{membersSquadId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Member of Squad by Username",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const userId = pm.collectionVariables.get('defaultUserIdSquads'); // Get userId from API/SQUADS default user\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"        url: 'http://localhost:3000/api/users',\r",
+									"        method: 'POST',\r",
+									"        header: {\r",
+									"            'Content-Type': 'application/json'\r",
+									"        },\r",
+									"        body: {\r",
+									"            mode: 'raw',\r",
+									"            raw: JSON.stringify({\r",
+									"                username: 'removeThisUser',\r",
+									"                email: 'removedUser@example.com',\r",
+									"                password: 'password123'\r",
+									"            })\r",
+									"        }\r",
+									"    }, function (err, res) {\r",
+									"        if (err) {\r",
+									"            console.error(err);\r",
+									"            return;\r",
+									"        }\r",
+									"        const username = res.json().user.username;\r",
+									"        pm.environment.set(\"deleteUsernameSquads\", username);\r",
+									"\r",
+									"        // Create squad\r",
+									"        pm.sendRequest({\r",
+									"        url: 'http://localhost:3000/api/squads',\r",
+									"        method: 'POST',\r",
+									"        header: {\r",
+									"            'Content-Type': 'application/json'\r",
+									"        },\r",
+									"        body: {\r",
+									"            mode: 'raw',\r",
+									"            raw: JSON.stringify({\r",
+									"                squadName: 'SquadForDelMember',\r",
+									"                created_by: userId\r",
+									"            })\r",
+									"        }\r",
+									"    }, function (err, res) {\r",
+									"        if (err) {\r",
+									"            console.error(err);\r",
+									"            return;\r",
+									"        }\r",
+									"\r",
+									"        // Get the squad ID from the response and save it as an environment variable\r",
+									"        // to be used in params\r",
+									"        const squadId = res.json().squad._id; \r",
+									"        pm.environment.set('deleteMemberOfSquadId', squadId); \r",
+									"\r",
+									"        const patchUrl = `http://localhost:3000/api/squads/${squadId}/users/${username}`;\r",
+									"        pm.sendRequest({\r",
+									"        url: patchUrl,\r",
+									"        method: 'PATCH',\r",
+									"        header: {\r",
+									"            'Content-Type': 'application/json'\r",
+									"        },\r",
+									"    }, function (err, res) {\r",
+									"        if (err) {\r",
+									"            console.error(err);\r",
+									"            return;\r",
+									"        }\r",
+									"        \r",
+									"    });\r",
+									"        \r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"    "
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200, user removed from squad\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/squads/:id/users/:username",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"squads",
+								":id",
+								"users",
+								":username"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{deleteMemberOfSquadId}}"
+								},
+								{
+									"key": "username",
+									"value": "{{deleteUsernameSquads}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"if (!pm.collectionVariables.has('defaultAPI/SQUADSCreated')) {\r",
+							"    pm.sendRequest({\r",
+							"        url: 'http://localhost:3000/api/users',\r",
+							"        method: 'POST',\r",
+							"        header: {\r",
+							"            'Content-Type': 'application/json'\r",
+							"        },\r",
+							"        body: {\r",
+							"            mode: 'raw',\r",
+							"            raw: JSON.stringify({\r",
+							"                username: 'defaultAPI/SQUADS',\r",
+							"                email: 'defaultusersquads@example.com',\r",
+							"                password: 'password123'\r",
+							"            })\r",
+							"        }\r",
+							"    }, function (err, res) {\r",
+							"        if (err) {\r",
+							"            console.error(err);\r",
+							"            return;\r",
+							"        }\r",
+							"\r",
+							"        const userId = res.json().user._id;\r",
+							"        const username = res.json().user.username;\r",
+							"        pm.collectionVariables.set(\"defaultUserIdSquads\", userId);\r",
+							"        pm.collectionVariables.set(\"defaultUsernameSquads\", username);\r",
+							"    });\r",
+							"    \r",
+							"    pm.collectionVariables.set('defaultAPI/SQUADSCreated', true);\r",
+							"}"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "API/LEADERBOARDS",
+			"item": [
+				{
+					"name": "GET All Leaderboards",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200, all leaderboards retrievd successfully\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/leaderboards",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"leaderboards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Leaderboard by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200, leaderboard retrieved successfully\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const leaderboardIdId = pm.collectionVariables.get('leaderboardId'); // Get userId from API/SQUADS default user\r",
+									"pm.environment.set('id', leaderboardIdId);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/leaderboards/:leaderboard_id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"leaderboards",
+								":leaderboard_id"
+							],
+							"variable": [
+								{
+									"key": "leaderboard_id",
+									"value": "{{id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"if (!pm.collectionVariables.has('defaultAPI/LEADBOARDSCreated')) {\r",
+							"    pm.sendRequest({\r",
+							"        url: 'http://localhost:3000/api/users',\r",
+							"        method: 'POST',\r",
+							"        header: {\r",
+							"            'Content-Type': 'application/json'\r",
+							"        },\r",
+							"        body: {\r",
+							"            mode: 'raw',\r",
+							"            raw: JSON.stringify({\r",
+							"                username: 'defaultAPILBoards',\r",
+							"                email: 'defaultuserlboards@example.com',\r",
+							"                password: 'password123'\r",
+							"            })\r",
+							"        }\r",
+							"    }, function (err, res) {\r",
+							"        if (err) {\r",
+							"            console.error(err);\r",
+							"            return;\r",
+							"        }\r",
+							"\r",
+							"        const userId = res.json().user._id;\r",
+							"        console.log(userId);\r",
+							"        const username = res.json().user.username;\r",
+							"        pm.collectionVariables.set(\"defaultUserIdLeaderboards\", userId);\r",
+							"        pm.collectionVariables.set(\"defaultUsernameLeaderboards\", username);\r",
+							"\r",
+							"        pm.sendRequest({\r",
+							"            url: 'http://localhost:3000/api/squads',\r",
+							"            method: 'POST',\r",
+							"            header: {\r",
+							"            'Content-Type': 'application/json'\r",
+							"        },\r",
+							"            body: {\r",
+							"                mode: 'raw',\r",
+							"                raw: JSON.stringify({\r",
+							"                    squadName: 'SquadForLeaderboards',\r",
+							"                    created_by: userId\r",
+							"            })\r",
+							"        }\r",
+							"    }, function (err, res) {\r",
+							"        if (err) {\r",
+							"            console.error(err);\r",
+							"            return;\r",
+							"        }\r",
+							"\r",
+							"        const squadId = res.json().squad._id; \r",
+							"        const leaderboardId = res.json().squad.leaderboard;\r",
+							"        pm.collectionVariables.set('leaderboardsSquadId', squadId); \r",
+							"        pm.collectionVariables.set('leaderboardId', leaderboardId);\r",
+							"        \r",
+							"    });\r",
+							"    });\r",
+							"\r",
+							"   \r",
+							"    \r",
+							"\r",
+							"    pm.collectionVariables.set('defaultAPI/LEADBOARDSCreated', true);\r",
+							"}"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "API/MILESTONES",
+			"item": [
+				{
+					"name": "POST Create Milestone",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 201, milestone successfully created\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const username = pm.collectionVariables.get(\"defaultUsernameMilestones\");\r",
+									"pm.environment.set('username', username);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n    \"title\" : \"Gamers\",\n    \"description\" : \"WOaw beers\",\n    \"beers\" : 5,\n    \"steps\" : 5000\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users/:username/milestones",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								":username",
+								"milestones"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "{{username}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Milestones of Specific User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200, milestones of user successfully retrieved\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const username = pm.collectionVariables.get(\"defaultUsernameMilestones\");\r",
+									"pm.environment.set('username', username);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/users/:username/milestones",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								":username",
+								"milestones"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "{{username}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Milestone by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200, milestone retrieved successfully\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const username = pm.collectionVariables.get(\"defaultUsernameMilestones\");  // Get username from collection variables\r",
+									"\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url: `http://localhost:3000/api/users/${username}/milestones`,\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            title: \"GetMilestone\",  \r",
+									"            description: \"Get this milestone\",  \r",
+									"            beers: 5,  \r",
+									"            steps: 42000  \r",
+									"        })\r",
+									"    }\r",
+									"}, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.error(\"Error creating milestone:\", err);\r",
+									"        return;\r",
+									"    }\r",
+									"\r",
+									"    \r",
+									"    const milestoneId = res.json().milestone._id;\r",
+									"    pm.environment.set('milestoneId', milestoneId);\r",
+									"    \r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/milestones/:milestone_id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"milestones",
+								":milestone_id"
+							],
+							"variable": [
+								{
+									"key": "milestone_id",
+									"value": "{{milestoneId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Update Milestone by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200, milestone updated successfully\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const username = pm.collectionVariables.get(\"defaultUsernameMilestones\");  // Get username from collection variables\r",
+									"\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url: `http://localhost:3000/api/users/${username}/milestones`,\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            title: \"PutMilestone\",  \r",
+									"            description: \"Put this milestone\",  \r",
+									"            beers: 5,  \r",
+									"            steps: 42000  \r",
+									"        })\r",
+									"    }\r",
+									"}, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.error(\"Error creating milestone:\", err);\r",
+									"        return;\r",
+									"    }\r",
+									"\r",
+									"    \r",
+									"    const milestoneId = res.json().milestone._id;\r",
+									"    pm.environment.set('milestoneId', milestoneId);\r",
+									"    \r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n    \"title\" : \"Non-Gamers\",\n    \"description\" : \"WOaw beers\",\n    \"beers\" : 5,\n    \"steps\" : 5000\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/milestones/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"milestones",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{milestoneId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Milestone by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200, milestone successfully deleted\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const username = pm.collectionVariables.get(\"defaultUsernameMilestones\");  // Get username from collection variables\r",
+									"\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url: `http://localhost:3000/api/users/${username}/milestones`,\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            title: \"DeleteMilestone\",  \r",
+									"            description: \"Delete this milestone\",  \r",
+									"            beers: 5,  \r",
+									"            steps: 42000  \r",
+									"        })\r",
+									"    }\r",
+									"}, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.error(\"Error creating milestone:\", err);\r",
+									"        return;\r",
+									"    }\r",
+									"\r",
+									"    \r",
+									"    const milestoneId = res.json().milestone._id;\r",
+									"    pm.environment.set('milestoneId', milestoneId);\r",
+									"    \r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/milestones/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"milestones",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{milestoneId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE All Milestones",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200, all milestones deleted successfully\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/milestones",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"milestones"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET All Milestones",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200, all milestones retrieved successfully\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const username = pm.collectionVariables.get(\"defaultUsernameMilestones\");  // Get username from collection variables\r",
+									"\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url: `http://localhost:3000/api/users/${username}/milestones`,\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            title: \"GetAllMilestone\",  \r",
+									"            description: \"Get all milestones\",  \r",
+									"            beers: 5,  \r",
+									"            steps: 42000  \r",
+									"        })\r",
+									"    }\r",
+									"}, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.error(\"Error creating milestone:\", err);\r",
+									"        return;\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/milestones",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"milestones"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH Partially Update Milestone by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200, partially updated milestone successfully\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const username = pm.collectionVariables.get(\"defaultUsernameMilestones\");  // Get username from collection variables\r",
+									"\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url: `http://localhost:3000/api/users/${username}/milestones`,\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            title: \"PatchMilestone\",  \r",
+									"            description: \"Patch milestone\",  \r",
+									"            beers: 5,  \r",
+									"            steps: 42000  \r",
+									"        })\r",
+									"    }\r",
+									"}, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.error(\"Error creating milestone:\", err);\r",
+									"        return;\r",
+									"    }\r",
+									"\r",
+									"    const milestoneId = res.json().milestone._id;\r",
+									"    pm.environment.set('milestoneId', milestoneId);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n    \"beers\" : 52,\n    \"steps\" : 50200\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/milestones/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"milestones",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{milestoneId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Milestones of User by Username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200, user's milestones deleted successfully\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const username = pm.collectionVariables.get(\"defaultUsernameMilestones\");\r",
+									"pm.environment.set('username', username);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/users/:username/milestones",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								":username",
+								"milestones"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "{{username}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"if (!pm.collectionVariables.has('defaultAPI/MILESTONESCreated')) {\r",
+							"    pm.sendRequest({\r",
+							"        url: 'http://localhost:3000/api/users',\r",
+							"        method: 'POST',\r",
+							"        header: {\r",
+							"            'Content-Type': 'application/json'\r",
+							"        },\r",
+							"        body: {\r",
+							"            mode: 'raw',\r",
+							"            raw: JSON.stringify({\r",
+							"                username: 'defaultAPIMilestones',\r",
+							"                email: 'defaultusermilestones@example.com',\r",
+							"                password: 'password123'\r",
+							"            })\r",
+							"        }\r",
+							"    }, function (err, res) {\r",
+							"        if (err) {\r",
+							"            console.error(err);\r",
+							"            return;\r",
+							"        }\r",
+							"\r",
+							"        const userId = res.json().user._id;\r",
+							"        console.log(userId);\r",
+							"        const username = res.json().user.username;\r",
+							"        pm.collectionVariables.set(\"defaultUserIdMilestones\", userId);\r",
+							"        pm.collectionVariables.set(\"defaultUsernameMilestones\", username);\r",
+							"    });\r",
+							"    \r",
+							"    pm.collectionVariables.set('defaultAPI/MILESTONESCreated', true);\r",
+							"}"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
