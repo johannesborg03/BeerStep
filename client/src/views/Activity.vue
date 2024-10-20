@@ -127,7 +127,8 @@
 
     <div class="col-md-3 d-flex flex-column align-items-center steps">
     
-            <p class="view-info" style="font-weight: 550;">Steps: {{ total_steps }}</p>
+            <p class="view-info-steps" style="font-weight: 550;">Steps: {{ total_steps }}</p>
+            <p class="view-info" style="font-weight: 550;">Steps Needed: {{ steps_needed }}</p>
             <div class="d-flex justify-content-center mb-3">
               <div class="reset">
                 <b-button @click="confirmResetSteps" variant="danger" class="reset-button">
@@ -447,20 +448,15 @@ export default {
 
       
       return {
-        labels: ['Beers vs Steps'],
+        labels: ['Beers'],
         datasets: [
           {
             label: 'Beer Consumption',
-            backgroundColor: '#42A5F5',
-            borderColor: '#42A5F5',
+            backgroundColor: '#ebb112',
+            borderColor: '#ebb112',
             data: beerLogsData,
           },
-          {
-            label: 'Steps Taken',
-            backgroundColor: '#66BB6A',
-            borderColor: '#66BB6A',
-            data: [{ x: new Date(), y: this.total_steps }],
-          },
+          
         ],
       };
     },
@@ -892,7 +888,7 @@ export default {
           this.steps = ''; // Reset the step input field
           this.showStepInput = false; // Hide the input field after submission
           this.total_steps = updatedUser.total_steps;
-          this.steps_needed = updatedUser.steps_needed;
+       //   this.steps_needed = updatedUser.steps_needed;
           this.showToastNotification('Steps successfully logged!');
         })
         .catch((error) => {
@@ -983,8 +979,21 @@ export default {
           return response.json();
         })
         .then((user) => {
+          console.log('Selected beer:', selectedBeer.kcal);
+          let newStepsNeeded = 0;
+          if(selectedBeer.kcal = 170) {
+            newStepsNeeded = user.steps_needed + 1888;
+          } else if (selectedBeer.kcal = 220) {
+            newStepsNeeded = user.steps_needed + 2444;
+          } else if (selectedBeer.kcal = 250) {
+            newStepsNeeded = user.steps_needed + 2777;
+          } else {
+            newStepsNeeded = 2000;
+          }
           const newTotalBeers = user.total_beers + 1;
-          const newStepsNeeded = user.steps_needed + 2000;
+          // const newStepsNeeded = user.steps_needed + 2000;
+
+          // LAGER: 180, IPA: 220, STOUT: 250: Pilsner: 170
 
           // Prepare the new beer log
           const newBeerLog = {
@@ -1090,6 +1099,13 @@ export default {
 
 .view-info{
   color: whitesmoke;
+  margin-bottom: 5%;
+  margin-top: 0%;
+}
+.view-info-steps{
+  color: whitesmoke;
+  margin-top: 5%;
+  margin-bottom: 2.5%;
 }
 
 .milestone-title{
@@ -1400,7 +1416,7 @@ export default {
 .milestones-button{
   border-radius: 15px;
   height: 100%;
-
+  
 }
 
 .ber{
