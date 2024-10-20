@@ -375,7 +375,7 @@
 
 <script>
 // Import your Chart Component
-import BeerVsStepsChart from '/Users/Lenovo/group-25-web-2/client/src/components/BeerVsStepsChart.vue'
+import BeerVsStepsChart from '@/components/BeerVsStepsChart.vue';
 import 'chartjs-adapter-date-fns';
 
 
