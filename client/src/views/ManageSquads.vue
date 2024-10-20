@@ -52,9 +52,7 @@
                     <button class="btn btn-warning btn-sm me-2" @click.stop="openInviteModal(squad)">
                       + Invite
                     </button>
-                    <button class="btn btn-secondary btn-sm" @click.stop="openLeaveModal(squad)">
-                      Leave
-                    </button>
+                    <button class="btn btn-danger btn-sm" @click="openLeaveModal(squad)" v-if="!isCreator(squad)">Leave</button>
                   </div>
                 </li>
                 <li v-if="filteredSquads.length === 0" class="list-group-item text-center text-muted">
@@ -302,13 +300,78 @@ export default {
     closeLeaveModal() {
       this.showLeaveModal = false;
     },
-    confirmLeave() {
-      alert(`Left the squad: ${this.selectedSquad.squadName}`);
-      this.showLeaveModal = false;
+    async confirmLeave() {
+      const username = localStorage.getItem('username')
+
+      if (!username) {
+        alert('No username found, please log in again.')
+        return
+      }
+
+      if (this.selectedSquad && this.selectedSquad._id) {
+        const squad_id = this.selectedSquad._id
+
+        try {
+          const response = await fetch(`http://localhost:3000/api/squads/${squad_id}/users/${username}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+
+          if (response.ok) {
+            alert(`You have left the squad "${this.selectedSquad.squadName}".`)
+            this.showLeaveModal = false
+            this.selectedSquad = null
+            await this.fetchSquads()
+          } else {
+            const errorData = await response.json()
+            throw new Error(`Failed to leave squad: ${errorData.message}`)
+          }
+        } catch (error) {
+          console.error('Error leaving squad:', error)
+          alert('An error occurred while trying to leave the squad. Please try again.')
+        }
+      } else {
+        alert('No squad selected.')
+      }
     },
-    sendInvite() {
-      alert(`Sent invite to ${this.inviteUsername}`);
-      this.closeInviteModal();
+
+    isCreator(squad) {
+      const username = localStorage.getItem('username');
+      return squad.created_by && squad.created_by.username === username;
+    },
+
+    async sendInvite() {
+      if (this.inviteUsername.trim()) {
+        const squad_id = this.selectedSquad._id
+        const username = this.inviteUsername
+
+        if (squad_id && username) {
+          try {
+            const response = await fetch(`http://localhost:3000/api/squads/${squad_id}/users/${username}`, {
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            })
+
+            if (response.ok) {
+              alert(`Invite sent to ${this.inviteUsername} for squad ${this.selectedSquad.squadName}!`)
+              this.closeInviteModal()
+            } else {
+              throw new Error('Failed to send invite')
+            }
+          } catch (error) {
+            console.error('Error sending invite:', error)
+            alert('An error occurred while sending the invite. Please try again.')
+          }
+        } else {
+          alert('Invalid squad or username.')
+        }
+      } else {
+        alert('Please enter a username to invite.')
+      }
     },
   },
 };
@@ -349,5 +412,26 @@ h1 {
 
 .modal-backdrop.show {
   background-color: rgba(0, 0, 0, 0.5);
+}
+
+.form-select {
+  width: 100%;
+  max-width: 200px;
+  padding: 0.4rem;
+}
+
+@media (max-width: 600px) {
+  .form-select {
+    max-width: 100%;
+    font-size: 14px;
+    padding: 0.3rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .form-select {
+    font-size: 12px;
+    padding: 0.25rem;
+  }
 }
 </style>

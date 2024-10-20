@@ -15,7 +15,7 @@
                   <p class="squad-name" @click="goToSquadSpace(squad.squadName)"> {{ squad.squadName }}</p>
                   <div>
                     <button class="btn btn-warning btn-sm me-2" @click="openInviteModal(squad)">+ Invite</button>
-                    <button class="btn btn-danger btn-sm" @click="openLeaveModal(squad)">Leave</button>
+                    <button class="btn btn-danger btn-sm" @click="openLeaveModal(squad)" v-if="!isCreator(squad)">Leave</button>
                   </div>
                 </li>
                 <li v-if="squads.length === 0" class="list-group-item text-muted">No squads yet</li>
@@ -265,6 +265,11 @@ export default {
       } else {
         alert('No squad selected.')
       }
+    },
+
+    isCreator(squad) {
+      const username = localStorage.getItem('username');
+      return squad.created_by && squad.created_by.username === username;
     },
 
     closeLeaveModal() {

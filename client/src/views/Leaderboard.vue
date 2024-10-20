@@ -300,17 +300,29 @@ td {
     align-items: stretch; 
     gap: 10px; 
   }
-
-  .squad-select {
-    font-size: 20px; 
-    width: 100%;
-  }
 }
 
+.squad-select {
+  font-size: 18px;
+  width: 100%;
+  max-width: 700px;
+  border-radius: 10px;
+  padding: 8px;
+}
+
+@media (max-width: 600px) {
+  .squad-select {
+    width: 100%;
+    font-size: 16px;
+    padding: 5px;
+  }
+}
 
 @media (max-width: 400px) {
-  th,td {
-    font-size: 12px;
+  .squad-select {
+    font-size: 14px;
+    padding: 4px;
   }
 }
+
 </style>
