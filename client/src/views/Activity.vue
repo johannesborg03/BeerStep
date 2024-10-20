@@ -160,7 +160,7 @@
               </b-button>
             </b-col>
             <b-col cols="6" md="auto">
-              <b-button @click="showStepInput = true" variant="primary" class="massive-button log-step">
+              <b-button @click="toggleStepInput" variant="primary" class="massive-button log-step">
                 Step
               </b-button>
             </b-col>
@@ -213,15 +213,18 @@
 
 
       <!-- Step input container with responsive input and button -->
+      
       <b-row v-if="showStepInput" class="justify-content-center mt-1">
+        <BCard class="justify-content-center box">
         <b-col cols="12" md="5" class="text-center">
           <b-form-input v-model="steps" type="number" placeholder="Enter number of steps" class="mb-1" />
           <b-button @click="logSteps" variant="success" block class="submit-button">
             Submit
           </b-button>
         </b-col>
+      </BCard>
       </b-row>
-
+    
       <!-- 
       <div class="d-flex justify-content-center mb-3">
         <div class="milestones">
@@ -380,6 +383,7 @@ export default {
   },
   data() {
     return {
+      isFirstClick: false,
       showCreateMilestones: false,
       showEditMilestoneForm: false,
       isBcardView: true,
@@ -652,7 +656,35 @@ export default {
         });
     },
 
-    
+    toggleStepInput(){
+      if (this.isFirstClick) {
+        this.runFirstMethod();  // Call the first method
+      } else {
+        this.runSecondMethod(); // Call the second method
+      }
+      // Toggle the flag to switch between the methods on subsequent clicks
+      this.isFirstClick = !this.isFirstClick;
+    },
+
+    runFirstMethod(){
+      
+      this.showCreateMilestones = false;
+      this.showEditMilestoneForm = false;
+      this.isBcardView = false;
+      this.showMilestoneForm = false; // Toggle milestone form visibility
+      this.isActivityView = false; // Determines which container is visible
+      this.isMilestoneView = false;
+      this.showStepInput = true;
+    },
+    runSecondMethod(){
+      this.showCreateMilestones = false;
+      this.showEditMilestoneForm = false;
+      this.isBcardView = true;
+      this.showMilestoneForm = false; // Toggle milestone form visibility
+      this.isActivityView = false; // Determines which container is visible
+      this.isMilestoneView = false;
+      this.showStepInput = false;
+    },
     toggleMilestoneForm() {
       this.showMilestoneForm = !this.showMilestoneForm;
     },
