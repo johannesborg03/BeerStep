@@ -47,6 +47,11 @@ var userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, ref: 'Milestone'      // Reference to Milestones
     }],
 
+    beerLogs: [{ // New array to store beer logs
+        date: { type: Date, default: Date.now },
+        count: { type: Number, default: 0 }
+    }],
+
 }); 
 
 

@@ -13,6 +13,10 @@
   "dependencies": {
     "bootstrap": "^5.3.3",
     "bootstrap-vue-next": "^0.24.23",
-    "method-override": "^3.0.0"
+    "chart.js": "^4.4.5",
+    "chartjs-adapter-date-fns": "^3.0.0",
+    "date-fns": "^4.1.0",
+    "method-override": "^3.0.0",
+    "vue-chartjs": "^5.3.1"
   }
 }

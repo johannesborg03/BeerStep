@@ -11,7 +11,7 @@
               <p class ="view-info" style = "font-weight: 550;">Username: </p>
               <p class="current-username view-info"> {{ username }} </p>
               <p class ="divider">|</p>
-             <p class = "view-info"style = "font-weight: 550;">Email: </p>
+             <p class = "view-info" style = "font-weight: 550;">Email: </p>
               <p class="current-email view-info"> {{ email }}</p>
             </BCol>
           </BCol>
