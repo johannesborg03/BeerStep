@@ -231,7 +231,8 @@ router.delete('/api/squads/:id/', async function (req, res, next) {
 });
 
 
-router.get('/api/squads/squadSpace/:squadName', async function (req, res, next) {
+// GET squadspace of specific squad
+router.get('/api/squads/:squadName', async function (req, res, next) {
     try {
         const squadName = req.params.squadName;
 
@@ -249,8 +250,8 @@ router.get('/api/squads/squadSpace/:squadName', async function (req, res, next) 
     }
 });
 
-
-router.post('/api/squads/squadSpace/:squadName', async function (req, res, next) {
+// PATCH squadspace of specific squad (send new message)
+router.patch('/api/squads/:squadName', async function (req, res, next) {
     try {
         const { username, message } = req.body;
         const squadName = req.params.squadName;
