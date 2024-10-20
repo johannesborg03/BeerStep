@@ -94,7 +94,7 @@ router.delete('/api/leaderboards/:leaderboard_id', async function (req, res) {
 }
 });
 
-
+//
 //Delete all Leaderboards (DELETE)
 router.delete('/api/leaderboards', async function (req, res) {
     try {
