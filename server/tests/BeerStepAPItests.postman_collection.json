@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "11af6913-6571-4b87-9446-aa4de1b4b819",
+		"_postman_id": "d439b8ba-b077-4770-a482-d2846e2386a0",
 		"name": "BeerStep API tests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "38271747"
+		"_exporter_id": "38271728"
 	},
 	"item": [
 		{
@@ -715,7 +715,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code 200 is for successful\", function () {\r",
+							"pm.test(\"Status code 200 is for success\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});"
 						],
@@ -1670,6 +1670,43 @@
 					]
 				},
 				"description": "The POST request is used to create a new squad space with the provided username and message. The request should be sent to [http://localhost:3000/api/squads/squadSpace/Hello](http://localhost:3000/api/squads/squadSpace/Hello).\n\n### Request Body\n\n- username (text, required): The username of the user creating the squad space.\n    \n- message (text, required): The message associated with the squad space.\n    \n\n### Response\n\nThe response will have a status code of 201 and a content type of application/json. The response body will be in the following JSON schema format:\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"message\": {\n            \"type\": \"string\"\n        },\n        \"squadSpace\": {\n            \"type\": \"array\",\n            \"items\": {\n                \"type\": \"object\",\n                \"properties\": {\n                    \"username\": {\n                        \"type\": \"string\"\n                    },\n                    \"message\": {\n                        \"type\": \"string\"\n                    },\n                    \"_id\": {\n                        \"type\": \"string\"\n                    }\n                }\n            }\n        }\n    }\n}\n\n ```"
+			},
+			"response": []
+		},
+		{
+			"name": "GET MILESTONE ID FOR USER ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404 for not found\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/users/jabo/milestones/6714e03d9ad3058df7bec6b0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users",
+						"jabo",
+						"milestones",
+						"6714e03d9ad3058df7bec6b0"
+					]
+				}
 			},
 			"response": []
 		}

@@ -375,7 +375,7 @@
 
 <script>
 // Import your Chart Component
-import BeerVsStepsChart from '/Users/Lenovo/group-25-web-2/client/src/components/BeerVsStepsChart.vue'
+import BeerVsStepsChart from '@/components/BeerVsStepsChart.vue';
 import 'chartjs-adapter-date-fns';
 
 
@@ -602,12 +602,37 @@ export default {
         })
         .then((data) => {
           this.milestones = data.milestones; // Assign the milestones to the component's data property
+
+           // Check if there's only one milestone and fetch that specific milestone
+           if (this.milestones.length === 1) {
+                const milestoneId = this.milestones[0]._id; // Get the ID of the milestone
+                this.fetchSingleMilestone(username, milestoneId); // Call the method to fetch the specific milestone
+            }
+
         })
         .catch((error) => {
           console.error('Error fetching milestones:', error);
           /*   this.showToastNotification('Failed to load milestones. Please try again.'); THIS SHOWS UP IF NO MILESTONES ARE THERE */
         });
     },
+
+
+    fetchSingleMilestone(username, milestoneId) {
+    fetch(`http://localhost:3000/api/users/${username}/milestones/${milestoneId}`)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`Error fetching single milestone: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then((data) => {
+            console.log('Single milestone fetched successfully:', data.milestone);
+            // Handle the single milestone data (e.g., update the UI, save in state, etc.)
+        })
+        .catch((error) => {
+            console.error('Error fetching single milestone:', error);
+        });
+},
 
     // Create and save the milestone
     createMilestone() {
