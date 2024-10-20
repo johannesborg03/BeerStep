@@ -216,12 +216,15 @@
       
       <b-row v-if="showStepInput" class="justify-content-center mt-1">
         <BCard class="justify-content-center box">
-        <b-col cols="12" md="5" class="text-center">
+        <b-col cols="12" md="12" class="text-step-center">
           <b-form-input v-model="steps" type="number" placeholder="Enter number of steps" class="mb-1" />
-          <b-button @click="logSteps" variant="success" block class="submit-button">
+        </b-col>
+        <b-col cols="12" md="12">
+          <b-button @click="logSteps" variant="success" block class="submit-steps-button">
             Submit
           </b-button>
         </b-col>
+        
       </BCard>
       </b-row>
     
@@ -959,6 +962,7 @@ export default {
           this.total_steps = updatedUser.total_steps;
           this.steps_needed = updatedUser.steps_needed;
           this.showToastNotification('Steps successfully logged!');
+          this.runSecondMethod();
         })
         .catch((error) => {
           console.error('Error logging steps:', error);
@@ -1139,6 +1143,17 @@ export default {
   width: 20vh;
 }
 
+.submit-steps-button {
+  font-family: 'Tahoma';
+  cursor: pointer;
+  border-radius: 15px;
+  transition: background-color 0.3s ease;
+  justify-content: center;
+  width: 100%;
+  margin-top: 2.5%;
+  
+}
+
 .submit-button:hover {
   background-color: #218838;
 }
@@ -1172,6 +1187,18 @@ export default {
 
 
 
+.text-step-center {
+  text-align: center;
+  margin: 0;
+  color: #ebb112;
+  font-size: 6vh;
+  font-family: 'sans-serif';
+  margin-bottom: 0%;
+  margin-top: 0vh;
+  border: 0%;
+  border-radius: 15px;
+}
+
 .text-center {
   text-align: center;
   margin: 0;
@@ -1181,6 +1208,7 @@ export default {
   margin-bottom: 0%;
   margin-top: 2.5vh;
   border: 0%;
+  border-radius: 15px;
 }
 
 .go-back-button{
@@ -1294,8 +1322,6 @@ export default {
   /* Change cursor to pointer on hover */
   transition: transform 0.3s ease, background-color 0.3s ease;
   /* Smooth transitions */
-
-
   /* Controls the space inside the button */
   font-size: 100%;
   /* Increases the size of the text */
