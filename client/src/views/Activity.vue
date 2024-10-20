@@ -513,6 +513,9 @@ export default {
     console.log('Chart data on mount:', this.chartData);
     //  this.updateChartData();
   },
+
+
+
   methods: {
 
     async prepareEditMilestone(milestone) {
@@ -1039,6 +1042,8 @@ export default {
           this.showToastNotification('Beer successfully logged!');
           this.total_beers = updatedUser.total_beers;
           this.steps_needed = updatedUser.steps_needed;
+          this.beerLogs = updatedUser.beerLogs; // Update beerLogs with the latest logs
+          this.$forceUpdate(); // Force Vue to re-render the chart; // Ensure the chart gets updated with the new
           this.showBeerCanvas = false; // Close the OffCanvas after selection
         })
         .catch((error) => {
@@ -1059,9 +1064,6 @@ export default {
 
   // Add the beer data to the chart
   this.chartData.datasets[0].data = beerData;
-
-  
-
   console.log('Updating chart data:', this.chartData); // Debugging to verify data
 },
   },
