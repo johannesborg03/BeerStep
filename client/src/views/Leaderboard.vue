@@ -34,7 +34,7 @@
           <th>User</th>
           <th @click="sortBy('score')" style="cursor: pointer;">
             Points
-            <span v-if="sortKey === 'score'">
+            <span v-if="sortKey === 'score'" class="sort-icon">
               {{ sortOrder === 1 ? '▲' : '▼' }}
             </span>
           </th>
@@ -332,13 +332,28 @@ td {
     font-size: 16px;
     padding: 5px;
   }
+
+  th{
+    font-size: 12px;
+  }
+  .sort-icon{
+    font-size: 10px;
+  }
+
+  .leaderboard-table{
+    width: 100%;
+  }
+
+  .b-card{
+    width: 100%;
+  }
 }
 
 @media (max-width: 400px) {
   .squad-select {
     font-size: 14px;
     padding: 4px;
-  }
+  } 
 }
 
 </style>
