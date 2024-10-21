@@ -137,18 +137,20 @@ export default {
 
     async fetchGlobalLeaderboardData() {
       try {
-        const response = await fetch('http://localhost:3000/api/leaderboards/type/global', {
+        const response = await fetch('http://localhost:3000/api/leaderboards?global=true', {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
 
         if (response.ok) {
-          const leaderboard = await response.json();
+          const data = await response.json();
+
+          // Access the leaderboard array from the response
+          const leaderboard = data.leaderboard;
           this.leaderboardData = leaderboard.map((entry) => ({
             user: entry.username,
             score: entry.score,
           }));
-          // Sorting is handled in the computed property
         } else {
           alert('Error fetching global leaderboard. Please try again.');
         }
