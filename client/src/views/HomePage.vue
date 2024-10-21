@@ -1,7 +1,7 @@
 <template>
   <div class="main bg-dark" style="min-height: 100vh;">
     <BRow>
-      <b-img src="/src/assets/set&homeBackground.jpg" fluid class="beerBack" />
+      <BContainer fluid class="beerBack" />
       <BCol class="overlay">
         <div class="stats">
           <h2>{{ stepsNeeded }}</h2>
@@ -23,11 +23,12 @@
 <script>
 export default {
   data() {
-    return {          
+    return {         
       submittedGoal: "",   
       stepsNeeded: 0,      
       username: "",     
-      quote: ""
+      quote: "",
+      HomeBackgroundImg: '/src/assets/set&homeBackground.jpg'
     };
   },
 
@@ -66,6 +67,7 @@ export default {
 <style scoped>
 
 .beerBack {
+  background-image: url('/src/assets/set&homeBackground.jpg');
   position: relative;
   width: 100%;
   height: 64vh; 
@@ -139,6 +141,9 @@ margin-bottom:20px;
 
 .overlay{
 margin-top: 200px;
+margin-left: 10px;
+
+
 }
 
 .btn{
@@ -148,6 +153,18 @@ font-size: 12px;
 .card-quotes{
 width: 95%;
 }
+
+.quotes{
+  display:none;
+}
+
+.beerBack {
+  height: 100vh; 
+  position: relative;
+  width: 100%;
+}
+
+
 
 }
 </style>
