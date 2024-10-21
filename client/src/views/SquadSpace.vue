@@ -68,7 +68,7 @@ export default {
         async fetchSquadPosts() {
             try {
                 const squadName = this.$route.params.squadName; 
-                const response = await fetch(`http://localhost:3000/api/squads/${squadName}`, {
+                const response = await fetch(`/api/squads/${squadName}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -100,7 +100,7 @@ export default {
 
             try {
                 const squadName = this.$route.params.squadName;
-                const response = await fetch(`http://localhost:3000/api/squads/${squadName}`, {
+                const response = await fetch(`/api/squads/${squadName}`, {
                     method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json',
