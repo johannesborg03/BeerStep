@@ -378,6 +378,10 @@
 import BeerVsStepsChart from '@/components/BeerVsStepsChart.vue';
 import 'chartjs-adapter-date-fns';
 
+import lagerImage from '@/assets/ljus.png';
+import ipaImage from '@/assets/ipa.png';
+import stoutImage from '@/assets/stout.png';
+import pilsnerImage from '@/assets/plisner.png';
 
 
 
@@ -409,22 +413,23 @@ export default {
       beerChoices: [
         {
           name: 'Lager',
-          avatar: 'src/assets/ljus.png',
+          // url('/src/assets/set&homeBackground.jpg');
+          avatar: lagerImage,
           kcal: 180,
         },
         {
           name: 'IPA',
-          avatar: 'src/assets/ipa.png',
+          avatar: ipaImage,
           kcal: 220,
         },
         {
           name: 'Stout',
-          avatar: 'src/assets/stout.png',
+          avatar: stoutImage,
           kcal: 250,
         },
         {
           name: 'Pilsner',
-          avatar: 'src/assets/plisner.png',
+          avatar: pilsnerImage,
           kcal: 170,
         },
       ],
