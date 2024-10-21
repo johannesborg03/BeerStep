@@ -379,7 +379,7 @@ export default {
 
 <style scoped>
 body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: Tahoma;
   background-image: url("/src/assets/logInBack.jpg");
   background-size: cover;
   background-position: center;

@@ -77,7 +77,7 @@ export default {
         email: "",
         password: ""
       },
-      username: "", // Added username to data()
+      username: "", 
       email: "",
       message: "",
       showNotification: false,
@@ -102,7 +102,7 @@ export default {
     },
     async fetchUserData() {
       try {
-        const username = this.$route.params.username; // Get the username from route parameters
+        const username = this.$route.params.username; 
 
         const response = await fetch(`http://localhost:3000/api/users/${username}`);
         if (!response.ok) {
@@ -110,7 +110,7 @@ export default {
         }
 
         const userData = await response.json();
-        this.email = userData.email; // Set the email from the fetched user data
+        this.email = userData.email; 
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
@@ -152,17 +152,14 @@ export default {
         this.message = '';
 
 
-          // Update the email in the component's data to reflect the new value
           if (this.input.email) {
             this.email = this.input.email; // Update displayed email
             }
 
-        // Show Notification and Clear Input fields
         this.showNotification = true;
         this.input.email = "";
         this.input.password = "";
 
-        // Show success toast message
         this.showToastMessage("User information updated successfully!");
 
       } catch (error) {
