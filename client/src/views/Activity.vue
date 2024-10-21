@@ -66,7 +66,7 @@
           <p class="beer-chart-title">Beer Progress:</p>
       
 
-            <BeerVsStepsChart ref="myChart" :chart-data="chartData" :options="chartOptions" />
+            <BeerVsStepsChart ref="myChart" :chart-data="chartData" :options="chartOptions" class ="chart" />
 
             <BCard class="activity-buttons-container">
               <div class="row d-flex flex-column align-items-center">
@@ -993,13 +993,13 @@ export default {
 }
 
 .title {
-  background-color: whitesmoke;
-  color: bg-dark;
+  font-weight: 500;
+  color: whitesmoke;
 }
 
 .beer-chart-title {
-  background-color: whitesmoke;
-  color: bg-dark;
+  font-weight: 500;
+  color: whitesmoke;
 }
 
 .view-info {
@@ -1276,6 +1276,16 @@ export default {
 
 /* Media Queries for smaller screens */
 
+@media (max-width: 768px) {
+
+.chart{
+    display: none;
+  }
+ .bcard{
+  width: 100%;
+ }
+}
+
 @media (min-width: 320px) {
 
   .milestones-button {
@@ -1313,7 +1323,6 @@ export default {
   .buttons-container {
     width: 100%;
   }
-
 
 
   .steps {
