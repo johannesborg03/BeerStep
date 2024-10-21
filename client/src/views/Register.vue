@@ -72,7 +72,7 @@
           };
   
           // Call the backend to create a new user
-          const backendResponse = await fetch('http://localhost:3000/api/users', {
+          const backendResponse = await fetch('/api/users', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
