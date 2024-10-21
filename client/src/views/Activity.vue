@@ -6,14 +6,8 @@
         <b-col>
         </b-col>
       </b-row>
-
-
-
       <BRow class="bcard" v-if="isBcardView">
         <BCard class="box bg-dark">
-
-
-
 
           <div class="milestone-view" v-if="isMilestoneView">
             <div class="d-flex justify-content-center mb-3">
@@ -127,10 +121,6 @@
         </BCard>
       </BRow>
 
-
-
-
-      <!-- Fixed button container -->
       <div class="fixed-bottom bg-dark p-3 w-100 text-center">
         <b-container>
           <b-row class="justify-content-center buttons-container">
@@ -175,7 +165,6 @@
         </BCard>
       </b-row>
     
-     
       <b-row v-if="showCreateMilestones" class="justify-content-center mb-3 milestone-view">
         <div class="create-milestone-view">
           <b-row v-if="showCreateMilestones" class="justify-content-center mb-3">
@@ -216,7 +205,6 @@
         </div>
       </b-row>
 
-      <!-- Milestone form for editing -->
       <b-row v-if="showEditMilestoneForm" class="justify-content-center mb-3">
         <BRow class="bcard">
           <BCard class="box bg-dark">
@@ -256,8 +244,6 @@
         </BRow>
       </b-row>
 
-
-
       <div class="toast-container position-fixed top-0 end-0 p-3">
         <div id="liveToast" class="toast bg-dark" role="alert" style="color: white;" aria-live="assertive"
           aria-atomic="true" :class="{ 'show': showToast }">
@@ -274,12 +260,6 @@
 
     </b-container>
   </div>
-
-
-
-
-
-
 
 </template>
 
@@ -998,14 +978,9 @@ export default {
 
   background: url('@/assets/set&homeBackground.jpg') no-repeat center center fixed;
   background-size: cover;
-  /* Ensure the image covers the entire area */
   height: 100vh;
-  /* Set full height for the body */
   margin: 0;
-  /* Remove default margin */
   padding: 0;
-  /* Remove default padding */
-
 }
 
 .milestone-label {
@@ -1045,20 +1020,12 @@ export default {
 
 .step-input-container {
   display: flex;
-  /* Ensures the input and button are aligned */
   flex-direction: column;
-  /* Stack the input and button vertically */
   justify-content: center;
-  /* Centers the input and button */
   align-items: center;
-  /* Aligns horizontally to center */
-  /* padding: 20px; /* Adds padding inside the container */
   margin-top: 20px;
-  /* Adds space above the container */
   width: 300px;
-  /* Ensures the container is as wide as possible */
   height: auto;
-  /* Auto-adjusts the height based on content */
   position: absolute;
   left: 40%;
   right: 40%;
@@ -1106,32 +1073,12 @@ export default {
 }
 
 
-@keyframes fadeout {
-  0% {
-    /* 0%: This represents the starting point of the animation (the beginning).
-                           At 0%, the opacity is set to 0.9, which means the element is almost fully visible but slightly transparent. */
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 1;
-  }
-
-  100% {
-    /* 100%: This represents the end point of the animation (the end).
-    At 100%, the opacity is set to 0, meaning the element becomes fully transparent (completely invisible). */
-    opacity: 0;
-  }
-}
 
 .disabled-button {
   cursor: not-allowed;
   opacity: 0.6;
   pointer-events: none;
 }
-
-
-
 
 
 .text-step-center {
@@ -1161,13 +1108,8 @@ export default {
 .go-back-button {
   margin-top: 5%;
   background-color: #ff5733;
-  /* Your desired background color */
   color: white;
-  /* Text color */
   border: none;
-  /* Remove border */
-
-
 }
 
 .justify-content-center {
@@ -1208,8 +1150,6 @@ export default {
 .milestone-form {
 
   margin: auto;
-  /* Centers the form horizontally */
-
 }
 
 .box {
@@ -1218,18 +1158,13 @@ export default {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 0%;
   width: 50%;
-  /* Adjust the width */
   padding: 0;
-  /* Add padding */
 }
 
 .bcard {
   justify-content: center;
   display: flex;
-  /* Aligns content inside */
   width: 100%;
-
-
 }
 
 .milestone-list {
@@ -1237,45 +1172,31 @@ export default {
   width: 100%;
   margin-bottom: 5%;
   max-height: 400px;
-  /* Set a maximum height for the milestone list */
   overflow-y: auto;
-  /* Allow vertical scrolling */
   padding-right: 15px;
-  /* Add some padding to avoid scrollbar overlap */
 }
 
 
 .fixed-bottom {
   z-index: 1030;
-  /* Ensure it stays above other content */
   height: auto;
-  /* This controls the height of the bottom section */
   display: flex;
   justify-content: center;
-  /* Centers horizontally */
   align-items: center;
-  /* Centers vertically */
-
 }
 
 .massive-button {
   font-family: 'Tahoma';
   color: whitesmoke;
-  /* rounded corners */
   cursor: pointer;
-  /* Change cursor to pointer on hover */
   transition: transform 0.3s ease, background-color 0.3s ease;
   /* Smooth transitions */
-  /* Controls the space inside the button */
   font-size: 100%;
   /* Increases the size of the text */
   width: 100%;
-  /* Sets a fixed width */
   height: 100%;
   /* Sets a fixed height */
   border-radius: 15px;
-  /* Optional: makes the corners rounded */
-
   flex: 1;
   /* Allows the button to grow and fill space */
   /* Center text inside the button */
@@ -1284,9 +1205,6 @@ export default {
   align-items: center;
   text-align: center;
   line-height: normal;
-
-
-
 }
 
 .beer {
@@ -1304,7 +1222,6 @@ export default {
 
 .log-step {
   background-color: #1a7fea;
-
 }
 
 
@@ -1315,11 +1232,6 @@ export default {
   transform: scale(1.05);
   /* Slightly enlarge on hover */
 }
-
-
-
-
-
 
 .buttons-container {
   margin: 0;
