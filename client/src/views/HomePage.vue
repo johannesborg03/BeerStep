@@ -139,6 +139,9 @@ margin-bottom:20px;
 
 .overlay{
 margin-top: 200px;
+margin-left: 10px;
+
+
 }
 
 .btn{
@@ -148,6 +151,18 @@ font-size: 12px;
 .card-quotes{
 width: 95%;
 }
+
+.quotes{
+  display:none;
+}
+
+.beerBack {
+  height: 100vh; 
+  position: relative;
+  width: 100%;
+}
+
+
 
 }
 </style>
