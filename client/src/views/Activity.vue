@@ -433,7 +433,7 @@ export default {
         steps: this.milestone.steps,
       };
 
-      fetch(`http://localhost:3000/api/milestones/${this.milestone._id}`, {
+      fetch(`/api/milestones/${this.milestone._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -469,7 +469,7 @@ export default {
     async fetchMilestone(milestoneId) {
       console.log('Fetching Milestone with id:', milestoneId);
       try {
-        const response = await fetch(`http://localhost:3000/api/milestones/${milestoneId}`, {
+        const response = await fetch(`/api/milestones/${milestoneId}`, {
           method: 'GET',
         });
         if (!response.ok) {
@@ -486,7 +486,7 @@ export default {
 
     fetchUserMilestones() {
       const username = localStorage.getItem('username'); // Retrieve the username from local storage
-      fetch(`http://localhost:3000/api/users/${username}/milestones`)
+      fetch(`/api/users/${username}/milestones`)
         .then((response) => {
           if (!response.ok) {
             throw new Error(`Error fetching milestones: ${response.statusText}`);
@@ -511,7 +511,7 @@ export default {
 
 
     fetchSingleMilestone(username, milestoneId) {
-      fetch(`http://localhost:3000/api/users/${username}/milestones/${milestoneId}`)
+      fetch(`/api/users/${username}/milestones/${milestoneId}`)
         .then((response) => {
           if (!response.ok) {
             throw new Error(`Error fetching single milestone: ${response.statusText}`);
@@ -539,7 +539,7 @@ export default {
       };
 
       // Send a POST request to the backend API
-      fetch(`http://localhost:3000/api/users/${username}/milestones`, {
+      fetch(`/api/users/${username}/milestones`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -664,7 +664,7 @@ export default {
       const username = localStorage.getItem('username');
 
       try {
-        const response = await fetch(`http://localhost:3000/api/users/${username}/milestones`, {
+        const response = await fetch(`/api/users/${username}/milestones`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -690,7 +690,7 @@ export default {
     resetBeers() {
       const username = localStorage.getItem('username');
 
-      fetch(`http://localhost:3000/api/users/${username}`)
+      fetch(`/api/users/${username}`)
         .then((response) => {
           if (!response.ok) {
             throw new Error(`Error fetching user data: ${response.statusText}`);
@@ -700,7 +700,7 @@ export default {
         .then((user) => {
           let newTotalBeers = 0;
 
-          return fetch(`http://localhost:3000/api/users/${username}`, {
+          return fetch(`/api/users/${username}`, {
             method: 'PATCH',
             headers: {
               'Content-Type': 'application/json',
@@ -735,7 +735,7 @@ export default {
     fetchUserData() {
       const username = localStorage.getItem('username');
 
-      fetch(`http://localhost:3000/api/users/${username}`)
+      fetch(`/api/users/${username}`)
         .then((response) => {
           if (!response.ok) {
             throw new Error(`Error fetching user data: ${response.statusText}`);
@@ -766,7 +766,7 @@ export default {
     resetSteps() {
       const username = localStorage.getItem('username');
 
-      fetch(`http://localhost:3000/api/users/${username}`)
+      fetch(`/api/users/${username}`)
         .then((response) => {
           if (!response.ok) {
             throw new Error(`Error fetching user data: ${response.statusText}`);
@@ -778,7 +778,7 @@ export default {
           let newStepsNeeded = 0;
 
 
-          return fetch(`http://localhost:3000/api/users/${username}`, {
+          return fetch(`/api/users/${username}`, {
             method: 'PATCH',
             headers: {
               'Content-Type': 'application/json',
@@ -831,7 +831,7 @@ export default {
       console.log('Steps logged:', this.steps);
       const username = localStorage.getItem('username');
 
-      fetch(`http://localhost:3000/api/users/${username}`)
+      fetch(`/api/users/${username}`)
         .then((response) => {
           if (!response.ok) {
             throw new Error(`Error fetching user data: ${response.statusText}`);
@@ -846,7 +846,7 @@ export default {
             newStepsNeeded = 0;
           }
 
-          return fetch(`http://localhost:3000/api/users/${username}`, {
+          return fetch(`/api/users/${username}`, {
             method: 'PATCH',
             headers: {
               'Content-Type': 'application/json',
@@ -883,7 +883,7 @@ export default {
       console.log('Selected beer:', selectedBeer);
       const username = localStorage.getItem('username');
 
-      fetch(`http://localhost:3000/api/users/${username}`)
+      fetch(`/api/users/${username}`)
         .then((response) => {
           if (!response.ok) {
             throw new Error(`Error fetching user data: ${response.statusText}`);
@@ -921,7 +921,7 @@ export default {
 
 
 
-          return fetch(`http://localhost:3000/api/users/${username}`, {
+          return fetch(`/api/users/${username}`, {
             method: 'PATCH',
             headers: {
               'Content-Type': 'application/json',

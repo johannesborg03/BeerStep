@@ -97,7 +97,7 @@ export default {
       }
 
       try {
-        const response = await fetch(`http://localhost:3000/api/users/${username}/squads`, {
+        const response = await fetch(`/api/users/${username}/squads`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -124,7 +124,7 @@ export default {
 
       const leaderboardId = this.selectedSquad.leaderboard;
       try {
-        const response = await fetch(`http://localhost:3000/api/leaderboards/${leaderboardId}`, {
+        const response = await fetch(`/api/leaderboards/${leaderboardId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -150,7 +150,7 @@ export default {
 
     async fetchGlobalLeaderboardData() {
       try {
-        const response = await fetch('http://localhost:3000/api/leaderboards?global=true', {
+        const response = await fetch('/api/leaderboards?global=true', {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });

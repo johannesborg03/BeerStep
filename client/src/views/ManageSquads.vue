@@ -160,7 +160,7 @@ export default {
       const username = this.currentUsername;
       try {
         const response = await fetch(
-          `http://localhost:3000/api/users/${username}/squads`,
+          `/api/users/${username}/squads`,
           {
             method: "GET",
             headers: {
@@ -194,7 +194,7 @@ export default {
     async openSquadDetails(squad) {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/squads/${squad._id}/users/`,
+          `/api/squads/${squad._id}/users/`,
           {
             method: "GET",
             headers: {
@@ -211,7 +211,7 @@ export default {
     async deleteSquad(squad) {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/squads/${squad._id}`,
+          `/api/squads/${squad._id}`,
           {
             method: "DELETE",
             headers: {
@@ -241,7 +241,7 @@ export default {
       const username = this.currentUsername;
       try {
         const response = await fetch(
-          `http://localhost:3000/api/users/${username}/squads`,
+          `/api/users/${username}/squads`,
           {
             method: "DELETE",
             headers: {
@@ -266,7 +266,7 @@ export default {
     async kickMember(squad, member) {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/squads/${squad._id}/users/${member.username}`,
+          `/api/squads/${squad._id}/users/${member.username}`,
           {
             method: "DELETE",
             headers: {
@@ -312,7 +312,7 @@ export default {
         const squad_id = this.selectedSquad._id
 
         try {
-          const response = await fetch(`http://localhost:3000/api/squads/${squad_id}/users/${username}`, {
+          const response = await fetch(`/api/squads/${squad_id}/users/${username}`, {
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/json'
@@ -349,7 +349,7 @@ export default {
 
         if (squad_id && username) {
           try {
-            const response = await fetch(`http://localhost:3000/api/squads/${squad_id}/users/${username}`, {
+            const response = await fetch(`/api/squads/${squad_id}/users/${username}`, {
               method: 'PATCH',
               headers: {
                 'Content-Type': 'application/json'
