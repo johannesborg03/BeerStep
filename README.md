@@ -66,8 +66,16 @@ BeerStep combines health and fun by merging step-taking with beer drinking in a 
 
 ### Pages
 
-* Home: 1-3 sentences describing what the page displays and what a user can do
-* Shopping cart: ...
+* Landing page: Entry point for users visiting the website. Buttons routing to login page or register page.
+* Login: Existing users can log in by entering their credentials.
+* Register: Users can register new BeerStep accounts.
+* Home page: Page for users logging in. Ability to navigate to log activity or around the site using the navigation bar.
+* Activity: Log activities such as drank beers or steps taken
+* Squads: Create and view squads you're a member of. Can navigate to a squadspace chat by clicking a squad's name or a management page for squads.
+* Manage squads: Overview of squads the user created/is a member of. Able to delete squads and kick members.
+* Squadspace: Chat for particular members of a squad to connect with each other.
+* Leaderboard: View current leaderboard standing of squads user is member of or a global leaderboard.
+* Settings: Change credentials of account.
 
 ### Entity-Relationship (ER) Diagram 
 
