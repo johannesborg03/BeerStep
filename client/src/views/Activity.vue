@@ -1102,7 +1102,7 @@ export default {
   margin-bottom: 0%;
   margin-top: 2.5vh;
   border: 0%;
-  border-radius: 15px;
+ /* border-radius: 15px; */
 }
 
 .go-back-button {
