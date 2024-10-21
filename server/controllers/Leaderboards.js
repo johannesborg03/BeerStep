@@ -7,14 +7,42 @@ var User = require('../models/User.js');
 router.get('/api/leaderboards/:leaderboard_id', async function (req, res) {
     try{
     var leaderboard_id = req.params.leaderboard_id;
-    const leaderboard = await Leaderboard.findById(leaderboard_id).populate('rankings.userId', 'username');
+    const leaderboard = await Leaderboard.findById(leaderboard_id).populate('rankings.userId', 'username total_beers');
     if (!leaderboard){
         return res.status(404).json({"message": "No such Leaderboard"});
     }
     leaderboard.calculateScores();
+
+
+
     console.log(leaderboard);
-    res.json(leaderboard);
-} catch (err) {
+
+
+
+        // Construct the response object
+        const response = {
+            rankings: leaderboard.rankings.map(ranking => ({
+                user: ranking.userId.username,
+                score: ranking.score,
+                beers: ranking.userId.total_beers // Provide a default value if total_beers is undefined
+            }))
+        };
+
+        console.log(response); // Log the response for debugging
+        return res.json(response); // Use return to prevent further execution
+
+/*
+    res.json({
+        rankings: leaderboard.rankings.map(ranking => ({
+          user: ranking.userId.username,
+          score: ranking.score,
+          beers: ranking.userId.total_beers // Send beers to frontend
+        }))
+        
+      });
+      console.log(response); // Log the response for debugging
+      */
+    }  catch (err) {
     res.status(500).json({"message" : "Server error", "error": err.message});
 }
 });
@@ -39,7 +67,8 @@ router.get('/api/leaderboards', async (req, res) => {
 
                     return {
                         username: user.username,
-                        score: score
+                        score: score,
+                        beers: totalBeers,
                     };
                 })
                 .sort((a, b) => b.score - a.score); // Sort by score in descending order

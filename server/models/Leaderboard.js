@@ -12,6 +12,10 @@ const leaderboardSchema = new mongoose.Schema({
                 type: Number,
                 default: 0, // Default score can be 0 or undefined
             },
+            beers: {
+                type: Number,
+                default: 0,
+            }
         },
     ],
     squad: {

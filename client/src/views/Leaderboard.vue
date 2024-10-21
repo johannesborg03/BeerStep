@@ -38,6 +38,14 @@
               {{ sortOrder === 1 ? '▲' : '▼' }}
             </span>
           </th>
+
+          <th @click="sortBy('beers')" style="cursor: pointer;">
+            Beers
+            <span v-if="sortKey === 'totalBeers'">
+              {{ sortOrder === 1 ? '▲' : '▼' }}
+            </span>
+          </th>
+
         </tr>
       </thead>
       <tbody>
@@ -45,6 +53,7 @@
           <td v-if="showRank">{{ index + 1 }}</td>
           <td>{{ entry.user }}</td>
           <td>{{ entry.score }}</td>
+          <td>{{ entry.beers }}</td> <!-- Display beers -->
         </tr>
       </tbody>
     </table>
@@ -71,6 +80,8 @@ export default {
         .sort((a, b) => {
           if (this.sortKey === 'score') {
             return (b[this.sortKey] - a[this.sortKey]) * this.sortOrder; // Change to descending order for ranking
+          } else if (this.sortKey === 'beers') {
+            return (b.beers - a.beers) * this.sortOrder; // Sort by beers
           }
           return 0; // Default case (no sorting if not by score)
         });
@@ -123,14 +134,16 @@ export default {
         if (response.ok) {
           const leaderboard = await response.json();
           this.leaderboardData = leaderboard.rankings.map((ranking) => ({
-            user: ranking.userId.username,
+            user: ranking.user,
             score: ranking.score,
+            beers: ranking.beers,
           }));
           // Sorting is handled in the computed property
         } else {
           alert('Error fetching leaderboard. Please try again.');
         }
       } catch (error) {
+        console.error('Error fetching leaderboard:', error);
         alert('Error fetching leaderboard. Please try again.');
       }
     },
@@ -150,6 +163,7 @@ export default {
           this.leaderboardData = leaderboard.map((entry) => ({
             user: entry.username,
             score: entry.score,
+            beers: entry.beers
           }));
         } else {
           alert('Error fetching global leaderboard. Please try again.');
