@@ -23,7 +23,7 @@
 <script>
 export default {
   data() {
-    return {          
+    return {         
       submittedGoal: "",   
       stepsNeeded: 0,      
       username: "",     

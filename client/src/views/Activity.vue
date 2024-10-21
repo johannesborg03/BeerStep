@@ -5,7 +5,7 @@
       <b-row>
         <b-col>
 
-         
+
         </b-col>
       </b-row>
 
@@ -30,120 +30,121 @@
       <BRow class="bcard" v-if="isBcardView">
         <BCard class="box bg-dark">
 
-          
+
 
 
           <div class="milestone-view" v-if="isMilestoneView">
-        <div class="d-flex justify-content-center mb-3">
-        </div>
-        <h3 class="milestone-title">Your Milestones: ({{ milestones.length }}) </h3>
-        <b-row v-if="milestones.length > 0" class="mt-3">
-          <b-col class="milestone-list" cols="12">
-          
-            <ul class="list-group">
-              <li v-for="(milestone, index) in milestones" :key="index" class="list-group-item">
-                <strong>{{ milestone.title }}</strong>  <br>
-                
-                <strong>Description: </strong> {{ milestone.description }}
-                  <br>
-                
-                <strong> Beers: </strong> {{ milestone.beers }}<br>
-                <strong> Steps: </strong> {{ milestone.steps }}
-                <div>
-                  <b-button @click="prepareEditMilestone(milestone)" variant="primary" class="edit-milestones-button">
-                    Edit Milestone
+            <div class="d-flex justify-content-center mb-3">
+            </div>
+            <h3 class="milestone-title">Your Milestones: ({{ milestones.length }}) </h3>
+            <b-row v-if="milestones.length > 0" class="mt-3">
+              <b-col class="milestone-list" cols="12">
+
+                <ul class="list-group">
+                  <li v-for="(milestone, index) in milestones" :key="index" class="list-group-item">
+                    <strong>{{ milestone.title }}</strong> <br>
+
+                    <strong>Description: </strong> {{ milestone.description }}
+                    <br>
+
+                    <strong> Beers: </strong> {{ milestone.beers }}<br>
+                    <strong> Steps: </strong> {{ milestone.steps }}
+                    <div>
+                      <b-button @click="prepareEditMilestone(milestone)" variant="primary"
+                        class="edit-milestones-button">
+                        Edit Milestone
+                      </b-button>
+                    </div>
+                  </li>
+                </ul>
+              </b-col>
+            </b-row>
+
+            <b-row justify-content-center d-flex>
+
+              <div class="col-md-6">
+                <div class="create-milestones-button">
+                  <b-button @click="toggleCreateMilestones" variant="success" class="create-milestones-button">
+                    Create Milestone
                   </b-button>
                 </div>
-              </li>
-            </ul>
-          </b-col>
-        </b-row>
+              </div>
 
-        <b-row justify-content-center d-flex>
-          
-          <div class="col-md-6">
-        <div class="create-milestones-button" >
-            <b-button @click="toggleCreateMilestones" variant="success" class="create-milestones-button" >
-              Create Milestone
-            </b-button>
-          </div>
-        </div>
+              <div class="col-md-6">
+                <div class="delete-milestones">
+                  <b-button @click="confirmDeleteMilestones" variant="danger" class="delete-milestones-button">
+                    Delete Milestones
+                  </b-button>
+                </div>
+              </div>
 
-        <div class="col-md-6">
-        <div class="delete-milestones">
-          <b-button @click="confirmDeleteMilestones" variant="danger" class="delete-milestones-button">
-            Delete Milestones
-          </b-button>
-        </div>
-      </div>
+            </b-row>
 
-      </b-row>
-
-        <b-button @click="toggleMilestones" class="go-back-button">
+            <b-button @click="toggleMilestones" class="go-back-button">
               Go Back
             </b-button>
-      </div>
+          </div>
 
-      <div class="activity" v-if="!isActivityView">
-          <h1 class="title">Activity Status</h1>
-          <p class="beer-chart-title">Beer Progress:</p>
-          <!-- INSERT BEER CHART-->
+          <div class="activity" v-if="!isActivityView">
+            <h1 class="title">Activity Status</h1>
+            <p class="beer-chart-title">Beer Progress:</p>
+            <!-- INSERT BEER CHART-->
 
-          <!-- Insert your Chart component here
+            <!-- Insert your Chart component here
               <beer-vs-steps-chart :totalBeers="total_beers" :totalSteps="total_steps" />
             -->
 
-          <BeerVsStepsChart ref="myChart" :chart-data="chartData" :options="chartOptions" />
+            <BeerVsStepsChart ref="myChart" :chart-data="chartData" :options="chartOptions" />
 
-          <BCard class="activity-buttons-container">
-          <div class="row d-flex flex-column align-items-center">
-          
-            
-            <div class="col-md-3 d-flex flex-column align-items-center ber">
-              
-            <p class="view-info" style="font-weight: 550;">Beers: {{ total_beers }} </p>
-            <div class="d-flex justify-content-center mb-3 reset-button">
-             
-                <b-button @click="confirmResetBeer" variant="danger" class="reset-buton-button">
-                  Reset Beers
-                </b-button>
-         
-            </div>
-          
+            <BCard class="activity-buttons-container">
+              <div class="row d-flex flex-column align-items-center">
+
+
+                <div class="col-md-3 d-flex flex-column align-items-center ber">
+
+                  <p class="view-info" style="font-weight: 550;">Beers: {{ total_beers }} </p>
+                  <div class="d-flex justify-content-center mb-3 reset-button">
+
+                    <b-button @click="confirmResetBeer" variant="danger" class="reset-buton-button">
+                      Reset Beers
+                    </b-button>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-6 d-flex flex-column align-items-center milestone">
+
+                  <p class="view-info" style="font-weight: 550;">Milestones: {{ total_milestones }}</p>
+                  <div class="d-flex justify-content-center">
+                    <div class="milestones">
+                      <b-button @click="toggleMilestones" variant="primary" class="milestones-button">
+                        Milestones
+                      </b-button>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="col-md-3 d-flex flex-column align-items-center steps">
+
+                  <p class="view-info-steps" style="font-weight: 550;">Steps: {{ total_steps }}</p>
+                  <p class="view-info" style="font-weight: 550;">Steps Needed: {{ steps_needed }}</p>
+                  <div class="d-flex justify-content-center mb-3 reset-button">
+
+                    <b-button @click="confirmResetSteps" variant="danger" class="reset-buton-button">
+                      Reset Steps
+                    </b-button>
+
+                  </div>
+
+                </div>
+
+
+              </div>
+            </BCard>
+
           </div>
-
-          <div class="col-md-6 d-flex flex-column align-items-center milestone">
-            
-            <p class="view-info" style="font-weight: 550;">Milestones: {{ total_milestones }}</p>
-            <div class="d-flex justify-content-center">
-        <div class="milestones">
-          <b-button @click="toggleMilestones" variant="primary" class="milestones-button">
-            Milestones
-          </b-button>
-        </div>
-      </div>
-  
-    </div>
-
-    <div class="col-md-3 d-flex flex-column align-items-center steps">
-    
-            <p class="view-info-steps" style="font-weight: 550;">Steps: {{ total_steps }}</p>
-            <p class="view-info" style="font-weight: 550;">Steps Needed: {{ steps_needed }}</p>
-            <div class="d-flex justify-content-center mb-3 reset-button">
-      
-                <b-button @click="confirmResetSteps" variant="danger" class="reset-buton-button">
-                  Reset Steps
-                </b-button>
-              
-            </div>
-          
-          </div>
-
-         
-        </div>
-      </BCard>
-
-    </div>
 
         </BCard>
       </BRow>
@@ -209,26 +210,26 @@
          -->
 
 
-      
+
 
 
 
       <!-- Step input container with responsive input and button -->
-      
+
       <b-row v-if="showStepInput" class="justify-content-center mt-1">
         <BCard class="justify-content-center box bg-dark">
-        <b-col cols="12" md="12" class="text-step-center">
-          <b-form-input v-model="steps" type="number" placeholder="Enter number of steps" class="mb-1" />
-        </b-col>
-        <b-col cols="12" md="12">
-          <b-button @click="logSteps" variant="success" block class="submit-steps-button">
-            Submit
-          </b-button>
-        </b-col>
-        
-      </BCard>
+          <b-col cols="12" md="12" class="text-step-center">
+            <b-form-input v-model="steps" type="number" placeholder="Enter number of steps" class="mb-1" />
+          </b-col>
+          <b-col cols="12" md="12">
+            <b-button @click="logSteps" variant="success" block class="submit-steps-button">
+              Submit
+            </b-button>
+          </b-col>
+
+        </BCard>
       </b-row>
-    
+
       <!-- 
       <div class="d-flex justify-content-center mb-3">
         <div class="milestones">
@@ -239,48 +240,49 @@
       </div>
     -->
 
-      
+
 
 
 
 
       <b-row v-if="showCreateMilestones" class="justify-content-center mb-3 milestone-view">
-      <div class="create-milestone-view">
-        <b-row v-if="showCreateMilestones" class="justify-content-center mb-3">
-          <BRow class="bcard">
-            <BCard class="box bg-dark">
-              <b-col cols="12" md="8" class="milestone-form">
-                <b-form @submit.prevent="createMilestone">
-                  <b-form-group label="Milestone Title" label-class="milestone-label">
-                    <b-form-input v-model="milestone.title" required placeholder="Enter milestone title"></b-form-input>
-                  </b-form-group>
+        <div class="create-milestone-view">
+          <b-row v-if="showCreateMilestones" class="justify-content-center mb-3">
+            <BRow class="bcard">
+              <BCard class="box bg-dark">
+                <b-col cols="12" md="8" class="milestone-form">
+                  <b-form @submit.prevent="createMilestone">
+                    <b-form-group label="Milestone Title" label-class="milestone-label">
+                      <b-form-input v-model="milestone.title" required
+                        placeholder="Enter milestone title"></b-form-input>
+                    </b-form-group>
 
-                  <b-form-group label="Milestone Description" label-class="milestone-label">
-                    <b-form-textarea v-model="milestone.description" required
-                      placeholder="Enter milestone description"></b-form-textarea>
-                  </b-form-group>
+                    <b-form-group label="Milestone Description" label-class="milestone-label">
+                      <b-form-textarea v-model="milestone.description" required
+                        placeholder="Enter milestone description"></b-form-textarea>
+                    </b-form-group>
 
-                  <b-form-group label="Number of Beers" label-class="milestone-label">
-                    <b-form-input type="number" v-model="milestone.beers" required
-                      placeholder="Enter number of beers"></b-form-input>
-                  </b-form-group>
+                    <b-form-group label="Number of Beers" label-class="milestone-label">
+                      <b-form-input type="number" v-model="milestone.beers" required
+                        placeholder="Enter number of beers"></b-form-input>
+                    </b-form-group>
 
-                  <b-form-group label="Number of Steps" label-class="milestone-label">
-                    <b-form-input type="number" v-model="milestone.steps" required
-                      placeholder="Enter number of steps"></b-form-input>
-                  </b-form-group>
+                    <b-form-group label="Number of Steps" label-class="milestone-label">
+                      <b-form-input type="number" v-model="milestone.steps" required
+                        placeholder="Enter number of steps"></b-form-input>
+                    </b-form-group>
 
-                  <b-button class="save-milestone" type="submit" variant="success">Save Milestone</b-button>
-                  <b-button @click="goBackToMilestonesFromCreateMilestone" class="go-back-button">
-              Go Back
-            </b-button>
-                  
-                </b-form>
-              </b-col>
-            </BCard>
-          </BRow>
-        </b-row>
-      </div>
+                    <b-button class="save-milestone" type="submit" variant="success">Save Milestone</b-button>
+                    <b-button @click="goBackToMilestonesFromCreateMilestone" class="go-back-button">
+                      Go Back
+                    </b-button>
+
+                  </b-form>
+                </b-col>
+              </BCard>
+            </BRow>
+          </b-row>
+        </div>
       </b-row>
 
       <!-- Milestone form for editing -->
@@ -309,14 +311,14 @@
                 </b-form-group>
 
                 <div>
-                <b-button class="save-milestone" type="save-milestone" variant="success">
-                  Save Milestone
-                </b-button>
-              </div>
+                  <b-button class="save-milestone" type="save-milestone" variant="success">
+                    Save Milestone
+                  </b-button>
+                </div>
 
                 <b-button @click="goBackToMilestonesFromEditMilestone" class="go-back-button">
-              Go Back
-            </b-button>
+                  Go Back
+                </b-button>
               </b-form>
             </b-col>
           </BCard>
@@ -435,18 +437,18 @@ export default {
       total_steps: 0,
       steps_needed: 0,
       beerLogs: [],
-      
+
     };
   },
 
   computed: {
     chartData() {
       const beerLogsData = this.beerLogs.map(log => ({
-      x: new Date(log.date).toISOString().split('T')[0], // Convert the log date to Date object for x-axis
-      y: log.count // Use the beer count for y-axis
+        x: new Date(log.date).toISOString().split('T')[0], // Convert the log date to Date object for x-axis
+        y: log.count // Use the beer count for y-axis
       }));
 
-      
+
       return {
         labels: ['Beers'],
         datasets: [
@@ -456,19 +458,19 @@ export default {
             borderColor: '#ebb112',
             data: beerLogsData,
           },
-          
+
         ],
       };
     },
 
     chartOptions() {
       // Get first and last date from beerLogs
-    const firstDate = this.beerLogs.length > 0 ? new Date(this.beerLogs[0].date) : null;
-    const lastDate = this.beerLogs.length > 0 ? new Date(this.beerLogs[this.beerLogs.length - 1].date) : null;
+      const firstDate = this.beerLogs.length > 0 ? new Date(this.beerLogs[0].date) : null;
+      const lastDate = this.beerLogs.length > 0 ? new Date(this.beerLogs[this.beerLogs.length - 1].date) : null;
 
-    // Ensure min and max are valid Date objects or fallback to default
-    const minDate = firstDate instanceof Date && !isNaN(firstDate) ? firstDate : new Date();
-    const maxDate = lastDate instanceof Date && !isNaN(lastDate) ? lastDate : new Date();
+      // Ensure min and max are valid Date objects or fallback to default
+      const minDate = firstDate instanceof Date && !isNaN(firstDate) ? firstDate : new Date();
+      const maxDate = lastDate instanceof Date && !isNaN(lastDate) ? lastDate : new Date();
 
       return {
         responsive: true,
@@ -483,7 +485,7 @@ export default {
             time: {
               unit: 'day',
               tooltipFormat: 'yyyy-MM-dd',
-            //  parser: 'yyyy-MM-dd', // Ensure correct date parsing format
+              //  parser: 'yyyy-MM-dd', // Ensure correct date parsing format
               displayFormats: {
                 day: 'yyyy-MM-dd'
               }
@@ -525,7 +527,7 @@ export default {
       this.isBcardView = false;
       this.isMilestoneView = false;
       this.showEditMilestoneForm = true; // Show the form
-      
+
     },
 
     saveMilestone(milestone) {
@@ -603,11 +605,11 @@ export default {
         .then((data) => {
           this.milestones = data.milestones; // Assign the milestones to the component's data property
 
-           // Check if there's only one milestone and fetch that specific milestone
-           if (this.milestones.length === 1) {
-                const milestoneId = this.milestones[0]._id; // Get the ID of the milestone
-                this.fetchSingleMilestone(username, milestoneId); // Call the method to fetch the specific milestone
-            }
+          // Check if there's only one milestone and fetch that specific milestone
+          if (this.milestones.length === 1) {
+            const milestoneId = this.milestones[0]._id; // Get the ID of the milestone
+            this.fetchSingleMilestone(username, milestoneId); // Call the method to fetch the specific milestone
+          }
 
         })
         .catch((error) => {
@@ -618,21 +620,21 @@ export default {
 
 
     fetchSingleMilestone(username, milestoneId) {
-    fetch(`http://localhost:3000/api/users/${username}/milestones/${milestoneId}`)
+      fetch(`http://localhost:3000/api/users/${username}/milestones/${milestoneId}`)
         .then((response) => {
-            if (!response.ok) {
-                throw new Error(`Error fetching single milestone: ${response.statusText}`);
-            }
-            return response.json();
+          if (!response.ok) {
+            throw new Error(`Error fetching single milestone: ${response.statusText}`);
+          }
+          return response.json();
         })
         .then((data) => {
-            console.log('Single milestone fetched successfully:', data.milestone);
-            // Handle the single milestone data (e.g., update the UI, save in state, etc.)
+          console.log('Single milestone fetched successfully:', data.milestone);
+          // Handle the single milestone data (e.g., update the UI, save in state, etc.)
         })
         .catch((error) => {
-            console.error('Error fetching single milestone:', error);
+          console.error('Error fetching single milestone:', error);
         });
-},
+    },
 
     // Create and save the milestone
     createMilestone() {
@@ -667,9 +669,9 @@ export default {
           this.fetchUserMilestones();
           this.showToastNotification('Milestone successfully saved!'); // Show success toast
           this.milestone = { title: '', description: '', beers: 0, steps: 0 }; // Reset the form fields
-          
+
           this.toggleCreateMilestones();
-          
+
         })
         .catch((error) => {
           console.error('Error saving milestone:', error);
@@ -678,12 +680,12 @@ export default {
 
           this.milestone = { title: '', description: '', beers: 0, steps: 0 }; // Reset form fields
           this.showMilestoneForm = false; // Hide the form
-         
+
 
         });
     },
 
-    toggleStepInput(){
+    toggleStepInput() {
       if (this.isFirstClick) {
         this.runFirstMethod();  // Call the first method
       } else {
@@ -693,8 +695,8 @@ export default {
       this.isFirstClick = !this.isFirstClick;
     },
 
-    runFirstMethod(){
-      
+    runFirstMethod() {
+
       this.showCreateMilestones = false;
       this.showEditMilestoneForm = false;
       this.isBcardView = false;
@@ -703,7 +705,7 @@ export default {
       this.isMilestoneView = false;
       this.showStepInput = true;
     },
-    runSecondMethod(){
+    runSecondMethod() {
       this.showCreateMilestones = false;
       this.showEditMilestoneForm = false;
       this.isBcardView = true;
@@ -716,8 +718,8 @@ export default {
       this.showMilestoneForm = !this.showMilestoneForm;
     },
     toggleCreateMilestones() {
-      this.showCreateMilestones= !this.showCreateMilestones;
-      this.isMilestoneView =!this.isMilestoneView;
+      this.showCreateMilestones = !this.showCreateMilestones;
+      this.isMilestoneView = !this.isMilestoneView;
       this.isBcardView = !this.isBcardView;
     },
 
@@ -725,12 +727,12 @@ export default {
       this.isMilestoneView = !this.isMilestoneView;
       this.isActivityView = !this.isActivityView;
     },
-    goBackToMilestonesFromEditMilestone(){
+    goBackToMilestonesFromEditMilestone() {
       this.showEditMilestoneForm = false;
       this.isMilestoneView = true;
       this.isBcardView = true;
     },
-    goBackToMilestonesFromCreateMilestone(){
+    goBackToMilestonesFromCreateMilestone() {
       this.milestone = { title: '', description: '', beers: 0, steps: 0 }; // Reset form fields
       this.showCreateMilestones = false;
       this.isMilestoneView = true;
@@ -864,9 +866,9 @@ export default {
           this.total_steps = user.total_steps;
           this.steps_needed = user.steps_needed;
           // Make sure beerLogs has valid dates
-           // Ensure beerLogs has valid ISO date strings, no need to convert twice
-      this.beerLogs = user.beerLogs; 
-      console.log('Fetched beerLogs:', this.beerLogs); // Log to check data
+          // Ensure beerLogs has valid ISO date strings, no need to convert twice
+          this.beerLogs = user.beerLogs;
+          console.log('Fetched beerLogs:', this.beerLogs); // Log to check data
 
 
           console.log('Fetched beerLogs:', this.beerLogs); // Log to check data
@@ -916,7 +918,7 @@ export default {
           this.steps = ''; // Reset the step input field
           this.showStepInput = false; // Hide the input field after submission
           this.total_steps = updatedUser.total_steps;
-       //   this.steps_needed = updatedUser.steps_needed;
+          //   this.steps_needed = updatedUser.steps_needed;
           this.showToastNotification('Steps successfully logged!');
         })
         .catch((error) => {
@@ -1009,7 +1011,7 @@ export default {
         .then((user) => {
           console.log('Selected beer:', selectedBeer.kcal);
           let newStepsNeeded = 0;
-          if(selectedBeer.kcal = 170) {
+          if (selectedBeer.kcal = 170) {
             newStepsNeeded = user.steps_needed + 1888;
           } else if (selectedBeer.kcal = 220) {
             newStepsNeeded = user.steps_needed + 2444;
@@ -1028,7 +1030,7 @@ export default {
             date: new Date().toISOString(), // Use ISO 8601 format to ensure correct
             count: newTotalBeers, // Total beers after increment
           };
-          
+
 
 
           // Prepare the request body
@@ -1037,7 +1039,7 @@ export default {
             steps_needed: newStepsNeeded,
             beerLogs: [...user.beerLogs, newBeerLog], // Combine existing logs with the new one
           };
-          
+
 
 
           return fetch(`http://localhost:3000/api/users/${username}`, {
@@ -1077,20 +1079,20 @@ export default {
         });
     },
     updateChartData() {
-       // Prepare beer data from the logs
-  const beerData = this.beerLogs.map(log => {
-    const logDate = new Date(log.date); // Parse the log date
+      // Prepare beer data from the logs
+      const beerData = this.beerLogs.map(log => {
+        const logDate = new Date(log.date); // Parse the log date
 
-    return {
-      x: logDate, // Pass the full Date object to Chart.js (it will use the correct month)
-      y: log.count, // Each log's count (1 for each logged beer)
-    };
-  });
+        return {
+          x: logDate, // Pass the full Date object to Chart.js (it will use the correct month)
+          y: log.count, // Each log's count (1 for each logged beer)
+        };
+      });
 
-  // Add the beer data to the chart
-  this.chartData.datasets[0].data = beerData;
-  console.log('Updating chart data:', this.chartData); // Debugging to verify data
-},
+      // Add the beer data to the chart
+      this.chartData.datasets[0].data = beerData;
+      console.log('Updating chart data:', this.chartData); // Debugging to verify data
+    },
   },
 };
 </script>
@@ -1103,43 +1105,49 @@ export default {
 .activity-view {
 
   background: url('@/assets/set&homeBackground.jpg') no-repeat center center fixed;
-  background-size: cover; /* Ensure the image covers the entire area */
-  height: 100vh; /* Set full height for the body */
-  margin: 0; /* Remove default margin */
-  padding: 0; /* Remove default padding */
+  background-size: cover;
+  /* Ensure the image covers the entire area */
+  height: 100vh;
+  /* Set full height for the body */
+  margin: 0;
+  /* Remove default margin */
+  padding: 0;
+  /* Remove default padding */
 
 }
-.milestone-label{
+
+.milestone-label {
   color: whitesmoke;
   background-color: whitesmoke;
 }
 
-.save-milestone{
+.save-milestone {
   margin-top: 5%;
 }
 
-.title{
+.title {
   background-color: whitesmoke;
-  color:bg-dark;
+  color: bg-dark;
 }
 
-.beer-chart-title{
+.beer-chart-title {
   background-color: whitesmoke;
-  color:bg-dark;
+  color: bg-dark;
 }
 
-.view-info{
+.view-info {
   color: whitesmoke;
   margin-bottom: 5%;
   margin-top: 0%;
 }
-.view-info-steps{
+
+.view-info-steps {
   color: whitesmoke;
   margin-top: 5%;
   margin-bottom: 2.5%;
 }
 
-.milestone-title{
+.milestone-title {
   color: whitesmoke;
 }
 
@@ -1198,7 +1206,7 @@ export default {
   justify-content: center;
   width: 100%;
   margin-top: 2.5%;
-  
+
 }
 
 .submit-button:hover {
@@ -1258,26 +1266,21 @@ export default {
   border-radius: 15px;
 }
 
-.go-back-button{
+.go-back-button {
   margin-top: 5%;
-  background-color: #ff5733; /* Your desired background color */
-  color: white; /* Text color */
-  border: none; /* Remove border */
-  
+  background-color: #ff5733;
+  /* Your desired background color */
+  color: white;
+  /* Text color */
+  border: none;
+  /* Remove border */
+
 
 }
-
-
-
-
-
 
 .justify-content-center {
   margin-top: 0%;
 }
-
-
-
 
 
 .edit-milestones-button {
@@ -1302,10 +1305,10 @@ export default {
   width: 15vh;
   height: 10vh;
   color: whitesmoke;
-  
+
 }
 
-.reset-buton-button{
+.reset-buton-button {
   border-radius: 15px;
 }
 
@@ -1333,7 +1336,7 @@ export default {
   display: flex;
   /* Aligns content inside */
   width: 100%;
-  
+
 
 }
 
@@ -1341,9 +1344,12 @@ export default {
   list-style-type: none;
   width: 100%;
   margin-bottom: 5%;
-  max-height: 400px; /* Set a maximum height for the milestone list */
-    overflow-y: auto; /* Allow vertical scrolling */
-    padding-right: 15px; /* Add some padding to avoid scrollbar overlap */
+  max-height: 400px;
+  /* Set a maximum height for the milestone list */
+  overflow-y: auto;
+  /* Allow vertical scrolling */
+  padding-right: 15px;
+  /* Add some padding to avoid scrollbar overlap */
 }
 
 
@@ -1443,43 +1449,46 @@ export default {
   justify-content: center;
   /* Center the button within the column */
 }
-.milestones-button{
+
+.milestones-button {
   border-radius: 15px;
   height: 100%;
-  
+
 }
 
-.ber{
+.ber {
   margin-top: 0%;
 }
 
-.reset-button{
+.reset-button {
   border-radius: 15px;
 }
 
 
-.activity-buttons-container{
+.activity-buttons-container {
 
   background-color: #333;
 }
+
 /* Media Queries for smaller screens */
 
 @media (min-width: 320px) {
 
-  .milestones-button{
+  .milestones-button {
     width: 100px;
   }
-  
-  .reset-button{
+
+  .reset-button {
     width: 1px;
-   
+
   }
-  .box{
+
+  .box {
     margin-top: 50px;
 
   }
-  
- 
+
+
 }
 
 @media (min-width: 1024px) {
@@ -1501,20 +1510,20 @@ export default {
     width: 100%;
   }
 
- 
+
 
   .steps {
-  margin-top: 5%;
-  text-align: center;
-  /* Center the button within the column */
+    margin-top: 5%;
+    text-align: center;
+    /* Center the button within the column */
   }
 
-  .ber{
+  .ber {
     text-align: center;
   }
 }
 
-.milestones-button{
+.milestones-button {
   margin: 0%;
 }
 
@@ -1523,42 +1532,42 @@ export default {
   .massive-button {
     width: 470px;
   }
-  
+
 
   .steps {
-    
-  text-align: center;
-  /* Center the button within the column */
+
+    text-align: center;
+    /* Center the button within the column */
   }
 
-  
+
 }
 
 @media (min-width: 1440px) {
 
-  .row{
+  .row {
     justify-content: center;
     gap: 10px;
   }
-  
+
 
 
 
   .massive-button {
     width: 650px;
   }
-  
+
 }
 
- 
 
-  
-  .reset-button {
-    width: 150px;
-    margin-left: 50px;
-    margin-right: 50px;
-    
-  }
+
+
+.reset-button {
+  width: 150px;
+  margin-left: 50px;
+  margin-right: 50px;
+
+}
 
 
 .activity-box {
@@ -1568,13 +1577,9 @@ export default {
 
 @media (min-height: 400px) {
 
-  .box{
+  .box {
     margin-bottom: 250px;
   }
 
 }
-
-
-
-
 </style>
