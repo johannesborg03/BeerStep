@@ -4,27 +4,9 @@
     <b-container>
       <b-row>
         <b-col>
-
-         
         </b-col>
       </b-row>
 
-      <!--
-      <BRow class="current-beer-container">
-        <p class="current-beer">
-          <img src="/src/assets/beerPic.webp" alt="Beer" class="beer-image" />
-        : {{ total_beers }} 
-          </p>
-        </BRow>
-
-        <BRow class="total-steps-container">
-          <p class="total-steps">
-            <img src="/src/assets/running.png" alt="Beer" class="running-image" />
-          :     {{ total_steps }} <br>
-         Steps Needed: {{ steps_needed }}
-          </p>
-        </BRow>
-        -->
 
 
       <BRow class="bcard" v-if="isBcardView">
@@ -87,11 +69,7 @@
       <div class="activity" v-if="!isActivityView">
           <h1 class="title">Activity Status</h1>
           <p class="beer-chart-title">Beer Progress:</p>
-          <!-- INSERT BEER CHART-->
-
-          <!-- Insert your Chart component here
-              <beer-vs-steps-chart :totalBeers="total_beers" :totalSteps="total_steps" />
-            -->
+      
 
           <BeerVsStepsChart ref="myChart" :chart-data="chartData" :options="chartOptions" />
 
@@ -169,24 +147,6 @@
         </b-container>
       </div>
 
-
-      <!-- Button container with responsive buttons -->
-
-
-      <!--
-      <b-row class="justify-content-center">
-        <b-col cols="12" md="5" class="text-center mb-3">
-          <b-button @click="toggleCanvas" variant="success" block class="massive-button beer">
-            Beer
-          </b-button>
-        </b-col>
-      </b-row>
-
-    -->
-
-
-
-      <!-- OffCanvas for beer selection -->
       <b-offcanvas v-model="showBeerCanvas" title="Choose Your Beer" :placement="'bottom'" class="bg-dark"
         style="color: white; height: 40%;">
         <b-list-group>
@@ -199,22 +159,7 @@
       </b-offcanvas>
 
 
-      <!--
-       
-        <b-col cols="12" md="5" class="text-center">
-          <b-button @click="showStepInput = true" variant="primary" block class="massive-button log-step">
-            Step
-          </b-button>
-        </b-col>
-         -->
 
-
-      
-
-
-
-      <!-- Step input container with responsive input and button -->
-      
       <b-row v-if="showStepInput" class="justify-content-center mt-1">
         <BCard class="justify-content-center box bg-dark">
         <b-col cols="12" md="12" class="text-step-center">
@@ -229,21 +174,7 @@
       </BCard>
       </b-row>
     
-      <!-- 
-      <div class="d-flex justify-content-center mb-3">
-        <div class="milestones">
-          <b-button @click="toggleMilestoneForm" class="milestones-button">
-            Milestones
-          </b-button>
-        </div>
-      </div>
-    -->
-
-      
-
-
-
-
+     
       <b-row v-if="showCreateMilestones" class="justify-content-center mb-3 milestone-view">
       <div class="create-milestone-view">
         <b-row v-if="showCreateMilestones" class="justify-content-center mb-3">
@@ -323,29 +254,6 @@
         </BRow>
       </b-row>
 
-      <!--
-      <div class="d-flex justify-content-center mb-3">
-        
-        <div class="edit-milestones">
-      <b-button @click="confirmEditMilestones" variant="primary" class="edit-milestones-button">
-        Edit Milestone
-      </b-button>
-    </div>
-    -->
-
-
-
-
-      <!-- Reset button at the bottom 
-    <div class="d-flex justify-content-center mb-3">
-      <div class="reset-steps">
-      <b-button @click="confirmResetSteps" variant="danger" class="reset-button">
-        Reset Steps
-      </b-button>
-    </div>
-    </div>
-  -->
-
 
 
       <div class="toast-container position-fixed top-0 end-0 p-3">
@@ -413,7 +321,7 @@ export default {
       beerChoices: [
         {
           name: 'Lager',
-          // url('/src/assets/set&homeBackground.jpg');
+          
           avatar: lagerImage,
           kcal: 180,
         },
@@ -588,9 +496,7 @@ export default {
         const milestoneData = await response.json();
         this.currentMilestone = milestoneData;
 
-        //  this.milestone = { ...milestoneId }; // Clone the milestone data to the form
-        // Open the milestone edit form
-        // this.showEditMilestoneForm = true;
+       
       } catch (error) {
         console.error('Error fetching milestone:', error);
       }
@@ -617,7 +523,7 @@ export default {
         })
         .catch((error) => {
           console.error('Error fetching milestones:', error);
-          /*   this.showToastNotification('Failed to load milestones. Please try again.'); THIS SHOWS UP IF NO MILESTONES ARE THERE */
+          
         });
     },
 
@@ -770,16 +676,7 @@ export default {
       }
     },
 
-    /*
-    async editMilestone() {
-      const username = localStorage.getItem('username');
-
-      try {
-        const response = await fetch()
-      }
-    },
-  */
-
+  
 
     async deleteMilestones() {
       const username = localStorage.getItem('username');
@@ -849,7 +746,7 @@ export default {
           this.showToastNotification('Failed to log beers. Please try again.');
         });
       this.total_beers = 0; // Reset the total steps count to 0
-      // You might also want to reset any other related state here
+      
       console.log("Total beers reset to 0");
     },
 
@@ -869,13 +766,13 @@ export default {
           this.total_steps = user.total_steps;
           this.steps_needed = user.steps_needed;
           // Make sure beerLogs has valid dates
-           // Ensure beerLogs has valid ISO date strings, no need to convert twice
+           // Ensure beerLogs has valid ISO date strings
       this.beerLogs = user.beerLogs; 
       console.log('Fetched beerLogs:', this.beerLogs); // Log to check data
 
 
           console.log('Fetched beerLogs:', this.beerLogs); // Log to check data
-          //this.updateChartData(); // Call to update chart with new data
+          
         })
         .catch((error) => {
           console.error('Error fetching user data:', error);
@@ -921,7 +818,7 @@ export default {
           this.steps = ''; // Reset the step input field
           this.showStepInput = false; // Hide the input field after submission
           this.total_steps = updatedUser.total_steps;
-       //   this.steps_needed = updatedUser.steps_needed;
+       
           this.showToastNotification('Steps successfully logged!');
         })
         .catch((error) => {
@@ -929,7 +826,7 @@ export default {
           this.showToastNotification('Failed to log steps. Please try again.');
         });
       this.total_steps = 0; // Reset the total steps count to 0
-      // You might also want to reset any other related state here
+  
       console.log("Total steps reset to 0");
     },
 
@@ -1024,10 +921,7 @@ export default {
             newStepsNeeded = 2000;
           }
           const newTotalBeers = user.total_beers + 1;
-          // const newStepsNeeded = user.steps_needed + 2000;
-
-          // LAGER: 180, IPA: 220, STOUT: 250: Pilsner: 170
-
+          
           // Prepare the new beer log
           const newBeerLog = {
             date: new Date().toISOString(), // Use ISO 8601 format to ensure correct
@@ -1052,12 +946,6 @@ export default {
             },
             body: JSON.stringify(requestBody),
 
-
-            //     total_beers: newTotalBeers,
-            //     steps_needed: newStepsNeeded }),
-            // Use $push to add the new beer log
-            //   beerLogs: newBeerLog // This is the key change
-            //   $push: { beerLogs: newBeerLog }, // Push new log into beerLogs array
 
           });
         })
@@ -1101,7 +989,6 @@ export default {
 </script>
 
 <style scoped>
-/* Add view-specific styles */
 
 
 
@@ -1578,8 +1465,6 @@ export default {
   }
 
 }
-
-
 
 
 </style>
