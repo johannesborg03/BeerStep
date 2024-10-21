@@ -1566,12 +1566,15 @@ export default {
 }
 
 
-@media (min-height: 800px) {
+@media (min-height: 400px) {
 
   .box{
     margin-bottom: 250px;
   }
 
 }
+
+
+
 
 </style>
