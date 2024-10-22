@@ -106,7 +106,7 @@ export default {
       const username = localStorage.getItem('username')
       if (username) {
         try {
-          const response = await fetch(`http://localhost:3000/api/users/${username}/squads`, {
+          const response = await fetch(`/api/users/${username}/squads`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json'
@@ -133,7 +133,7 @@ export default {
 
       if (this.squadName.trim()) {
         try {
-          const userResponse = await fetch(`http://localhost:3000/api/users/${username}`, {
+          const userResponse = await fetch(`/api/users/${username}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json'
@@ -157,7 +157,7 @@ export default {
             leaderboard: []
           }
 
-          const response = await fetch('http://localhost:3000/api/squads', {
+          const response = await fetch('/api/squads', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -200,7 +200,7 @@ export default {
 
         if (squad_id && username) {
           try {
-            const response = await fetch(`http://localhost:3000/api/squads/${squad_id}/users/${username}`, {
+            const response = await fetch(`/api/squads/${squad_id}/users/${username}`, {
               method: 'PATCH',
               headers: {
                 'Content-Type': 'application/json'
@@ -242,7 +242,7 @@ export default {
         const squad_id = this.selectedSquad._id
 
         try {
-          const response = await fetch(`http://localhost:3000/api/squads/${squad_id}/users/${username}`, {
+          const response = await fetch(`/api/squads/${squad_id}/users/${username}`, {
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/json'

@@ -42,7 +42,7 @@ export default {
   
     async displaySteps() {
       try {
-        const response = await fetch(`http://localhost:3000/api/users/${this.username}`);
+        const response = await fetch(`/api/users/${this.username}`);
         if (!response.ok) {
           throw new Error(`Error fetching user data: ${response.statusText}`);
         }

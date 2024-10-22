@@ -104,7 +104,7 @@ export default {
       try {
         const username = this.$route.params.username; 
 
-        const response = await fetch(`http://localhost:3000/api/users/${username}`);
+        const response = await fetch(`/api/users/${username}`);
         if (!response.ok) {
           throw new Error(`Failed to fetch user data: ${response.status}`);
         }
@@ -135,7 +135,7 @@ export default {
           return;
         }
 
-        const response = await fetch(`http://localhost:3000/api/users/${username}`, {
+        const response = await fetch(`/api/users/${username}`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json'
