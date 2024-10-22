@@ -812,6 +812,7 @@ export default {
       console.log("Total steps reset to 0");
     },
 
+    //Add Com
     // Toggle the beer selection OffCanvas
     toggleCanvas() {
       this.showBeerCanvas = !this.showBeerCanvas;
